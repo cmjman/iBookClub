@@ -1,5 +1,9 @@
 package com.shining.ibookclub;
 
+import com.shining.ibookclub.dao.BookInfoDao;
+import com.shining.ibookclub.fragment.BorrowFragment;
+import com.shining.ibookclub.fragment.DummySectionFragment;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -74,6 +78,8 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		 BookInfoDao.initBookInfoDao(this);
 	}
 
 	@Override
@@ -121,6 +127,14 @@ public class MainActivity extends FragmentActivity implements
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
+		//	BorrowFragment borrowFragment=new BorrowFragment();
+		//	Bundle args=new Bundle();
+		//	args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			//borrowFragment.setArguments(args);
+			
+			//if(position==0)
+			//	return borrowFragment;
+			
 		}
 
 		@Override
@@ -143,31 +157,5 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			// Create a new TextView and set its text to the fragment's section
-			// number argument value.
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return textView;
-		}
-	}
 
 }

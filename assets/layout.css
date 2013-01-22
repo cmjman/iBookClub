@@ -1,0 +1,61 @@
+body 
+{
+	
+	background-color: #CCC;
+
+}
+div  
+{  
+	font-size:24;
+}
+ul
+{
+	list-style:none; 
+	display:table-row-group; 
+}
+li 
+{ 
+	float: left; 
+	display:table-cell; 
+	height:150px;
+	width:159px; 
+	font-family:Helvetica;
+	color:#000;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	border:1px solid #AAA;
+	text-align:center;
+	text-shadow:0px 1px 1px #fff;
+	background-image:-webkit-gradient(linear,left top ,left bottom,from(#ccc),to(#999));
+	-webkit-border-top-left-radius:8px;
+	-webkit-border-top-right-radius:8px;
+	-webkit-border-bottom-left-radius:8px;
+	-webkit-border-bottom-right-radius:8px;
+}
+img
+{
+	border:1px solid #AAA; 
+	height:100px
+	width:80px;
+	
+}
+
+#bookInfo #main
+{
+	font-family:Helvetica;
+	color:#000;
+	border:1px solid #AAA;
+	text-shadow:0px 1px 1px #fff;
+	-webkit-border-top-left-radius:8px;
+	-webkit-border-top-right-radius:8px;
+	-webkit-border-bottom-left-radius:8px;
+	-webkit-border-bottom-right-radius:8px;
+}
+
+
+
+#bookImage,h1
+{
+	text-align:center;
+}
