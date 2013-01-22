@@ -11,7 +11,11 @@
        android:text="点此启动扫描"
        />
   
-   
+   <Button 
+       android:id="@+id/button_lend"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       />
      <WebView
    	     android:id="@+id/webview_BookInfo"
         android:layout_width="match_parent"

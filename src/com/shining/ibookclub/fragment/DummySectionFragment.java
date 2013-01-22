@@ -62,9 +62,11 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_scan;
 	
+	private Button button_lend;
+	
 	private String isbn;
 	
-	private BookInfo bookInfo;
+	private static BookInfo bookInfo;
 	
 	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
 	
@@ -166,6 +168,10 @@ public  class DummySectionFragment extends Fragment {
 		        	 }
 		         });
 		         
+		    //     button_lend=(Button)getActivity().findViewById(R.id.button_lend);
+		    //     setLend();
+		         
+		         
 		     	webview_BookInfo = (WebView)getActivity().findViewById(R.id.webview_BookInfo);
 		     	webview_BookInfo.getSettings().setSupportZoom(false);
 		     	webview_BookInfo.getSettings().setJavaScriptCanOpenWindowsAutomatically(
@@ -193,6 +199,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	   
 	   isbn=data.getStringExtra("SCAN_RESULT");
+	   
+	//   System.out.println(isbn);
 	  
 	 //  textview_isbn.setText("ISBN:"+isbn);
 	   
@@ -202,14 +210,58 @@ public  class DummySectionFragment extends Fragment {
 		//intent.putExtra("ISBN", isbn);
 		//this.startActivity(intent);
 	   
-		getBookInfoRun.run();
-		
+	//	getBookInfoRun.run();
+	   
+	   final Object object = new Object();  
+	   
+	   new Thread(){  
+			  
+			
+			  public void run() {  
+				  try {
+					//  bookInfo = getResultByIsbn(isbn);
+				//	  synchronized (bookInfo){};   
+					 
+					  synchronized (object){
+					  
+						  bookInfo=  getResultByIsbn();
+						  
+						  object.notify();
+					  }
+				
+					  } catch (Exception e) {
+							e.printStackTrace();
+							throw new RuntimeException(e);
+						}
+				  
+				
+					   
+					  
+				//	  handler1.sendEmptyMessage(0);
+			  }  
+			    }.start();  
+			    
+	   
+		if(bookInfo==null)
+			System.out.println("1234");
 		
 	   
 		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
 		
+		synchronized (object){
+			
+			try {
+				object.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
      	webview_BookInfo.addJavascriptInterface(new Object() {
+     		
+     		
+     		
+     		
 			public String getBookName() {
 				return bookInfo.getName();
 			}
@@ -225,32 +277,20 @@ public  class DummySectionFragment extends Fragment {
 			public String getBookAuthor() {
 				return bookInfo.getAuthor();
 			}
+			
+     		
+     		
 		}, "searchResult");
-
-	 
+		}
+     	
 		}
 	   
 	 }
 	 
-	  Runnable getBookInfoRun = new Runnable(){  
-		  
-			
-		  public void run() {  
-			  try {
-				  bookInfo = getResultByIsbn(isbn);
-			
-				  } catch (Exception e) {
-						e.printStackTrace();
-						throw new RuntimeException(e);
-					}
-			  
-			
-				   
-				  
-				  handler1.sendEmptyMessage(0);
-		  }  
-		    };  
-	
+	 // Thread getBookInfoRun = 
+	/*
+	 
+	 
 	  private Handler handler1 =new Handler(){
 			
 		   public void handleMessage(Message msg){
@@ -261,6 +301,30 @@ public  class DummySectionFragment extends Fragment {
 			
 		   }
 		 };
+	*/
+	 
+	 
+		 private void setLend(){
+				button_lend.setText("发布到图书馆");
+				button_lend.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						BookInfoDao.getInstance().create(bookInfo);
+						setHasLend();
+					}
+				});
+			}
+
+			private void setHasLend() {
+				button_lend.setText("已发布");
+				button_lend.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						BookInfoDao.getInstance().delete(bookInfo.getIsbn());
+						setLend();
+					}
+				});
+			}
 		 
 		 private void checkNetworkInfo(){
 			  
@@ -278,8 +342,8 @@ public  class DummySectionFragment extends Fragment {
 			  }
 		 
 		 
-		 private BookInfo getResultByIsbn(String isbn){
-					BookInfo dbook=null;
+		 private BookInfo getResultByIsbn(){
+				//	BookInfo dbook=null;
 					
 	
 					
@@ -303,7 +367,8 @@ public  class DummySectionFragment extends Fragment {
 					/////////////////////
 				
 					
-					dbook = getBookInfo(inStream);
+				//	dbook = getBookInfo(inStream);
+					return getBookInfo(inStream);
 					}catch (Exception e) {  
 					e.printStackTrace();  
 					}  
@@ -311,7 +376,8 @@ public  class DummySectionFragment extends Fragment {
 				//	if(dbook==null)
 					//	System.out.println("1111");
 					
-					return dbook;
+				//	return dbook;
+					return null;
 					
 					
 					}
@@ -319,7 +385,7 @@ public  class DummySectionFragment extends Fragment {
 			
 			public BookInfo getBookInfo(InputStream inputStream)/* throws XmlPullParserException, IOException*/ {
 				
-				BookInfo bookInfo1 = new BookInfo();
+			//	BookInfo bookInfo1 = new BookInfo();
 				
 				try{
 				
@@ -328,7 +394,8 @@ public  class DummySectionFragment extends Fragment {
 				XmlPullParser parser = factory.newPullParser();
 				parser.setInput(inputStream, "UTF-8");
 				
-				bookInfo1.setIsbn(isbn);
+				bookInfo=new BookInfo();
+				bookInfo.setIsbn(isbn);
 				
 			
 				
@@ -338,33 +405,36 @@ public  class DummySectionFragment extends Fragment {
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("title")) {
-						bookInfo1.setName(parser.nextText());
-						Log.v("SearchBook", "title>>" + bookInfo1.getName());
+						bookInfo.setName(parser.nextText());
+						Log.v("SearchBook", "title>>" + bookInfo.getName());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("author")) {
-						bookInfo1.setAuthor(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookInfo1.getAuthor());
+						bookInfo.setAuthor(parser.nextText());
+						Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG && parser.getName().equals("link")) {
 						if (parser.getAttributeValue(1).equals("image")) {
-							bookInfo1.setImageUrl(parser.getAttributeValue(0));
-							Log.v("SearchBook", "image>>" + bookInfo1.getImageUrl());
+							bookInfo.setImageUrl(parser.getAttributeValue(0));
+							Log.v("SearchBook", "image>>" + bookInfo.getImageUrl());
 						}
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("summary")) {
-						bookInfo1.setSummary(parser.nextText());
-						Log.v("SearchBook", "summary>>" + bookInfo1.getSummary());
+						bookInfo.setSummary(parser.nextText());
+						Log.v("SearchBook", "summary>>" + bookInfo.getSummary());
 						continue;
 					}
 					
 				}
 				Log.v("SearchBook", ">>>>> parse end.");
+				
+			//	if(bookInfo==null)
+				//	System.out.println("5678");
 				
 				}catch(Exception e){
 					e.printStackTrace();
@@ -372,7 +442,7 @@ public  class DummySectionFragment extends Fragment {
 			
 			
 
-				return bookInfo1;
+				return bookInfo;
 			}
 
 
