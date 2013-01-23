@@ -26,6 +26,7 @@ import android.net.NetworkInfo.State;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -51,6 +52,8 @@ public  class DummySectionFragment extends Fragment {
 	 * fragment.
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
+	
+	public static final Object lock = new Object();  
 	
 	private int SEC_NUMBER_INTEGER;
 	
@@ -168,8 +171,8 @@ public  class DummySectionFragment extends Fragment {
 		        	 }
 		         });
 		         
-		    //     button_lend=(Button)getActivity().findViewById(R.id.button_lend);
-		    //     setLend();
+		         button_lend=(Button)getActivity().findViewById(R.id.button_lend);
+		         setLend();
 		         
 		         
 		     	webview_BookInfo = (WebView)getActivity().findViewById(R.id.webview_BookInfo);
@@ -212,7 +215,7 @@ public  class DummySectionFragment extends Fragment {
 	   
 	//	getBookInfoRun.run();
 	   
-	   final Object object = new Object();  
+	 
 	   
 	   new Thread(){  
 			  
@@ -220,14 +223,14 @@ public  class DummySectionFragment extends Fragment {
 			  public void run() {  
 				  try {
 					//  bookInfo = getResultByIsbn(isbn);
-				//	  synchronized (bookInfo){};   
+					//  synchronized (bookInfo){};   
 					 
-					  synchronized (object){
+					  Looper.prepare();
 					  
-						  bookInfo=  getResultByIsbn();
+					  bookInfo=  getResultByIsbn();
 						  
-						  object.notify();
-					  }
+					  Looper.loop();
+					
 				
 					  } catch (Exception e) {
 							e.printStackTrace();
@@ -248,14 +251,18 @@ public  class DummySectionFragment extends Fragment {
 	   
 		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
 		
-		synchronized (object){
+		
+		
+		synchronized (lock){
 			
-			try {
-				object.wait();
+			try {	
+				lock.wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+ 		
+			
 
      	webview_BookInfo.addJavascriptInterface(new Object() {
      		
@@ -279,7 +286,7 @@ public  class DummySectionFragment extends Fragment {
 			}
 			
      		
-     		
+			
 		}, "searchResult");
 		}
      	
@@ -394,6 +401,8 @@ public  class DummySectionFragment extends Fragment {
 				XmlPullParser parser = factory.newPullParser();
 				parser.setInput(inputStream, "UTF-8");
 				
+				 synchronized (lock){
+				
 				bookInfo=new BookInfo();
 				bookInfo.setIsbn(isbn);
 				
@@ -436,11 +445,15 @@ public  class DummySectionFragment extends Fragment {
 			//	if(bookInfo==null)
 				//	System.out.println("5678");
 				
+				 lock.notify();
+				  }
+			
+				
 				}catch(Exception e){
 					e.printStackTrace();
 				}
-			
-			
+				
+				 
 
 				return bookInfo;
 			}
@@ -498,8 +511,9 @@ public  class DummySectionFragment extends Fragment {
 	 public void onResume() {  
 		  
 	        super.onResume();  
-	        
-	      //  webview_BookForBorrow.reload();
+	        if(SEC_NUMBER_INTEGER==1){
+	        	webview_BookForBorrow.reload();
+	        }
 	    }  
 	 
 }

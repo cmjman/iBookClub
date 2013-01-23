@@ -48,7 +48,7 @@ public class BookInfo{
 		
 	}
 	
-	public String getSummary(){
+	public  String getSummary(){
 		
 		return summary;
 	}
