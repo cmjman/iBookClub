@@ -1,11 +1,11 @@
 package com.shining.ibookclub;
 
 import com.shining.ibookclub.dao.BookInfoDao;
-import com.shining.ibookclub.fragment.BorrowFragment;
 import com.shining.ibookclub.fragment.DummySectionFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -88,6 +88,20 @@ public class MainActivity extends FragmentActivity implements
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+	
+	 public boolean onOptionsItemSelected(MenuItem item) {
+		  
+		 super.onOptionsItemSelected(item);
+	        switch(item.getItemId())
+	        {
+	        case R.id.menu_settings:
+	        	break;
+	        case R.id.menu_login:
+	        	startActivity(new Intent(MainActivity.this,LoginActivity.class));
+	            break;
+	        }
+	        return true;
+	 }
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,

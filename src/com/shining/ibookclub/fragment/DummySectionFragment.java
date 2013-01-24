@@ -75,7 +75,7 @@ public  class DummySectionFragment extends Fragment {
 	
 	private static String URL = "http://api.douban.com/book/subject/isbn/";
 	
-	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
+//	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
 	
 
 	public DummySectionFragment() {
@@ -415,27 +415,27 @@ public  class DummySectionFragment extends Fragment {
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("title")) {
 						bookInfo.setName(parser.nextText());
-						Log.v("SearchBook", "title>>" + bookInfo.getName());
+					//	Log.v("SearchBook", "title>>" + bookInfo.getName());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("author")) {
 						bookInfo.setAuthor(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
+					//	Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG && parser.getName().equals("link")) {
 						if (parser.getAttributeValue(1).equals("image")) {
 							bookInfo.setImageUrl(parser.getAttributeValue(0));
-							Log.v("SearchBook", "image>>" + bookInfo.getImageUrl());
+						//	Log.v("SearchBook", "image>>" + bookInfo.getImageUrl());
 						}
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("summary")) {
 						bookInfo.setSummary(parser.nextText());
-						Log.v("SearchBook", "summary>>" + bookInfo.getSummary());
+						//Log.v("SearchBook", "summary>>" + bookInfo.getSummary());
 						continue;
 					}
 					
@@ -458,6 +458,7 @@ public  class DummySectionFragment extends Fragment {
 				return bookInfo;
 			}
 
+			/*
 
 
 			public byte[] downImage(String imageUrl) {
@@ -506,7 +507,7 @@ public  class DummySectionFragment extends Fragment {
 					bos.close();   
 					}   
 	 
-	
+	*/
 	 
 	 public void onResume() {  
 		  

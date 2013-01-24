@@ -3,10 +3,10 @@
     package="com.shining.ibookclub"
     android:versionCode="1"
     android:versionName="1.0" >
-    
-     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    	<uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -26,125 +26,161 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
-               <activity android:name="com.google.zxing.client.android.CaptureActivity"
-              android:screenOrientation="landscape"
-              android:clearTaskOnLaunch="true"
-              android:stateNotNeeded="true"
-              android:configChanges="orientation|keyboardHidden"
-              android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-              android:windowSoftInputMode="stateAlwaysHidden">
-      <intent-filter>
-        <action android:name="com.shining.iBookClub.library.com.google.zxing.client.android.SCAN"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-      <!-- Allow web apps to launch Barcode Scanner by linking to http://zxing.appspot.com/scan. -->
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="http" android:host="zxing.appspot.com" android:path="/scan"/>
-      </intent-filter>
-      <!-- We also support a Google Product Search URL. -->
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="http" android:host="www.google.com" android:path="/m/products/scan"/>
-      </intent-filter>
-      <!-- And the UK version. -->
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="http" android:host="www.google.co.uk" android:path="/m/products/scan"/>
-      </intent-filter>
-      <!-- Support zxing://scan/?... like iPhone app -->
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="zxing" android:host="scan" android:path="/"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.PreferencesActivity"
-             
-              android:stateNotNeeded="true">
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.encode.EncodeActivity"
-       
-              android:stateNotNeeded="true">
-      <intent-filter>
-        <action android:name="com.google.zxing.client.android.ENCODE"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-      <!-- This allows us to handle the Share button in Contacts. -->
-      <intent-filter>
-        <action android:name="android.intent.action.SEND"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <data android:mimeType="text/x-vcard"/>
-      </intent-filter>
-      <!-- This allows us to handle sharing any plain text . -->
-      <intent-filter>
-        <action android:name="android.intent.action.SEND"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <data android:mimeType="text/plain"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.book.SearchBookContentsActivity"
-         
-              android:stateNotNeeded="true"
-              android:screenOrientation="landscape"
-              android:configChanges="orientation|keyboardHidden">
-      <intent-filter>
-        <action android:name="com.google.zxing.client.android.SEARCH_BOOK_CONTENTS"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.share.ShareActivity"
-     
-              android:stateNotNeeded="true"
-              android:screenOrientation="user"
-              android:theme="@android:style/Theme.Light">
-      <intent-filter>
-        <action android:name="com.google.zxing.client.android.SHARE"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.history.HistoryActivity"
-        
-              android:stateNotNeeded="true">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.share.BookmarkPickerActivity"
-           
-              android:stateNotNeeded="true">
-      <intent-filter>
-        <action android:name="android.intent.action.PICK"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.share.AppPickerActivity"
-        
-              android:stateNotNeeded="true"
-              android:configChanges="orientation">
-      <intent-filter>
-        <action android:name="android.intent.action.PICK"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.shining.iBookClub.library.HelpActivity"
-              android:screenOrientation="user">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-        
+        <activity
+            android:name="com.google.zxing.client.android.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="com.shining.iBookClub.library.com.google.zxing.client.android.SCAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- Allow web apps to launch Barcode Scanner by linking to http://zxing.appspot.com/scan. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="zxing.appspot.com"
+                    android:path="/scan"
+                    android:scheme="http" />
+            </intent-filter>
+            <!-- We also support a Google Product Search URL. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.google.com"
+                    android:path="/m/products/scan"
+                    android:scheme="http" />
+            </intent-filter>
+            <!-- And the UK version. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.google.co.uk"
+                    android:path="/m/products/scan"
+                    android:scheme="http" />
+            </intent-filter>
+            <!-- Support zxing://scan/?... like iPhone app -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="scan"
+                    android:path="/"
+                    android:scheme="zxing" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.PreferencesActivity"
+            android:stateNotNeeded="true" >
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.encode.EncodeActivity"
+            android:stateNotNeeded="true" >
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.ENCODE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- This allows us to handle the Share button in Contacts. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/x-vcard" />
+            </intent-filter>
+            <!-- This allows us to handle sharing any plain text . -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.book.SearchBookContentsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:stateNotNeeded="true" >
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SEARCH_BOOK_CONTENTS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.share.ShareActivity"
+            android:screenOrientation="user"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.Light" >
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SHARE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.history.HistoryActivity"
+            android:stateNotNeeded="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.share.BookmarkPickerActivity"
+            android:stateNotNeeded="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.share.AppPickerActivity"
+            android:configChanges="orientation"
+            android:stateNotNeeded="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.iBookClub.library.HelpActivity"
+            android:screenOrientation="user" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shining.ibookclub.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
     </application>
 
 </manifest>
