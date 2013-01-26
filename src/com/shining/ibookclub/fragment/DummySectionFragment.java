@@ -245,8 +245,8 @@ public  class DummySectionFragment extends Fragment {
 			    }.start();  
 			    
 	   
-		if(bookInfo==null)
-			System.out.println("1234");
+	//	if(bookInfo==null)
+		//	System.out.println("1234");
 		
 	   
 		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");

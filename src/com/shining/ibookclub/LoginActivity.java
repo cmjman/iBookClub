@@ -1,6 +1,22 @@
 package com.shining.ibookclub;
 
-import weibo4j.Weibo;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+
 
 
 import android.animation.Animator;
@@ -193,6 +209,77 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
+	
+	
+	public static Boolean Login(String UserId ,String PassWord){
+		
+		Boolean actionResult=false;
+		String httpUrl="http://192.168.1.113:8003/iBookClubServer/LoginServlet";
+		
+		HttpPost httpRequest =new HttpPost(httpUrl);
+		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+        params.add(new BasicNameValuePair("userid", UserId)); 
+        params.add(new BasicNameValuePair("password", PassWord)); 
+      
+		
+		try{
+	
+			HttpClient httpclient=new DefaultHttpClient();
+
+			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
+			HttpResponse httpResponse=httpclient.execute(httpRequest);
+		
+			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+				
+				String strResult=EntityUtils.toString(httpResponse.getEntity());
+				System.out.println(strResult);
+				JSONObject jsonObject = new JSONObject(strResult) ;
+				actionResult=jsonObject.getBoolean("ActionResult");
+			}
+		}
+		catch(Exception e){
+			return false;
+		}
+		return actionResult;
+	}
+
+	
+	
+	
+	
+	public static Boolean Register(String UserId, String passWord,
+            String niceName) {
+         
+        Boolean actionResult=false;   
+        String httpUrl="http://192.168.1.113:8003/iBookClubServer/Action=adduser.jsp&&Account="+UserId+"&PassWord="+passWord;
+     
+        HttpPost httpRequest =new HttpPost(httpUrl);
+          
+        try
+        {
+       
+            HttpClient httpclient=new DefaultHttpClient();
+             
+            HttpResponse  httpResponse=httpclient.execute(httpRequest);
+             
+            if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
+            {
+             
+                String strResult=EntityUtils.toString(httpResponse.getEntity());
+                 
+                JSONObject jsonObject = new JSONObject(strResult) ;
+         
+                actionResult=jsonObject.getBoolean("ActionResult");
+            }
+        }
+        catch(Exception e)
+        {
+            return false;
+             
+        }
+        return actionResult;
+    }
+
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
@@ -205,7 +292,7 @@ public class LoginActivity extends Activity {
 
 		//	Weibo weibo = new Weibo("XXX@sina.com","XXX");
 		//	weibo.setHttpConnectionTimeout(5000);
-
+			Login(mEmail,mPassword);
 			
 			try {
 				// Simulate network access.

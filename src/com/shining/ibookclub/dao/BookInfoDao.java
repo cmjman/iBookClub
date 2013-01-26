@@ -74,7 +74,7 @@ public class BookInfoDao {
 				object.put("isbn", cursor.getString(1));
 				object.put("image",cursor.getString(2));
 				
-				System.out.println(cursor.getString(2));
+			//	System.out.println(cursor.getString(2));
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}
