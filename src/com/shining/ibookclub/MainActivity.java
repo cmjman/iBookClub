@@ -38,6 +38,8 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,11 @@ public class MainActivity extends FragmentActivity implements
 		}
 		
 		 BookInfoDao.initBookInfoDao(this);
+		 
+		
 	}
+	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,6 +175,8 @@ public class MainActivity extends FragmentActivity implements
 			}
 			return null;
 		}
+		
+	
 	}
 
 

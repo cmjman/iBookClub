@@ -61,6 +61,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	private WebView webview_BookInfo;
 	
+	private TextView text_nickname;
+	
 	private Handler handler = new Handler();
 	
 	private Button button_scan;
@@ -74,6 +76,8 @@ public  class DummySectionFragment extends Fragment {
 	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
 	
 	private static String URL = "http://api.douban.com/book/subject/isbn/";
+	
+	private static String nickname;
 	
 //	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
 	
@@ -100,6 +104,9 @@ public  class DummySectionFragment extends Fragment {
 		}
 		else if(SEC_NUMBER_INTEGER==2){
 			return inflater.inflate(R.layout.fragment_lend, container,false);
+		}
+		else if(SEC_NUMBER_INTEGER==3){
+			return inflater.inflate(R.layout.fragment_info, container,false);
 		}
 		
 	//	if()
@@ -184,6 +191,17 @@ public  class DummySectionFragment extends Fragment {
 		     
 
 
+		    	
+		    }
+		    else if(SEC_NUMBER_INTEGER==3){
+		    	
+		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
+		    	
+		    	Bundle bundle=getActivity().getIntent().getExtras();
+		    	if(bundle!=null){
+		    		nickname=bundle.getString("nickname");
+		    		text_nickname.setText("Welcome!"+nickname);
+		    	}
 		    	
 		    }
 		   

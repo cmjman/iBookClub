@@ -16,6 +16,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.shining.ibookclub.fragment.DummySectionFragment;
+
 
 
 
@@ -23,10 +25,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -59,6 +63,7 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private static String nickname;
 
 	// UI references.
 	private EditText mEmailView;
@@ -211,14 +216,14 @@ public class LoginActivity extends Activity {
 	}
 	
 	
-	public static Boolean Login(String UserId ,String PassWord){
+	public static Boolean Login(String Email ,String PassWord){
 		
 		Boolean actionResult=false;
 		String httpUrl="http://192.168.1.113:8003/iBookClubServer/LoginServlet";
 		
 		HttpPost httpRequest =new HttpPost(httpUrl);
 		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-        params.add(new BasicNameValuePair("userid", UserId)); 
+        params.add(new BasicNameValuePair("email", Email)); 
         params.add(new BasicNameValuePair("password", PassWord)); 
       
 		
@@ -232,9 +237,14 @@ public class LoginActivity extends Activity {
 			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
 				
 				String strResult=EntityUtils.toString(httpResponse.getEntity());
-				System.out.println(strResult);
+			//	System.out.println(strResult);
 				JSONObject jsonObject = new JSONObject(strResult) ;
 				actionResult=jsonObject.getBoolean("ActionResult");
+				nickname=jsonObject.getString("nickname");
+				//System.out.println(actionResult+nickname);
+				
+				 
+				  
 			}
 		}
 		catch(Exception e){
@@ -247,19 +257,25 @@ public class LoginActivity extends Activity {
 	
 	
 	
-	public static Boolean Register(String UserId, String passWord,
-            String niceName) {
+	public static Boolean Register(String Email, String PassWord,
+            String NickName) {
          
         Boolean actionResult=false;   
-        String httpUrl="http://192.168.1.113:8003/iBookClubServer/Action=adduser.jsp&&Account="+UserId+"&PassWord="+passWord;
+        String httpUrl="http://192.168.1.113:8003/iBookClubServer/RegisterServlet";
      
         HttpPost httpRequest =new HttpPost(httpUrl);
+    	List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+        params.add(new BasicNameValuePair("email", Email)); 
+        params.add(new BasicNameValuePair("password", PassWord)); 
+        params.add(new BasicNameValuePair("nickname",NickName));
           
         try
         {
        
             HttpClient httpclient=new DefaultHttpClient();
-             
+            
+    		httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
+            
             HttpResponse  httpResponse=httpclient.execute(httpRequest);
              
             if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
@@ -292,8 +308,18 @@ public class LoginActivity extends Activity {
 
 		//	Weibo weibo = new Weibo("XXX@sina.com","XXX");
 		//	weibo.setHttpConnectionTimeout(5000);
-			Login(mEmail,mPassword);
+			if(Login(mEmail,mPassword)){
+				
+				 Bundle bundle = new Bundle();
+				  bundle.putString("nickname", nickname);
+				   Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+				   intent.putExtras(bundle);
+				   finish();
+				   startActivity(intent);
+				
+			}
 			
+			//
 			try {
 				// Simulate network access.
 				Thread.sleep(2000);
@@ -308,8 +334,13 @@ public class LoginActivity extends Activity {
 					return pieces[1].equals(mPassword);
 				}
 			}
-
+			
+		
+			
+			
 			// TODO: register the new account here.
+			Register(mEmail,mPassword,mEmail);
+			
 			return true;
 		}
 
