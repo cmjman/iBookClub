@@ -10,6 +10,19 @@
        android:layout_height="wrap_content"
        android:text="点此启动扫描"
        />
+   <EditText
+       android:id="@+id/edittext_isbn"
+       android:layout_width="match_parent"
+   	   android:layout_height="wrap_content"
+       android:hint="请在此输入ISBN编号"
+       android:textSize="24sp"
+       />
+   <Button 
+       android:id="@+id/button_searchByIsbn"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="点此根据ISBN号搜索书目"
+       />
   
    <Button 
        android:id="@+id/button_lend"

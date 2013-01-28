@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	private int SEC_NUMBER_INTEGER;
 	
+	private SearchBookTask searchBookTask;
+	
 	private WebView webview_BookForBorrow;
 	
 	private WebView webview_BookInfo;
@@ -67,11 +71,15 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_scan;
 	
+	private Button button_searchByIsbn;
+	
 	private Button button_lend;
+	
+	private EditText edittext_isbn;
 	
 	private String isbn;
 	
-	private static BookInfo bookInfo;
+	private static BookInfo bookInfo=new BookInfo();
 	
 	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
 	
@@ -178,6 +186,25 @@ public  class DummySectionFragment extends Fragment {
 		        	 }
 		         });
 		         
+		         edittext_isbn=(EditText)getActivity().findViewById(R.id.edittext_isbn);
+		         
+		         button_searchByIsbn=(Button)getActivity().findViewById(R.id.button_searchByIsbn);
+		         
+		         button_searchByIsbn.setOnClickListener(new OnClickListener(){
+		        	 
+		        	 public void onClick(View view){
+		        		 if(edittext_isbn.getText()!=null){
+		        			 isbn=edittext_isbn.getText().toString();
+		        		//	  LoadBookInfo();  
+		        		//	  searchBookThread.start();  
+		        			   searchBookTask=new SearchBookTask();
+		        			   searchBookTask.execute((Void) null);
+		        			
+		        		 }
+		        		 
+		        	 }
+		         });
+		         
 		         button_lend=(Button)getActivity().findViewById(R.id.button_lend);
 		         setLend();
 		         
@@ -207,6 +234,42 @@ public  class DummySectionFragment extends Fragment {
 		   
 		    
 	 }
+	 /*
+	 
+	 Thread searchBookThread= new Thread(){  
+		  
+			
+		  public synchronized void run() {  
+			  try {
+				//  bookInfo = getResultByIsbn(isbn);
+				//  synchronized (bookInfo){};   
+					
+				  Looper.prepare();
+				
+				  synchronized (lock){
+				//	  bookInfo.wait();
+				  
+				  bookInfo=  getResultByIsbn();
+				 lock.notify();
+				  }
+				  
+				  
+				 
+					  
+				  Looper.loop();
+				
+			
+				  } catch (Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException(e);
+					}
+			  
+			
+				   
+				  
+			//	  handler1.sendEmptyMessage(0);
+		  }  
+		    };*/
 	 
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 	
@@ -234,54 +297,73 @@ public  class DummySectionFragment extends Fragment {
 	//	getBookInfoRun.run();
 	   
 	 
-	   
-	   new Thread(){  
-			  
+	//  Looper.prepare();
+	   /*
+	   synchronized (bookInfo){
 			
-			  public void run() {  
-				  try {
-					//  bookInfo = getResultByIsbn(isbn);
-					//  synchronized (bookInfo){};   
-					 
-					  Looper.prepare();
-					  
-					  bookInfo=  getResultByIsbn();
-						  
-					  Looper.loop();
-					
+			try {	
 				
-					  } catch (Exception e) {
-							e.printStackTrace();
-							throw new RuntimeException(e);
-						}
-				  
-				
-					   
-					  
-				//	  handler1.sendEmptyMessage(0);
-			  }  
-			    }.start();  
+			} catch (InterruptedException e) {
+			
+				e.printStackTrace();
+			}
+	   }*/
+		
+	//   LoadBookInfo();
+	
+	//  searchBookThread.start();  
+	   
+	   searchBookTask=new SearchBookTask();
+	   searchBookTask.execute((Void) null);
+	  
+	//  Looper.loop();
 			    
+	
 	   
 	//	if(bookInfo==null)
 		//	System.out.println("1234");
 		
 	   
-		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
-		
-		
-		
-		synchronized (lock){
+	
+	   
+	 }
+	 }
+	 
+	 // Thread getBookInfoRun = 
+	/*
+	 
+	 
+	  private Handler handler1 =new Handler(){
 			
-			try {	
-				lock.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		   public void handleMessage(Message msg){
+			   
+			   
+			   super.handleMessage(msg);
+			   
+			
+		   }
+		 };
+	*/
+	 
+	public void LoadBookInfo(){
+		 
+	webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
+		
+		
+		
+	
+	//System.out.println("111");
  		
-			
-
+		/*
+	   synchronized (lock){
+				
+		   try {
+			   while(bookInfo.equals(null))
+				   lock.wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
      	webview_BookInfo.addJavascriptInterface(new Object() {
      		
      		
@@ -306,27 +388,14 @@ public  class DummySectionFragment extends Fragment {
      		
 			
 		}, "searchResult");
-		}
      	
-		}
-	   
-	 }
+	   }
+		
+	//}
+     	
+	
 	 
-	 // Thread getBookInfoRun = 
-	/*
-	 
-	 
-	  private Handler handler1 =new Handler(){
-			
-		   public void handleMessage(Message msg){
-			   
-			   
-			   super.handleMessage(msg);
-			   
-			
-		   }
-		 };
-	*/
+
 	 
 	 
 		 private void setLend(){
@@ -334,19 +403,23 @@ public  class DummySectionFragment extends Fragment {
 				button_lend.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						BookInfoDao.getInstance().create(bookInfo);
-						setHasLend();
+					//TODO 缺少判空操作，可能导致空指针崩溃，待修正,下同
+							BookInfoDao.getInstance().create(bookInfo);
+							setHasLend();
+						
 					}
 				});
 			}
 
 			private void setHasLend() {
-				button_lend.setText("已发布");
+				button_lend.setText("已发布,点此可下架");
 				button_lend.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						
 						BookInfoDao.getInstance().delete(bookInfo.getIsbn());
 						setLend();
+						
 					}
 				});
 			}
@@ -375,7 +448,7 @@ public  class DummySectionFragment extends Fragment {
 					checkNetworkInfo();
 					
 		
-			
+				
 					
 					try{	
 					
@@ -419,7 +492,7 @@ public  class DummySectionFragment extends Fragment {
 				XmlPullParser parser = factory.newPullParser();
 				parser.setInput(inputStream, "UTF-8");
 				
-				 synchronized (lock){
+				
 				
 				bookInfo=new BookInfo();
 				bookInfo.setIsbn(isbn);
@@ -463,8 +536,9 @@ public  class DummySectionFragment extends Fragment {
 			//	if(bookInfo==null)
 				//	System.out.println("5678");
 				
-				 lock.notify();
-				  }
+				
+			//	notify();
+				 
 			
 				
 				}catch(Exception e){
@@ -526,6 +600,29 @@ public  class DummySectionFragment extends Fragment {
 					}   
 	 
 	*/
+			
+			
+	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
+				
+				
+		protected Boolean doInBackground(Void... params) {
+		
+			 bookInfo=  getResultByIsbn();
+			
+			return true;
+		}
+		
+		protected void onPostExecute(final Boolean success) {
+			
+			 LoadBookInfo();
+		}
+		
+		protected void onCancelled() {
+			
+		}
+		
+		
+	}
 	 
 	 public void onResume() {  
 		  

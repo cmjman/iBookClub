@@ -101,13 +101,15 @@ public class MainActivity extends FragmentActivity implements
 	        switch(item.getItemId())
 	        {
 	        case R.id.menu_settings:
+	        	startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 	        	break;
-	        case R.id.menu_login:
-	        	startActivity(new Intent(MainActivity.this,LoginActivity.class));
+	        case R.id.menu_logout:
+	       // 	startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),0);
 	            break;
 	        }
 	        return true;
 	 }
+	 
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,

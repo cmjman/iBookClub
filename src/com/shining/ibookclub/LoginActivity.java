@@ -26,17 +26,29 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -54,6 +66,8 @@ public class LoginActivity extends Activity {
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
+	
+	public static final String SERVER_URL ="http://192.168.1.101:8003/iBookClubServer/"; 
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -64,24 +78,60 @@ public class LoginActivity extends Activity {
 	private String mEmail;
 	private String mPassword;
 	private static String nickname;
+	
+	//private AutoCompleteTextView mUserNameAuto;  
+//	private EditText mPasswordEt;  
+    private CheckBox mRemPwd;  
+    private CheckBox mShowPwd;  
+    private SharedPreferences mPasswordSp;  
 
 	// UI references.
-	private EditText mEmailView;
+	private AutoCompleteTextView mEmailView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		
+		mRemPwd=(CheckBox)findViewById(R.id.checkBox_remPwd);
+		mShowPwd=(CheckBox)findViewById(R.id.checkBox_showPwd);
+		
+		mShowPwd.setOnClickListener(new OnClickListener() {//显示密码事件操作  
+            /*  
+             * 明文显示密码 ：  
+             * 明文显示：android.text.method.HideReturnsTransformationMethod ；  
+             * 密文显示：android.text.method.PasswordTransformationMethod ；  
+             */ 
+            @Override 
+            public void onClick(View v) {  
+               
+                if (mShowPwd.isChecked()) {// 被选中，则显示明文  
+                    // 将文本框的内容设置成明文显示  
+                    mPasswordView.setTransformationMethod(HideReturnsTransformationMethod  
+                            .getInstance());  
+                } else {  
+                    // 将文本框内容设置成密文的方式显示  
+                    mPasswordView.setTransformationMethod(PasswordTransformationMethod  
+                            .getInstance());  
+                }  
+            }  
+        });  
+    
+//	    mUserNameAuto = (AutoCompleteTextView) findViewById(R.id.cardNumAuto);  
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
+		
+		savePassword();
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -108,6 +158,8 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
+		
+		
 	}
 
 	@Override
@@ -159,6 +211,10 @@ public class LoginActivity extends Activity {
 			focusView = mEmailView;
 			cancel = true;
 		}
+		
+		if (mRemPwd.isChecked()) {  //选择记住密码功能
+            mPasswordSp.edit().putString(mEmail, mPassword).commit();//记住密码，把密码信息放入SharedPreferences文件中  
+        }  
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -219,7 +275,7 @@ public class LoginActivity extends Activity {
 	public static Boolean Login(String Email ,String PassWord){
 		
 		Boolean actionResult=false;
-		String httpUrl="http://192.168.1.113:8003/iBookClubServer/LoginServlet";
+		String httpUrl=SERVER_URL+"LoginServlet";
 		
 		HttpPost httpRequest =new HttpPost(httpUrl);
 		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
@@ -261,7 +317,7 @@ public class LoginActivity extends Activity {
             String NickName) {
          
         Boolean actionResult=false;   
-        String httpUrl="http://192.168.1.113:8003/iBookClubServer/RegisterServlet";
+        String httpUrl=SERVER_URL+"RegisterServlet";
      
         HttpPost httpRequest =new HttpPost(httpUrl);
     	List <NameValuePair> params = new ArrayList <NameValuePair>(); 
@@ -295,6 +351,52 @@ public class LoginActivity extends Activity {
         }
         return actionResult;
     }
+	
+	private void savePassword() {//保存密码方法，数据放入SharedPreferences文件  
+        /*  
+         * 参数简述：  
+         * Name—获得SharedPreferences之后，将会在应用程序的私有文件夹中保存着一个XML文件，第一个参数name就是这个文件名字  
+         * 。 Mode—XML文件的保存模式，默认为0，也就是MODE_PRIVATE  
+         */ 
+        mPasswordSp = this.getSharedPreferences("passwordFile", MODE_PRIVATE);  
+        mRemPwd.setChecked(true);// 默认为记住密码  
+        mEmailView.setThreshold(1);// 输入1个字母就开始自动提示  
+        // 隐藏密码为InputType.TYPE_TEXT_VARIATION_PASSWORD，也就是0x81  
+        // 显示密码为InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD，也就是0x91  
+  //      mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT  
+     //           | InputType.TYPE_TEXT_VARIATION_PASSWORD);  
+        mEmailView.addTextChangedListener(new TextWatcher() {  
+ 
+            @Override 
+            public void onTextChanged(CharSequence s, int start, int before,  
+                    int count) {  
+                // TODO Auto-generated method stub  
+                String[] allUserName = new String[mPasswordSp.getAll().size()];// sp.getAll().size()返回的是有多少个键值对  
+                allUserName = mPasswordSp.getAll().keySet().toArray(new String[0]);  
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(  
+                        LoginActivity.this,  
+                        android.R.layout.simple_dropdown_item_1line,  
+                        allUserName);  
+                mEmailView.setAdapter(adapter);// 设置数据适配器  
+            }  
+ 
+            @Override 
+            public void beforeTextChanged(CharSequence s, int start, int count,  
+                    int after) {  
+                // TODO Auto-generated method stub  
+ 
+            }  
+ 
+            @Override 
+            public void afterTextChanged(Editable s) {  
+                // TODO Auto-generated method stub  
+                // 自动输入密码  
+            	mPasswordView.setText(mPasswordSp.getString(mEmailView.getText().toString(),  
+                        ""));  
+ 
+            }  
+        });  
+    }  
 
 
 	/**
@@ -314,11 +416,11 @@ public class LoginActivity extends Activity {
 				  bundle.putString("nickname", nickname);
 				   Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 				   intent.putExtras(bundle);
+				//   setResult(0,intent);
 				   finish();
 				   startActivity(intent);
-				
+				   return true;
 			}
-			
 			//
 			try {
 				// Simulate network access.
@@ -335,13 +437,13 @@ public class LoginActivity extends Activity {
 				}
 			}
 			
-		
+			
 			
 			
 			// TODO: register the new account here.
-			Register(mEmail,mPassword,mEmail);
+		//	Register(mEmail,mPassword,mEmail);
 			
-			return true;
+			return false;
 		}
 
 		@Override
@@ -355,6 +457,7 @@ public class LoginActivity extends Activity {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
+		//		Toast.makeText(LoginActivity.this, "密码错误!", Toast.LENGTH_SHORT).show();
 			}
 		}
 
