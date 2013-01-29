@@ -31,12 +31,10 @@ public class LoginSingleton {
    
     private static String loginEmail = null;  
     private static String loginPassword = null;  
-    private static String loginName = null;  
+   
 	public static String nickname;
     private static Boolean actionResult=false;
-    private String tmpResult = null;  
-    private String resultDate = null;  
-    private String loginTag = null;  
+
 
   
     private LoginSingleton(String loginEmail, String loginPassword) throws Exception{  
