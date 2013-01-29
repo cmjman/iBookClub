@@ -70,6 +70,12 @@
 		        android:layout_width="wrap_content" 
 		        android:layout_height="wrap_content" 
 		        android:text="@string/rempwd" /> 
+		    <CheckBox 
+		        android:id="@+id/checkBox_autoLogin"
+		        android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content" 
+		        android:text="@string/autologin"
+		        />
 		        
             <CheckBox 
 		        android:id="@+id/checkBox_showPwd" 

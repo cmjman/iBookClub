@@ -9,6 +9,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
@@ -17,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import com.shining.ibookclub.fragment.DummySectionFragment;
+import com.shining.ibookclub.support.LoginSingleton;
 
 
 
@@ -25,6 +28,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -46,6 +50,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +73,7 @@ public class LoginActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 	
-	public static final String SERVER_URL ="http://192.168.1.101:8003/iBookClubServer/"; 
+
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -77,13 +83,15 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
-	private static String nickname;
+
 	
 	//private AutoCompleteTextView mUserNameAuto;  
 //	private EditText mPasswordEt;  
     private CheckBox mRemPwd;  
     private CheckBox mShowPwd;  
+    private CheckBox mAutoLogin;
     private SharedPreferences mPasswordSp;  
+    private SharedPreferences mAutoLoginSp;
 
 	// UI references.
 	private AutoCompleteTextView mEmailView;
@@ -100,8 +108,30 @@ public class LoginActivity extends Activity {
 
 		setContentView(R.layout.activity_login);
 		
+		
+		mAutoLoginSp = this.getSharedPreferences("userInfo", MODE_PRIVATE); 
+		
 		mRemPwd=(CheckBox)findViewById(R.id.checkBox_remPwd);
 		mShowPwd=(CheckBox)findViewById(R.id.checkBox_showPwd);
+		mAutoLogin=(CheckBox)findViewById(R.id.checkBox_autoLogin);
+	
+		
+		mAutoLogin.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+	
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if(mAutoLogin.isChecked()){
+					mAutoLoginSp.edit().putBoolean("AUTO_ISCHECK", true).commit();
+				}else{
+					mAutoLoginSp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+				}
+				
+			}
+			
+			
+		});
+		
+	//	mAutoLoginSp.edit().putBoolean("AUTO_ISCHECK", false).commit();
 		
 		mShowPwd.setOnClickListener(new OnClickListener() {//显示密码事件操作  
             /*  
@@ -123,6 +153,8 @@ public class LoginActivity extends Activity {
                 }  
             }  
         });  
+		
+	
     
 //	    mUserNameAuto = (AutoCompleteTextView) findViewById(R.id.cardNumAuto);  
 
@@ -132,6 +164,9 @@ public class LoginActivity extends Activity {
 		mEmailView.setText(mEmail);
 		
 		savePassword();
+		
+		
+		
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -146,6 +181,9 @@ public class LoginActivity extends Activity {
 						return false;
 					}
 				});
+		
+		
+		
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
@@ -159,6 +197,15 @@ public class LoginActivity extends Activity {
 					}
 				});
 		
+		if(mAutoLoginSp.getBoolean("AUTO_ISCHECK", true)){
+			
+			mEmailView.setText(mAutoLoginSp.getString("email",""));
+			mPasswordView.setText(mAutoLoginSp.getString("password", ""));
+		//	System.out.println(mEmail+mPassword);
+		//	mAuthTask = new UserLoginTask();
+		//	mAuthTask.execute((Void) null);
+			attemptLogin();
+		}
 		
 	}
 
@@ -215,6 +262,21 @@ public class LoginActivity extends Activity {
 		if (mRemPwd.isChecked()) {  //选择记住密码功能
             mPasswordSp.edit().putString(mEmail, mPassword).commit();//记住密码，把密码信息放入SharedPreferences文件中  
         }  
+		
+		if(mAutoLogin.isChecked()){
+    		//	mAuthTask.execute((Void) null);
+			
+		
+    			
+    			mAutoLoginSp
+    		    .edit()
+    		    .putString("email", mEmail)
+    		    .putString("password", mPassword)
+    		    .putBoolean("AUTO_ISCHECK", true)
+    		    .commit();
+    		}
+		
+	
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -272,46 +334,10 @@ public class LoginActivity extends Activity {
 	}
 	
 	
-	public static Boolean Login(String Email ,String PassWord){
-		
-		Boolean actionResult=false;
-		String httpUrl=SERVER_URL+"LoginServlet";
-		
-		HttpPost httpRequest =new HttpPost(httpUrl);
-		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-        params.add(new BasicNameValuePair("email", Email)); 
-        params.add(new BasicNameValuePair("password", PassWord)); 
-      
-		
-		try{
-	
-			HttpClient httpclient=new DefaultHttpClient();
-
-			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
-			HttpResponse httpResponse=httpclient.execute(httpRequest);
-		
-			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
-				
-				String strResult=EntityUtils.toString(httpResponse.getEntity());
-			//	System.out.println(strResult);
-				JSONObject jsonObject = new JSONObject(strResult) ;
-				actionResult=jsonObject.getBoolean("ActionResult");
-				nickname=jsonObject.getString("nickname");
-				//System.out.println(actionResult+nickname);
-				
-				 
-				  
-			}
-		}
-		catch(Exception e){
-			return false;
-		}
-		return actionResult;
-	}
-
 	
 	
 	
+	/*
 	
 	public static Boolean Register(String Email, String PassWord,
             String NickName) {
@@ -351,6 +377,7 @@ public class LoginActivity extends Activity {
         }
         return actionResult;
     }
+    */
 	
 	private void savePassword() {//保存密码方法，数据放入SharedPreferences文件  
         /*  
@@ -396,6 +423,9 @@ public class LoginActivity extends Activity {
  
             }  
         });  
+        
+    	
+    		
     }  
 
 
@@ -406,14 +436,21 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
+		
 
 		//	Weibo weibo = new Weibo("XXX@sina.com","XXX");
 		//	weibo.setHttpConnectionTimeout(5000);
-			if(Login(mEmail,mPassword)){
+			
+			try {
+				LoginSingleton.getInstance(mEmail, mPassword);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}  
+			if(LoginSingleton.isLoginSuccess()){
 				
 				 Bundle bundle = new Bundle();
-				  bundle.putString("nickname", nickname);
+				  bundle.putString("nickname",LoginSingleton.nickname);
 				   Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 				   intent.putExtras(bundle);
 				//   setResult(0,intent);
@@ -440,7 +477,7 @@ public class LoginActivity extends Activity {
 			
 			
 			
-			// TODO: register the new account here.
+		
 		//	Register(mEmail,mPassword,mEmail);
 			
 			return false;

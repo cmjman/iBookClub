@@ -2,10 +2,12 @@ package com.shining.ibookclub;
 
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.fragment.DummySectionFragment;
+import com.shining.ibookclub.support.LoginSingleton;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -38,6 +40,7 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
 	
 
 
@@ -103,8 +106,15 @@ public class MainActivity extends FragmentActivity implements
 	        case R.id.menu_settings:
 	        	startActivity(new Intent(MainActivity.this,SettingsActivity.class));
 	        	break;
-	        case R.id.menu_logout:
+	        case R.id.menu_logout:{
 	       // 	startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),0);
+	        	
+	        	    LoginSingleton.logout();
+	        	    SharedPreferences sp=this.getSharedPreferences("userInfo", MODE_PRIVATE); 
+	        	    sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+	        	    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+	        }
+	        	    
 	            break;
 	        }
 	        return true;
