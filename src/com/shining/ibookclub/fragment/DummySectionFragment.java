@@ -9,7 +9,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -17,6 +32,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import com.shining.ibookclub.*;
 import com.shining.ibookclub.bean.BookInfo;
 import com.shining.ibookclub.dao.BookInfoDao;
+import com.shining.ibookclub.support.LoginSingleton;
 
 import android.content.Context;
 import android.content.Intent;
@@ -350,20 +366,7 @@ public  class DummySectionFragment extends Fragment {
 	webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
 		
 		
-		
 	
-	//System.out.println("111");
- 		
-		/*
-	   synchronized (lock){
-				
-		   try {
-			   while(bookInfo.equals(null))
-				   lock.wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
      	webview_BookInfo.addJavascriptInterface(new Object() {
      		
      		
@@ -404,7 +407,10 @@ public  class DummySectionFragment extends Fragment {
 					@Override
 					public void onClick(View v) {
 					//TODO 缺少判空操作，可能导致空指针崩溃，待修正,下同
-							BookInfoDao.getInstance().create(bookInfo);
+						//	BookInfoDao.getInstance().create(bookInfo);
+							
+							postBookToLibrary();
+						
 							setHasLend();
 						
 					}
@@ -417,12 +423,80 @@ public  class DummySectionFragment extends Fragment {
 					@Override
 					public void onClick(View v) {
 						
-						BookInfoDao.getInstance().delete(bookInfo.getIsbn());
+					//	BookInfoDao.getInstance().delete(bookInfo.getIsbn());
+						deleteBookFromLibray();
 						setLend();
 						
 					}
 				});
 			}
+			
+		private void postBookToLibrary(){
+			
+			PostBookTask postBookTask=new PostBookTask();
+			postBookTask.execute((Void)null);
+			
+		}
+		
+		private void deleteBookFromLibray(){
+			
+		}
+		
+		public class PostBookTask extends AsyncTask<Void, Void, Boolean> {
+
+			@Override
+			protected Boolean doInBackground(Void... arg0) {
+				// TODO Auto-generated method stub
+				Boolean result=false;
+				String httpUrl=LoginSingleton.SERVER_URL+"AddBookServlet";
+				
+				if(LoginSingleton.isLoginSuccess()){
+					
+					HttpPost httpRequest =new HttpPost(httpUrl);
+					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+			        params.add(new BasicNameValuePair("isbn", bookInfo.getIsbn()));  
+			        params.add(new BasicNameValuePair("name", bookInfo.getName()));  
+			        params.add(new BasicNameValuePair("author", bookInfo.getAuthor()));  
+			        params.add(new BasicNameValuePair("publisher", bookInfo.getPublisher())); 
+			        params.add(new BasicNameValuePair("price", bookInfo.getPrice())); 
+			       
+					System.out.println(bookInfo.getIsbn());
+					try{
+				
+						HttpClient httpclient=new DefaultHttpClient();
+
+						httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
+						HttpResponse httpResponse=httpclient.execute(httpRequest);
+					
+						if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+							
+							
+
+							
+							String strResult=EntityUtils.toString(httpResponse.getEntity());
+						//	System.out.println(strResult);
+							JSONObject jsonObject = new JSONObject(strResult) ;
+							result=jsonObject.getBoolean("ActionResult");
+							
+							//System.out.println(actionResult+nickname);
+							
+							 
+							  
+						}
+					}
+					catch(Exception e){
+						return false;
+					}
+					return result;
+				}
+				
+				return null;
+			}
+			
+			
+			
+		}
 		 
 		 private void checkNetworkInfo(){
 			  
@@ -514,6 +588,20 @@ public  class DummySectionFragment extends Fragment {
 							&& parser.getAttributeValue(0).equals("author")) {
 						bookInfo.setAuthor(parser.nextText());
 					//	Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
+						continue;
+					}
+					if (i == XmlPullParser.START_TAG
+							&& parser.getName().equals("attribute")
+							&& parser.getAttributeValue(0).equals("publisher")) {
+						bookInfo.setPublisher(parser.nextText());
+						Log.v("SearchBook", "author>>" + bookInfo.getPublisher());
+						continue;
+					}
+					if (i == XmlPullParser.START_TAG
+							&& parser.getName().equals("attribute")
+							&& parser.getAttributeValue(0).equals("price")) {
+						bookInfo.setPrice(parser.nextText());
+						Log.v("SearchBook", "author>>" + bookInfo.getPrice());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG && parser.getName().equals("link")) {

@@ -7,6 +7,8 @@ public class BookInfo{
 	private String author;
 	private String imageUrl;
 	private String summary;
+	private String publisher;
+	private String price;
 	
 	
 	public String getIsbn() {
@@ -48,10 +50,30 @@ public class BookInfo{
 		
 	}
 	
+	public String getPublisher(){
+		
+		return this.publisher;
+	}
+	
+	public void setPublisher(String publisher){
+		
+		this.publisher=publisher;
+	}
+	
+	public String getPrice(){
+		return this.price;
+	}
+	
+	public void setPrice(String price){
+		this.price=price;
+	}
+	
 	public  String getSummary(){
 		
 		return summary;
 	}
+	
+	
 	
 	public void setSummary(String summary){
 		

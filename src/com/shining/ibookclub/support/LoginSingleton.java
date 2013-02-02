@@ -17,29 +17,35 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import android.app.Application;
+
 public class LoginSingleton {
 	
-	public static final String SERVER_URL ="http://192.168.1.103:8003/iBookClubServer/"; 
+
 	
     private static LoginSingleton loginInstance = null;  
     
-
+    public static final String SERVER_URL ="http://192.168.1.103:8003/iBookClubServer/"; 
       
     
     public static HttpClient httpClient = null;  
       
    
-    private static String loginEmail = null;  
+    public static String loginEmail = null;  
     private static String loginPassword = null;  
    
 	public static String nickname;
     private static Boolean actionResult=false;
+    
+  //  public Application application;
 
 
   
     private LoginSingleton(String loginEmail, String loginPassword) throws Exception{  
         this.loginEmail = loginEmail;  
         this.loginPassword = loginPassword;  
+        
+     
           
         Login();
      
