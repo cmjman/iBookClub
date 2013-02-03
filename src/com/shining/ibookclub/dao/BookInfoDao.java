@@ -30,7 +30,7 @@ public class BookInfoDao {
 
 	private void createTables() {
 		database.execSQL("create table if not exists favorite_books("
-				+ " id integer primary key autoincrement," + " name text,"
+				+ " _id integer primary key autoincrement," + " name text,"
 				+ "isbn text," + "image text"+");");
 	}
 
@@ -84,6 +84,12 @@ public class BookInfoDao {
 		cursor.close();
 
 		return array;
+	}
+	
+	public Cursor query(String sql,String[] args){
+		
+		Cursor cursor=database.rawQuery(sql, args);
+		return cursor;
 	}
 
 	public void delete(String isbn) {

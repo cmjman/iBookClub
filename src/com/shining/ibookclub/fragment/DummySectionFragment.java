@@ -24,18 +24,21 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 
 import com.shining.ibookclub.*;
+import com.shining.ibookclub.adapter.GridAdapter;
 import com.shining.ibookclub.bean.BookInfo;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.support.LoginSingleton;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
@@ -55,8 +58,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,6 +89,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	private TextView text_nickname;
 	
+	private GridView grid_mybook;
+	
 	private Handler handler = new Handler();
 	
 	private Button button_scan;
@@ -95,6 +103,10 @@ public  class DummySectionFragment extends Fragment {
 	
 	private String isbn;
 	
+	//private BookInfoDao bookInfoDao;
+	
+	private Cursor cursor;
+	
 	private static BookInfo bookInfo=new BookInfo();
 	
 	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
@@ -102,6 +114,9 @@ public  class DummySectionFragment extends Fragment {
 	private static String URL = "http://api.douban.com/book/subject/isbn/";
 	
 	private static String nickname;
+	
+	
+	ArrayList<String> bookList=new ArrayList<String>();
 	
 //	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
 	
@@ -239,7 +254,28 @@ public  class DummySectionFragment extends Fragment {
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
+		    	grid_mybook=(GridView)getActivity().findViewById(R.id.grid_mybook);
 		    	
+		    	//TODO 需补充具体sql语句
+		    	String sql="select _id,name,isbn,image from favorite_books";
+		    	cursor=BookInfoDao.getInstance().query(sql, null);
+		    	
+		    	GridAdapter gridAdapter=new GridAdapter(getActivity(), R.layout.gridview_mybook, cursor, 
+		    							new String[]{"name"}, new int[]{R.id.book_name}, "_id", R.id.book_cover);
+		    
+		    	
+		    	grid_mybook.setAdapter(gridAdapter);
+		    	
+		    	 grid_mybook.setOnItemClickListener(new  OnItemClickListener()
+			     {
+
+			    	  public void onItemClick(AdapterView parent, View v, int position, long id)
+			    	  {
+			    		  //TODO 点击跳转
+			    	  }
+			     });
+		    	 
+		    	 
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
@@ -446,9 +482,10 @@ public  class DummySectionFragment extends Fragment {
 
 			@Override
 			protected Boolean doInBackground(Void... arg0) {
-				// TODO Auto-generated method stub
+			
 				Boolean result=false;
 				String httpUrl=LoginSingleton.SERVER_URL+"AddBookServlet";
+			//	String httpUrlForLoadBook=LoginSingleton.SERVER_URL+"PersonalBookServlet";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -460,8 +497,11 @@ public  class DummySectionFragment extends Fragment {
 			        params.add(new BasicNameValuePair("author", bookInfo.getAuthor()));  
 			        params.add(new BasicNameValuePair("publisher", bookInfo.getPublisher())); 
 			        params.add(new BasicNameValuePair("price", bookInfo.getPrice())); 
+			        
+			     //   HttpPost httpRequestForLoadBook=new HttpPost(httpUrlForLoadBook);
+			        
 			       
-					System.out.println(bookInfo.getIsbn());
+			//		System.out.println(bookInfo.getIsbn());
 					try{
 				
 						HttpClient httpclient=new DefaultHttpClient();
@@ -476,10 +516,25 @@ public  class DummySectionFragment extends Fragment {
 							
 							String strResult=EntityUtils.toString(httpResponse.getEntity());
 						//	System.out.println(strResult);
-							JSONObject jsonObject = new JSONObject(strResult) ;
-							result=jsonObject.getBoolean("ActionResult");
+							JSONArray jsonArray = new JSONArray(strResult) ;
+						//	System.out.println(jsonArray);
+						
+					//		int count=jsonObject.getInt("count");
+						//	System.out.println(count);
+						//	bookList = new ArrayList<String>();
+							for(int i=0;i<jsonArray.length();i++){
+								
+								JSONObject jsonObj=new JSONObject();
+								jsonObj=jsonArray.getJSONObject(i);
+						//		System.out.println(jsonObj);
 							
-							//System.out.println(actionResult+nickname);
+								bookList.add(jsonObj.getString("isbn"));
+				
+							}
+					//		result=jsonObject.getBoolean("ActionResult");
+						
+							
+						//	System.out.println(list);
 							
 							 
 							  
@@ -492,6 +547,27 @@ public  class DummySectionFragment extends Fragment {
 				}
 				
 				return null;
+			}
+			
+			protected void onPostExecute(final Boolean success) {
+				
+				 LoadMyBook();
+			}
+			
+			
+			
+		}
+		
+		public void LoadMyBook(){
+			
+			//TODO 写入数据到本地缓存SQLITE并刷新
+			
+			for(String book_isbn:bookList){
+			
+				isbn=book_isbn;
+			   searchBookTask=new SearchBookTask();
+			   searchBookTask.execute((Void) null);
+			   BookInfoDao.getInstance().create(bookInfo);
 			}
 			
 			
@@ -519,7 +595,7 @@ public  class DummySectionFragment extends Fragment {
 					
 	
 					
-					checkNetworkInfo();
+			//		checkNetworkInfo();
 					
 		
 				
