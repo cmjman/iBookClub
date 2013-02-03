@@ -1,10 +1,14 @@
 package com.shining.ibookclub.dao;
 
+
+
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.shining.ibookclub.bean.BookInfo;
+import com.shining.ibookclub.bean.BookBean;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -41,7 +45,7 @@ public class BookInfoDao {
 		statement.close();
 	}
 
-	public void create(BookInfo bookInfo) {
+	public void create(BookBean bookInfo) {
 		
 		/*
 		SQLiteStatement statement = database
@@ -54,9 +58,9 @@ public class BookInfoDao {
 		
 		 ContentValues cv = new ContentValues();  
 		 
-		 cv.put("name", bookInfo.getName());
+		 cv.put("name", bookInfo.getBookname());
 		 cv.put("isbn",bookInfo.getIsbn());
-		 cv.put("image", bookInfo.getImageUrl());
+		 cv.put("image", bookInfo.getBookcover_url());
 		
 		 database.insert("favorite_books", null, cv);
 	}
@@ -100,14 +104,14 @@ public class BookInfoDao {
 		statement.close();
 	}
 
-	public BookInfo get(String isbn) {
-		BookInfo bookInfo = null;
+	public BookBean get(String isbn) {
+		BookBean bookInfo = null;
 		Cursor cursor = database.rawQuery(
 				"select name from favorite_books where isbn=" + isbn,
 				new String[] {});
 		if (cursor.moveToFirst()) {
-			bookInfo = new BookInfo();
-			bookInfo.setName(cursor.getString(0));
+			bookInfo = new BookBean();
+			bookInfo.setBookname(cursor.getString(0));
 			bookInfo.setIsbn(isbn);
 		}
 		cursor.close();

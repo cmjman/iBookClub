@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -30,9 +32,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.*;
 import com.shining.ibookclub.adapter.GridAdapter;
-import com.shining.ibookclub.bean.BookInfo;
+import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -107,7 +111,7 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Cursor cursor;
 	
-	private static BookInfo bookInfo=new BookInfo();
+	private static BookBean bookBean=new BookBean();
 	
 	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
 	
@@ -116,7 +120,7 @@ public  class DummySectionFragment extends Fragment {
 	private static String nickname;
 	
 	
-	ArrayList<String> bookList=new ArrayList<String>();
+	ArrayList<BookBean> bookList=new ArrayList<BookBean>();
 	
 //	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
 	
@@ -409,19 +413,19 @@ public  class DummySectionFragment extends Fragment {
      		
      		
 			public String getBookName() {
-				return bookInfo.getName();
+				return bookBean.getBookname();
 			}
 
 			public String getBookSummary() {
-				return bookInfo.getSummary();
+				return bookBean.getSummary();
 			}
 
 			public String getBookImageUrl() {
-				return bookInfo.getImageUrl();
+				return bookBean.getBookcover_url();
 			}
 
 			public String getBookAuthor() {
-				return bookInfo.getAuthor();
+				return bookBean.getAuthor();
 			}
 			
      		
@@ -492,11 +496,18 @@ public  class DummySectionFragment extends Fragment {
 					HttpPost httpRequest =new HttpPost(httpUrl);
 					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-			        params.add(new BasicNameValuePair("isbn", bookInfo.getIsbn()));  
-			        params.add(new BasicNameValuePair("name", bookInfo.getName()));  
-			        params.add(new BasicNameValuePair("author", bookInfo.getAuthor()));  
-			        params.add(new BasicNameValuePair("publisher", bookInfo.getPublisher())); 
-			        params.add(new BasicNameValuePair("price", bookInfo.getPrice())); 
+			    //    params.add(new BasicNameValuePair("isbn", bookInfo.getIsbn()));  
+			     //   params.add(new BasicNameValuePair("name", bookInfo.getName()));  
+			     //   params.add(new BasicNameValuePair("author", bookInfo.getAuthor()));  
+			     //   params.add(new BasicNameValuePair("publisher", bookInfo.getPublisher())); 
+			     //   params.add(new BasicNameValuePair("price", bookInfo.getPrice())); 
+			        Gson gsonBookInfo=new Gson();
+					
+			   //   JSONObject  jsonBookInfo=JSONObject.fromObject(bookInfo);
+			        
+			      
+			        
+					params.add(new BasicNameValuePair("bookbean",gsonBookInfo.toJson(bookBean)));
 			        
 			     //   HttpPost httpRequestForLoadBook=new HttpPost(httpUrlForLoadBook);
 			        
@@ -516,21 +527,25 @@ public  class DummySectionFragment extends Fragment {
 							
 							String strResult=EntityUtils.toString(httpResponse.getEntity());
 						//	System.out.println(strResult);
-							JSONArray jsonArray = new JSONArray(strResult) ;
+					//		JSONArray jsonArray = JSONArray.fromObject(strResult) ;
+							Gson gson = new Gson();
+							bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+							System.out.println(bookList);
+						//	BookInfo bookgson.fromJson(strResult, BookInfo.class);
 						//	System.out.println(jsonArray);
 						
 					//		int count=jsonObject.getInt("count");
 						//	System.out.println(count);
 						//	bookList = new ArrayList<String>();
-							for(int i=0;i<jsonArray.length();i++){
+						//	for(int i=0;i<jsonArray.size();i++){
 								
-								JSONObject jsonObj=new JSONObject();
-								jsonObj=jsonArray.getJSONObject(i);
+						//		JSONObject jsonObj=new JSONObject();
+					//			jsonObj=jsonArray.getJSONObject(i);
 						//		System.out.println(jsonObj);
-							
-								bookList.add(jsonObj.getString("isbn"));
+					//			BookInfo bean=(BookInfo) JSONObject.toBean(jsonObj);
+						//		bookList.add(bean);
 				
-							}
+					//		}
 					//		result=jsonObject.getBoolean("ActionResult");
 						
 							
@@ -562,12 +577,12 @@ public  class DummySectionFragment extends Fragment {
 			
 			//TODO 写入数据到本地缓存SQLITE并刷新
 			
-			for(String book_isbn:bookList){
+			for(BookBean book:bookList){
 			
-				isbn=book_isbn;
-			   searchBookTask=new SearchBookTask();
-			   searchBookTask.execute((Void) null);
-			   BookInfoDao.getInstance().create(bookInfo);
+			//	isbn=book_isbn;
+			//   searchBookTask=new SearchBookTask();
+			//   searchBookTask.execute((Void) null);
+			   BookInfoDao.getInstance().create(book);
 			}
 			
 			
@@ -590,7 +605,7 @@ public  class DummySectionFragment extends Fragment {
 			  }
 		 
 		 
-		 private BookInfo getResultByIsbn(){
+		 private BookBean getResultByIsbn(){
 				//	BookInfo dbook=null;
 					
 	
@@ -631,7 +646,7 @@ public  class DummySectionFragment extends Fragment {
 					}
 
 			
-			public BookInfo getBookInfo(InputStream inputStream)/* throws XmlPullParserException, IOException*/ {
+			public BookBean getBookInfo(InputStream inputStream)/* throws XmlPullParserException, IOException*/ {
 				
 			//	BookInfo bookInfo1 = new BookInfo();
 				
@@ -644,8 +659,8 @@ public  class DummySectionFragment extends Fragment {
 				
 				
 				
-				bookInfo=new BookInfo();
-				bookInfo.setIsbn(isbn);
+				bookBean=new BookBean();
+				bookBean.setIsbn(isbn);
 				
 			
 				
@@ -655,41 +670,41 @@ public  class DummySectionFragment extends Fragment {
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("title")) {
-						bookInfo.setName(parser.nextText());
+						bookBean.setBookname(parser.nextText());
 					//	Log.v("SearchBook", "title>>" + bookInfo.getName());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("author")) {
-						bookInfo.setAuthor(parser.nextText());
+						bookBean.setAuthor(parser.nextText());
 					//	Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("publisher")) {
-						bookInfo.setPublisher(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookInfo.getPublisher());
+						bookBean.setPublisher(parser.nextText());
+						Log.v("SearchBook", "author>>" + bookBean.getPublisher());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("attribute")
 							&& parser.getAttributeValue(0).equals("price")) {
-						bookInfo.setPrice(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookInfo.getPrice());
+						bookBean.setPrice(parser.nextText());
+						Log.v("SearchBook", "author>>" + bookBean.getPrice());
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG && parser.getName().equals("link")) {
 						if (parser.getAttributeValue(1).equals("image")) {
-							bookInfo.setImageUrl(parser.getAttributeValue(0));
+							bookBean.setBookcover_url(parser.getAttributeValue(0));
 						//	Log.v("SearchBook", "image>>" + bookInfo.getImageUrl());
 						}
 						continue;
 					}
 					if (i == XmlPullParser.START_TAG
 							&& parser.getName().equals("summary")) {
-						bookInfo.setSummary(parser.nextText());
+						bookBean.setSummary(parser.nextText());
 						//Log.v("SearchBook", "summary>>" + bookInfo.getSummary());
 						continue;
 					}
@@ -711,7 +726,7 @@ public  class DummySectionFragment extends Fragment {
 				
 				 
 
-				return bookInfo;
+				return bookBean;
 			}
 
 			/*
@@ -771,7 +786,7 @@ public  class DummySectionFragment extends Fragment {
 				
 		protected Boolean doInBackground(Void... params) {
 		
-			 bookInfo=  getResultByIsbn();
+			 bookBean=  getResultByIsbn();
 			
 			return true;
 		}
