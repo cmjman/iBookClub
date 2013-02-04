@@ -36,7 +36,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.*;
-import com.shining.ibookclub.adapter.GridAdapter;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
@@ -99,7 +98,6 @@ public  class DummySectionFragment extends Fragment {
 	
 	private GridView grid_mybook;
 	
-	private GridAdapter gridAdapter;
 	
 	private Handler handler = new Handler();
 	
@@ -268,7 +266,6 @@ public  class DummySectionFragment extends Fragment {
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
-		  //  	grid_mybook=(GridView)getActivity().findViewById(R.id.grid_mybook);
 		    	
 		    	webview_MyBook=(WebView)getActivity().findViewById(R.id.webview_MyBook);
 		    	
