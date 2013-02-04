@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="layout.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="jquery-1.4.2.min.js"></script>
+<script language="javascript">
+function listBook(){
+	$("#results").html("");
+	
+	var array=eval("("+window.mybook.getMyBook()+")");
+	for(var i=0;i<array.length;i++){
+		var bookInfo=array[i];
+		var bookInfoElement=$('<li><input type="checkbox" value="'+bookInfo.isbn+'" name="isbn" '+' /><a href="" onClick="window.mybook.getDetail('+'\''+bookInfo.isbn+'\''+')">'+bookInfo.bookname+'<br>'+'<img src="'+bookInfo.bookcover+'"/></a></li>');
+
+		$("#results").append(bookInfoElement);
+	}
+}
+
+
+</script>
+
+</head>
+<body onload="listBook();">
+<ul>
+<div id="results" style="font-size: 20"></div>
+</ul>
+</body>
+</html>

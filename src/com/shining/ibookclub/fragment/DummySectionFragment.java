@@ -24,6 +24,7 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -38,6 +39,7 @@ import com.shining.ibookclub.*;
 import com.shining.ibookclub.adapter.GridAdapter;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
+import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.support.LoginSingleton;
 
 import android.content.Context;
@@ -91,9 +93,13 @@ public  class DummySectionFragment extends Fragment {
 	
 	private WebView webview_BookInfo;
 	
+	private WebView webview_MyBook;
+	
 	private TextView text_nickname;
 	
 	private GridView grid_mybook;
+	
+	private GridAdapter gridAdapter;
 	
 	private Handler handler = new Handler();
 	
@@ -163,6 +169,10 @@ public  class DummySectionFragment extends Fragment {
 		   
 		    if(SEC_NUMBER_INTEGER==1){
 		    	
+		    	
+		    	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
+		    	getPublicBook.execute((Void)null);
+		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
 		    	webview_BookForBorrow.getSettings().setSupportZoom(false);
@@ -186,10 +196,10 @@ public  class DummySectionFragment extends Fragment {
 							@Override
 							public void run() {
 								Intent intent = new Intent();
-							//	intent.setClass(getActivity(),
-						//				SearchBookActivity.class);
-							//	intent.putExtra("ISBN", isbn);
-							//	startActivity(intent);
+								intent.setClass(getActivity(),
+										BookDetailActivity.class);
+								intent.putExtra("ISBN", isbn);
+								startActivity(intent);
 							}
 						});
 					}
@@ -258,27 +268,51 @@ public  class DummySectionFragment extends Fragment {
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
-		    	grid_mybook=(GridView)getActivity().findViewById(R.id.grid_mybook);
+		  //  	grid_mybook=(GridView)getActivity().findViewById(R.id.grid_mybook);
 		    	
-		    	//TODO 需补充具体sql语句
-		    	String sql="select _id,name,isbn,image from favorite_books";
-		    	cursor=BookInfoDao.getInstance().query(sql, null);
+		    	webview_MyBook=(WebView)getActivity().findViewById(R.id.webview_MyBook);
 		    	
-		    	GridAdapter gridAdapter=new GridAdapter(getActivity(), R.layout.gridview_mybook, cursor, 
-		    							new String[]{"name"}, new int[]{R.id.book_name}, "_id", R.id.book_cover);
+		       	webview_MyBook.getSettings().setSupportZoom(false);
+		    	webview_MyBook.getSettings().setJavaScriptCanOpenWindowsAutomatically(
+						true);
+		    	webview_MyBook.getSettings().setJavaScriptEnabled(true);
+		    	
+		    	GetMyBookInfo getMyBook=new GetMyBookInfo();
+		    	getMyBook.execute((Void)null);
+		    	
+		    	webview_MyBook.loadUrl("file:///android_asset/mybook.html");
+				
+		    	
+		    	webview_MyBook.addJavascriptInterface(new Object() {
+					public String getMyBook() {
+						return MyBookDao.getInstance().list().toString();
+					}
+
+			
+				
+
+					public void getDetail(final String isbn) {
+						
+						handler.post(new Runnable() {
+							@Override
+							public void run() {
+								Intent intent = new Intent();
+								intent.setClass(getActivity(),
+										BookDetailActivity.class);
+								intent.putExtra("ISBN", isbn);
+								startActivity(intent);
+							}
+						});
+					}
+					
+				
+
+			
+				}, "mybook");
 		    
 		    	
-		    	grid_mybook.setAdapter(gridAdapter);
 		    	
-		    	 grid_mybook.setOnItemClickListener(new  OnItemClickListener()
-			     {
-
-			    	  public void onItemClick(AdapterView parent, View v, int position, long id)
-			    	  {
-			    		  //TODO 点击跳转
-			    	  }
-			     });
-		    	 
+		    
 		    	 
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
@@ -290,42 +324,117 @@ public  class DummySectionFragment extends Fragment {
 		   
 		    
 	 }
-	 /*
 	 
-	 Thread searchBookThread= new Thread(){  
-		  
+	 
+	 
+	 public class GetPublicBookInfo extends AsyncTask<Void, Void, Boolean> {
+
 			
-		  public synchronized void run() {  
-			  try {
-				//  bookInfo = getResultByIsbn(isbn);
-				//  synchronized (bookInfo){};   
+			protected Boolean doInBackground(Void... arg0) {
+				
+				Boolean result=false;
+				String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
+				
+				try{
 					
-				  Looper.prepare();
-				
-				  synchronized (lock){
-				//	  bookInfo.wait();
-				  
-				  bookInfo=  getResultByIsbn();
-				 lock.notify();
-				  }
-				  
-				  
-				 
-					  
-				  Looper.loop();
-				
+					HttpPost httpRequest =new HttpPost(httpUrl);
+					
+					HttpClient httpclient=new DefaultHttpClient();
 			
-				  } catch (Exception e) {
-						e.printStackTrace();
-						throw new RuntimeException(e);
+		
+					HttpResponse httpResponse=httpclient.execute(httpRequest);
+					
+				
+					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+						
+						
+
+						
+						String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
+			
+						Gson gson = new Gson();
+						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+					
+						
+						
+						 
+						  
 					}
-			  
+				}
+				catch(Exception e){
+					return false;
+				}
+				return result;
+				
+			}
 			
-				   
-				  
-			//	  handler1.sendEmptyMessage(0);
-		  }  
-		    };*/
+			protected void onPostExeute(final Boolean success){
+				LoadPublicBook();
+			}
+		}
+		
+	 
+	 public class GetMyBookInfo  extends AsyncTask<Void, Void, Boolean> {
+
+	
+		protected Boolean doInBackground(Void... arg0) {
+			
+			
+			Boolean result=false;
+			String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
+			
+			if(LoginSingleton.isLoginSuccess()){
+				
+				HttpPost httpRequest =new HttpPost(httpUrl);
+				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+		
+		        
+				try{
+			
+					HttpClient httpclient=new DefaultHttpClient();
+			
+					httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
+		
+					HttpResponse httpResponse=httpclient.execute(httpRequest);
+					
+				
+					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+						
+						
+
+						
+						String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
+						System.out.println("GetMyBook:"+strResult);
+						Gson gson = new Gson();
+						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+					
+						
+						
+						 
+						  
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				return result;
+			}
+			
+			return null;
+			
+		
+		}
+		
+		protected void onPostExecute(final Boolean success) {
+			
+			 LoadMyBook();
+		}
+		
+		 
+		 
+	 }
+
 	 
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 	
@@ -340,66 +449,16 @@ public  class DummySectionFragment extends Fragment {
 	   
 	   isbn=data.getStringExtra("SCAN_RESULT");
 	   
-	//   System.out.println(isbn);
-	  
-	 //  textview_isbn.setText("ISBN:"+isbn);
-	   
-	//   Intent intent = new Intent();
-	//	intent.setClass(this, SearchBookActivity.class);
-		
-		//intent.putExtra("ISBN", isbn);
-		//this.startActivity(intent);
-	   
-	//	getBookInfoRun.run();
-	   
-	 
-	//  Looper.prepare();
-	   /*
-	   synchronized (bookInfo){
-			
-			try {	
-				
-			} catch (InterruptedException e) {
-			
-				e.printStackTrace();
-			}
-	   }*/
-		
-	//   LoadBookInfo();
 	
-	//  searchBookThread.start();  
 	   
 	   searchBookTask=new SearchBookTask();
 	   searchBookTask.execute((Void) null);
 	  
-	//  Looper.loop();
-			    
-	
-	   
-	//	if(bookInfo==null)
-		//	System.out.println("1234");
-		
 	   
 	
 	   
 	 }
 	 }
-	 
-	 // Thread getBookInfoRun = 
-	/*
-	 
-	 
-	  private Handler handler1 =new Handler(){
-			
-		   public void handleMessage(Message msg){
-			   
-			   
-			   super.handleMessage(msg);
-			   
-			
-		   }
-		 };
-	*/
 	 
 	public void LoadBookInfo(){
 		 
@@ -430,7 +489,7 @@ public  class DummySectionFragment extends Fragment {
 			
      		
 			
-		}, "searchResult");
+		}, "bookDetail");
      	
 	   }
 		
@@ -516,21 +575,23 @@ public  class DummySectionFragment extends Fragment {
 					try{
 				
 						HttpClient httpclient=new DefaultHttpClient();
-
-						httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
+				
+						httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
+			
 						HttpResponse httpResponse=httpclient.execute(httpRequest);
+						
 					
 						if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
 							
 							
 
 							
-							String strResult=EntityUtils.toString(httpResponse.getEntity());
-						//	System.out.println(strResult);
+							String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
+							System.out.println("客户端接收到的数据："+strResult);
 					//		JSONArray jsonArray = JSONArray.fromObject(strResult) ;
 							Gson gson = new Gson();
 							bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-							System.out.println(bookList);
+						
 						//	BookInfo bookgson.fromJson(strResult, BookInfo.class);
 						//	System.out.println(jsonArray);
 						
@@ -573,18 +634,50 @@ public  class DummySectionFragment extends Fragment {
 			
 		}
 		
+		
+		public void LoadPublicBook(){
+			
+			BookInfoDao.getInstance().deleteAll();
+			
+			for(BookBean book:bookList){
+				
+				BookInfoDao.getInstance().create(book);
+			}
+		}
+		
 		public void LoadMyBook(){
 			
 			//TODO 写入数据到本地缓存SQLITE并刷新
+			MyBookDao.getInstance().deleteAll();
 			
 			for(BookBean book:bookList){
 			
 			//	isbn=book_isbn;
 			//   searchBookTask=new SearchBookTask();
 			//   searchBookTask.execute((Void) null);
-			   BookInfoDao.getInstance().create(book);
+			//	System.out.println(book.getBookname());
+				
+			 //  BookInfoDao.getInstance().create(book);
+				MyBookDao.getInstance().create(book);
 			}
 			
+			//TODO 需补充具体sql语句
+	    //	String sql="select * from my_books";
+	  //  	cursor=MyBookDao.getInstance().query(sql, null);
+	    	
+	   // 	gridAdapter=new GridAdapter(getActivity(), R.layout.gridview_mybook, cursor, 
+		//			new String[]{"bookname"}, new int[]{R.id.book_name}, "_id", R.id.book_cover);
+			
+	    	
+	    	
+	    
+			
+	    	
+	 
+
+	    
+	     	
+		   
 			
 			
 		}

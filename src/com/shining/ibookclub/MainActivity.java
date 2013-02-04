@@ -1,6 +1,7 @@
 package com.shining.ibookclub;
 
 import com.shining.ibookclub.dao.BookInfoDao;
+import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.fragment.DummySectionFragment;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -85,7 +86,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 		
 		 BookInfoDao.initBookInfoDao(this);
-		 
+		 MyBookDao.initMyBookDao(this);
 		
 	}
 	

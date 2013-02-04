@@ -16,8 +16,17 @@ public final class R {
         public static final int pref_sync_frequency_values=0x7f060004;
     }
     public static final class attr {
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int buttonBarButtonStyle=0x7f010001;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int buttonBarStyle=0x7f010000;
     }
     public static final class color {
+        public static final int black_overlay=0x7f07000b;
         public static final int contents_text=0x7f070000;
         public static final int encode_view=0x7f070001;
         public static final int possible_result_points=0x7f070002;
@@ -47,92 +56,96 @@ public final class R {
         public static final int shopper_icon=0x7f020003;
     }
     public static final class id {
-        public static final int back_button=0x7f09002e;
-        public static final int barcode_image_view=0x7f090017;
-        public static final int book_cover=0x7f09002b;
-        public static final int book_name=0x7f09002c;
-        public static final int bookmark_title=0x7f090012;
-        public static final int bookmark_url=0x7f090013;
-        public static final int button_lend=0x7f090029;
-        public static final int button_scan=0x7f090026;
-        public static final int button_searchByIsbn=0x7f090028;
-        public static final int checkBox_autoLogin=0x7f09000e;
-        public static final int checkBox_remPwd=0x7f09000d;
-        public static final int checkBox_showPwd=0x7f09000f;
-        public static final int contents_supplement_text_view=0x7f09001e;
-        public static final int contents_text_view=0x7f09001d;
+        public static final int back_button=0x7f090031;
+        public static final int barcode_image_view=0x7f09001a;
+        public static final int book_cover=0x7f09002e;
+        public static final int book_name=0x7f09002f;
+        public static final int bookmark_title=0x7f090015;
+        public static final int bookmark_url=0x7f090016;
+        public static final int button_lend=0x7f09002c;
+        public static final int button_scan=0x7f090029;
+        public static final int button_searchByIsbn=0x7f09002b;
+        public static final int checkBox_autoLogin=0x7f090011;
+        public static final int checkBox_remPwd=0x7f090010;
+        public static final int checkBox_showPwd=0x7f090012;
+        public static final int contents_supplement_text_view=0x7f090021;
+        public static final int contents_text_view=0x7f090020;
         public static final int decode=0x7f090000;
         public static final int decode_failed=0x7f090001;
         public static final int decode_succeeded=0x7f090002;
-        public static final int done_button=0x7f09002f;
-        public static final int edittext_isbn=0x7f090027;
-        public static final int email=0x7f09000a;
-        public static final int format_text_view=0x7f090018;
-        public static final int grid_mybook=0x7f090025;
-        public static final int help_contents=0x7f09002d;
-        public static final int history_detail=0x7f090031;
-        public static final int history_title=0x7f090030;
-        public static final int image_view=0x7f090022;
+        public static final int done_button=0x7f090032;
+        public static final int dummy_button=0x7f090009;
+        public static final int edittext_isbn=0x7f09002a;
+        public static final int email=0x7f09000d;
+        public static final int format_text_view=0x7f09001b;
+        public static final int fullscreen_content_controls=0x7f090008;
+        public static final int help_contents=0x7f090030;
+        public static final int history_detail=0x7f090034;
+        public static final int history_title=0x7f090033;
+        public static final int image_view=0x7f090025;
         public static final int launch_product_query=0x7f090003;
-        public static final int login=0x7f09000c;
-        public static final int login_form=0x7f090009;
-        public static final int login_status=0x7f090007;
-        public static final int login_status_message=0x7f090008;
-        public static final int menu_encode=0x7f090042;
-        public static final int menu_forgot_password=0x7f09003c;
-        public static final int menu_help=0x7f090041;
-        public static final int menu_history=0x7f090040;
-        public static final int menu_history_clear_text=0x7f090044;
-        public static final int menu_history_send=0x7f090043;
-        public static final int menu_logout=0x7f09003e;
-        public static final int menu_settings=0x7f09003d;
-        public static final int menu_share=0x7f09003f;
-        public static final int meta_text_view=0x7f09001c;
-        public static final int meta_text_view_label=0x7f09001b;
-        public static final int page_number_view=0x7f090035;
-        public static final int pager=0x7f090011;
-        public static final int password=0x7f09000b;
-        public static final int preview_view=0x7f090014;
-        public static final int query_button=0x7f090033;
-        public static final int query_text_view=0x7f090032;
+        public static final int login=0x7f09000f;
+        public static final int login_form=0x7f09000c;
+        public static final int login_status=0x7f09000a;
+        public static final int login_status_message=0x7f09000b;
+        public static final int menu_encode=0x7f090045;
+        public static final int menu_forgot_password=0x7f09003f;
+        public static final int menu_help=0x7f090044;
+        public static final int menu_history=0x7f090043;
+        public static final int menu_history_clear_text=0x7f090047;
+        public static final int menu_history_send=0x7f090046;
+        public static final int menu_logout=0x7f090041;
+        public static final int menu_settings=0x7f090040;
+        public static final int menu_share=0x7f090042;
+        public static final int meta_text_view=0x7f09001f;
+        public static final int meta_text_view_label=0x7f09001e;
+        public static final int page_number_view=0x7f090038;
+        public static final int pager=0x7f090014;
+        public static final int password=0x7f09000e;
+        public static final int preview_view=0x7f090017;
+        public static final int query_button=0x7f090036;
+        public static final int query_text_view=0x7f090035;
         public static final int quit=0x7f090004;
         public static final int restart_preview=0x7f090005;
-        public static final int result_button_view=0x7f09001f;
-        public static final int result_list_view=0x7f090034;
-        public static final int result_view=0x7f090016;
+        public static final int result_button_view=0x7f090022;
+        public static final int result_list_view=0x7f090037;
+        public static final int result_view=0x7f090019;
         public static final int return_scan_result=0x7f090006;
-        public static final int share_app_button=0x7f090037;
-        public static final int share_bookmark_button=0x7f090038;
-        public static final int share_clipboard_button=0x7f09003a;
-        public static final int share_contact_button=0x7f090039;
-        public static final int share_text_view=0x7f09003b;
-        public static final int shopper_button=0x7f090020;
-        public static final int sign_in_button=0x7f090010;
-        public static final int snippet_view=0x7f090036;
-        public static final int status_view=0x7f090021;
-        public static final int text_nickname=0x7f090024;
-        public static final int time_text_view=0x7f09001a;
-        public static final int type_text_view=0x7f090019;
-        public static final int viewfinder_view=0x7f090015;
-        public static final int webview_BookForBorrow=0x7f090023;
-        public static final int webview_BookInfo=0x7f09002a;
+        public static final int share_app_button=0x7f09003a;
+        public static final int share_bookmark_button=0x7f09003b;
+        public static final int share_clipboard_button=0x7f09003d;
+        public static final int share_contact_button=0x7f09003c;
+        public static final int share_text_view=0x7f09003e;
+        public static final int shopper_button=0x7f090023;
+        public static final int sign_in_button=0x7f090013;
+        public static final int snippet_view=0x7f090039;
+        public static final int status_view=0x7f090024;
+        public static final int text_nickname=0x7f090027;
+        public static final int time_text_view=0x7f09001d;
+        public static final int type_text_view=0x7f09001c;
+        public static final int viewfinder_view=0x7f090018;
+        public static final int webview_BookDetail=0x7f090007;
+        public static final int webview_BookForBorrow=0x7f090026;
+        public static final int webview_BookInfo=0x7f09002d;
+        public static final int webview_MyBook=0x7f090028;
     }
     public static final class layout {
-        public static final int activity_login=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int bookmark_picker_list_item=0x7f030002;
-        public static final int capture=0x7f030003;
-        public static final int encode=0x7f030004;
-        public static final int fragment_borrow=0x7f030005;
-        public static final int fragment_info=0x7f030006;
-        public static final int fragment_lend=0x7f030007;
-        public static final int gridview_mybook=0x7f030008;
-        public static final int help=0x7f030009;
-        public static final int history_list_item=0x7f03000a;
-        public static final int search_book_contents=0x7f03000b;
-        public static final int search_book_contents_header=0x7f03000c;
-        public static final int search_book_contents_list_item=0x7f03000d;
-        public static final int share=0x7f03000e;
+        public static final int activity_book_detail=0x7f030000;
+        public static final int activity_login=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int bookmark_picker_list_item=0x7f030003;
+        public static final int capture=0x7f030004;
+        public static final int encode=0x7f030005;
+        public static final int fragment_borrow=0x7f030006;
+        public static final int fragment_info=0x7f030007;
+        public static final int fragment_lend=0x7f030008;
+        public static final int gridview_mybook=0x7f030009;
+        public static final int help=0x7f03000a;
+        public static final int history_list_item=0x7f03000b;
+        public static final int search_book_contents=0x7f03000c;
+        public static final int search_book_contents_header=0x7f03000d;
+        public static final int search_book_contents_list_item=0x7f03000e;
+        public static final int share=0x7f03000f;
     }
     public static final class menu {
         public static final int activity_login=0x7f0c0000;
@@ -145,8 +158,8 @@ public final class R {
         public static final int beep=0x7f050000;
     }
     public static final class string {
-        public static final int action_sign_in_register=0x7f0a0085;
-        public static final int action_sign_in_short=0x7f0a0086;
+        public static final int action_sign_in_register=0x7f0a0088;
+        public static final int action_sign_in_short=0x7f0a0089;
         public static final int app_name=0x7f0a0000;
         public static final int app_picker_name=0x7f0a0001;
         public static final int autologin=0x7f0a0081;
@@ -183,10 +196,12 @@ public final class R {
         public static final int contents_phone=0x7f0a0020;
         public static final int contents_sms=0x7f0a0021;
         public static final int contents_text=0x7f0a0022;
-        public static final int error_field_required=0x7f0a008c;
-        public static final int error_incorrect_password=0x7f0a008b;
-        public static final int error_invalid_email=0x7f0a0089;
-        public static final int error_invalid_password=0x7f0a008a;
+        public static final int dummy_button=0x7f0a0083;
+        public static final int dummy_content=0x7f0a0082;
+        public static final int error_field_required=0x7f0a008f;
+        public static final int error_incorrect_password=0x7f0a008e;
+        public static final int error_invalid_email=0x7f0a008c;
+        public static final int error_invalid_password=0x7f0a008d;
         public static final int hello_world=0x7f0a007c;
         public static final int history_clear_one_history_text=0x7f0a0024;
         public static final int history_clear_text=0x7f0a0023;
@@ -195,10 +210,10 @@ public final class R {
         public static final int history_empty_detail=0x7f0a0027;
         public static final int history_send=0x7f0a0028;
         public static final int history_title=0x7f0a0029;
-        public static final int login_progress_signing_in=0x7f0a0088;
+        public static final int login_progress_signing_in=0x7f0a008b;
         public static final int menu_encode_mecard=0x7f0a002a;
         public static final int menu_encode_vcard=0x7f0a002b;
-        public static final int menu_forgot_password=0x7f0a0087;
+        public static final int menu_forgot_password=0x7f0a008a;
         public static final int menu_help=0x7f0a002c;
         public static final int menu_history=0x7f0a002d;
         public static final int menu_logout=0x7f0a007d;
@@ -232,27 +247,27 @@ public final class R {
         public static final int msg_share_text=0x7f0a0049;
         public static final int msg_sure=0x7f0a004a;
         public static final int msg_unmount_usb=0x7f0a004b;
-        public static final int pref_default_display_name=0x7f0a0092;
-        public static final int pref_description_social_recommendations=0x7f0a0090;
+        public static final int pref_default_display_name=0x7f0a0095;
+        public static final int pref_description_social_recommendations=0x7f0a0093;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f0a0094;
+        public static final int pref_header_data_sync=0x7f0a0097;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f0a008e;
+        public static final int pref_header_general=0x7f0a0091;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f0a0097;
-        public static final int pref_ringtone_silent=0x7f0a009a;
-        public static final int pref_title_add_friends_to_messages=0x7f0a0093;
-        public static final int pref_title_display_name=0x7f0a0091;
-        public static final int pref_title_new_message_notifications=0x7f0a0098;
-        public static final int pref_title_ringtone=0x7f0a0099;
-        public static final int pref_title_social_recommendations=0x7f0a008f;
-        public static final int pref_title_sync_frequency=0x7f0a0095;
-        public static final int pref_title_system_sync_settings=0x7f0a0096;
-        public static final int pref_title_vibrate=0x7f0a009b;
+        public static final int pref_header_notifications=0x7f0a009a;
+        public static final int pref_ringtone_silent=0x7f0a009d;
+        public static final int pref_title_add_friends_to_messages=0x7f0a0096;
+        public static final int pref_title_display_name=0x7f0a0094;
+        public static final int pref_title_new_message_notifications=0x7f0a009b;
+        public static final int pref_title_ringtone=0x7f0a009c;
+        public static final int pref_title_social_recommendations=0x7f0a0092;
+        public static final int pref_title_sync_frequency=0x7f0a0098;
+        public static final int pref_title_system_sync_settings=0x7f0a0099;
+        public static final int pref_title_vibrate=0x7f0a009e;
         public static final int preferences_actions_title=0x7f0a004c;
         public static final int preferences_auto_focus_title=0x7f0a004d;
         public static final int preferences_bulk_mode_summary=0x7f0a004e;
@@ -284,8 +299,8 @@ public final class R {
         public static final int preferences_vibrate_title=0x7f0a0068;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0a0083;
-        public static final int prompt_password=0x7f0a0084;
+        public static final int prompt_email=0x7f0a0086;
+        public static final int prompt_password=0x7f0a0087;
         public static final int rempwd=0x7f0a007f;
         public static final int result_address_book=0x7f0a0069;
         public static final int result_calendar=0x7f0a006a;
@@ -301,8 +316,9 @@ public final class R {
         public static final int sbc_name=0x7f0a0074;
         public static final int share_name=0x7f0a0075;
         public static final int showpwd=0x7f0a0080;
-        public static final int title_activity_login=0x7f0a0082;
-        public static final int title_activity_settings=0x7f0a008d;
+        public static final int title_activity_book_detail=0x7f0a0084;
+        public static final int title_activity_login=0x7f0a0085;
+        public static final int title_activity_settings=0x7f0a0090;
         public static final int title_section1=0x7f0a007b;
         public static final int title_section2=0x7f0a007a;
         public static final int title_section3=0x7f0a0079;
@@ -316,16 +332,19 @@ public final class R {
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
 
+
         
 
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
+
     
  API 11 theme customizations can go here. 
 
@@ -340,6 +359,10 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b0001;
+        public static final int ButtonBar=0x7f0b0004;
+        public static final int ButtonBarButton=0x7f0b0003;
+        public static final int FullscreenActionBarStyle=0x7f0b0006;
+        public static final int FullscreenTheme=0x7f0b0005;
         public static final int LoginFormContainer=0x7f0b0002;
     }
     public static final class xml {
@@ -349,4 +372,46 @@ public final class R {
         public static final int pref_notification=0x7f040003;
         public static final int preferences=0x7f040004;
     }
+    public static final class styleable {
+        /** 
+         Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels.
+    
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_buttonBarButtonStyle com.shining.ibookclub:buttonBarButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_buttonBarStyle com.shining.ibookclub:buttonBarStyle}</code></td><td></td></tr>
+           </table>
+           @see #ButtonBarContainerTheme_buttonBarButtonStyle
+           @see #ButtonBarContainerTheme_buttonBarStyle
+         */
+        public static final int[] ButtonBarContainerTheme = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#buttonBarButtonStyle}
+          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:buttonBarButtonStyle
+        */
+        public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#buttonBarStyle}
+          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:buttonBarStyle
+        */
+        public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
+    };
 }

@@ -19,6 +19,7 @@ public class GridAdapter extends SimpleCursorAdapter{
 	
 	    private ImageView imageview=null;
 	    private Uri uri=null;
+	    private Cursor cursor;
 	   
 	      
 	    public GridAdapter(Context context, int layout, Cursor c,  
@@ -27,6 +28,7 @@ public class GridAdapter extends SimpleCursorAdapter{
 	    
 	        mIdColumn = idColumn;  
 	        mImageViewId=imageViewId;
+	        cursor=c;
 	    }  
 	 
 	    @Override 
@@ -49,15 +51,20 @@ public class GridAdapter extends SimpleCursorAdapter{
 	        View view = super.getView(position, convertView, parent);  
 	   
 
-	        Cursor cursor = getCursor();  
-	        cursor.moveToPosition(position);  
-	        int rowId = cursor.getInt(cursor.getColumnIndexOrThrow(mIdColumn));  
+	    //    Cursor cursor = getCursor();  
+	      //  cursor.moveToPosition(position);  
+	    //    int rowId = cursor.getInt(cursor.getColumnIndexOrThrow(mIdColumn));  
 	   
 	        
 	        imageview=(ImageView)view.findViewById(mImageViewId);
 	       
-	        int  id=cursor.getInt(cursor.getColumnIndexOrThrow(mIdColumn));
-	        //    uri=Uri.parse("file:///data/data/com.rss_reader/files/"+id+".png");
+	   //     int  id=cursor.getInt(cursor.getColumnIndexOrThrow(mIdColumn));
+	        
+	       String url=cursor.getString(5);
+	        
+	        uri=Uri.parse(url);
+	        
+	        System.out.println(uri);
 	
 	       imageview.setImageURI(uri);
 	       return view;  
