@@ -69,6 +69,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,15 +107,19 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_searchByIsbn;
 	
+	private ImageButton button_searchByName;
+	
 	private Button button_lend;
 	
 	private EditText edittext_isbn;
 	
+	private EditText edittext_name;
+	
 	private String isbn;
 	
-	//private BookInfoDao bookInfoDao;
+	private String keyword; 
 	
-	private Cursor cursor;
+	
 	
 	private static BookBean bookBean=new BookBean();
 	
@@ -173,6 +178,24 @@ public  class DummySectionFragment extends Fragment {
 		    	
 		    	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
 		    	getPublicBook.execute((Void)null);
+		    	
+		    	edittext_name=(EditText)getActivity().findViewById(R.id.edittext_bookname);
+		    	button_searchByName=(ImageButton)getActivity().findViewById(R.id.button_searchByName);
+		    	
+		    	button_searchByName.setOnClickListener(new OnClickListener(){
+
+				
+					public void onClick(View arg0) {
+					keyword=edittext_name.getText().toString();
+					
+					SearchPublicBookTask search=new SearchPublicBookTask();
+					search.execute((Void) null);
+						
+						
+					}
+		    		
+		    		
+		    	});
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
@@ -322,9 +345,69 @@ public  class DummySectionFragment extends Fragment {
 		    	
 		    }
 		   
-		    
-	 }
+	     
 	 
+	}
+
+	 
+
+	public class SearchPublicBookTask extends AsyncTask<Void,Void,Boolean>{
+	 
+	 protected Boolean doInBackground(Void... arg0){
+		 
+		 Boolean result=false;
+		 String httpUrl=LoginSingleton.SERVER_URL+"SearchBookServlet";
+		 
+		if(LoginSingleton.isLoginSuccess()){
+		 
+		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+	    params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail)); 
+	    params.add(new BasicNameValuePair("keyword",keyword));
+			
+			try{
+				
+				HttpPost httpRequest =new HttpPost(httpUrl);
+				
+				httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
+				
+				HttpClient httpclient=new DefaultHttpClient();
+		
+	
+				HttpResponse httpResponse=httpclient.execute(httpRequest);
+				
+			
+				if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+					
+					
+
+					
+					String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
+					
+					System.out.println("SearchPublicBook:"+strResult);
+					Gson gson = new Gson();
+					bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+				
+					
+					
+					 
+					  
+				}
+			}
+			catch(Exception e){
+				return false;
+			}
+		}
+			return result;
+			
+			
+		}
+		 
+	 
+	 
+	 protected void onPostExeute(final Boolean success){
+			
+	 }
+}
 	 
 	 
 	 public class GetPublicBookInfo extends AsyncTask<Void, Void, Boolean> {

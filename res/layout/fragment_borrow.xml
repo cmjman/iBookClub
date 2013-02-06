@@ -3,6 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+   <EditText
+       android:id="@+id/edittext_bookname"
+       android:layout_width="match_parent"
+   	   android:layout_height="wrap_content"
+       android:hint="请在此输入需要借的书名"
+       android:textSize="24sp"
+       />
+   <ImageButton 
+       android:id="@+id/button_searchByName"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/button_search"
+       android:text="点此根据书名搜索"
+       />
 
      <WebView
    	     android:id="@+id/webview_BookForBorrow"
