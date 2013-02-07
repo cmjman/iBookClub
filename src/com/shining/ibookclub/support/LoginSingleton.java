@@ -88,16 +88,16 @@ private static Boolean Login(){
 				//	Log.i(TAG, "-------Cookie NONE---------");    
 				} 
 				else {                   
-					for (int i = 0; i < cookies.size(); i++ ){    
+			//		for (int i = 0; i < cookies.size(); i++ ){    
 				
-						Cookie cookie = cookies.get(i);    
+				//		Cookie cookie = cookies.get(i);    
 					//	Log.d(TAG, cookies.get(i).getName() "=" cookies.get(i).getValue() );    
-					}
+			//		}
 				}  
 
 				
 				String strResult=EntityUtils.toString(httpResponse.getEntity());
-			//	System.out.println(strResult);
+				System.out.println("LoginSingleton:"+strResult);
 				JSONObject jsonObject = new JSONObject(strResult) ;
 				actionResult=jsonObject.getBoolean("ActionResult");
 				nickname=jsonObject.getString("nickname");
