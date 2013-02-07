@@ -2,6 +2,7 @@ package com.shining.ibookclub;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -16,6 +17,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -42,6 +44,8 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setupSimplePreferencesScreen();
 	}
@@ -251,5 +255,19 @@ public class SettingsActivity extends PreferenceActivity {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 		}
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		  
+		 super.onOptionsItemSelected(item);
+		 
+		 switch(item.getItemId())
+	     {
+	        case android.R.id.home:
+	        	startActivity(new Intent(SettingsActivity.this,MainActivity.class));
+	        	break;
+	     }
+		 
+		 return true;
 	}
 }

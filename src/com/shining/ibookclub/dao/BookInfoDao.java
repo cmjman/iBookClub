@@ -57,10 +57,13 @@ public class BookInfoDao {
 		*/
 		
 		 ContentValues cv = new ContentValues();  
+		
 		 
 		 cv.put("name", bookInfo.getBookname());
 		 cv.put("isbn",bookInfo.getIsbn());
 		 cv.put("image", bookInfo.getBookcover_url());
+		 
+		 System.out.println("bookInfo.getBookname()"+bookInfo.getBookname());
 		
 		 database.insert("favorite_books", null, cv);
 	}

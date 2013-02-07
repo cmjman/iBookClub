@@ -2,11 +2,13 @@ package com.shining.ibookclub.fragment;
 
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import com.shining.ibookclub.*;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
+import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
 import android.content.Context;
@@ -366,32 +369,13 @@ public  class DummySectionFragment extends Fragment {
 			
 			try{
 				
-				HttpPost httpRequest =new HttpPost(httpUrl);
-				
-				httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
-				
-				HttpClient httpclient=new DefaultHttpClient();
+				HttpUtility httpUtility=new HttpUtility(httpUrl,params);
 		
-	
-				HttpResponse httpResponse=httpclient.execute(httpRequest);
-				
-			
-				if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+				String strResult=httpUtility.doPost();
 					
-					
-
-					
-					String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
-					
-					System.out.println("SearchPublicBook:"+strResult);
-					Gson gson = new Gson();
-					bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-				
-					
-					
-					 
-					  
-				}
+				System.out.println("SearchPublicBook:"+strResult);
+				Gson gson = new Gson();
+				bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
 			}
 			catch(Exception e){
 				return false;
@@ -415,44 +399,38 @@ public  class DummySectionFragment extends Fragment {
 			
 			protected Boolean doInBackground(Void... arg0) {
 				
-				Boolean result=false;
+			//	Boolean result=false;
 				String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
 				
 				try{
 					
-					HttpPost httpRequest =new HttpPost(httpUrl);
-					
-					HttpClient httpclient=new DefaultHttpClient();
-			
-		
-					HttpResponse httpResponse=httpclient.execute(httpRequest);
-					
+					HttpUtility httpUtility=new HttpUtility(httpUrl,null);
 				
-					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+		
 						
-						
-
-						
-						String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
+						String strResult=httpUtility.doPost();
 			
 						Gson gson = new Gson();
 						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+						
+						System.out.println("GetPublicBookInfo"+strResult);
+						
+					//	result=true;
 					
-						
-						
-						 
-						  
-					}
 				}
 				catch(Exception e){
-					return false;
+				//	return false;
+					e.printStackTrace();
 				}
-				return result;
+				return true;
 				
 			}
 			
-			protected void onPostExeute(final Boolean success){
-				LoadPublicBook();
+			protected void onPostExecute(final Boolean success) {
+				
+				 System.out.println("GetPublicBookInfo onPostExeute");
+				
+				 LoadPublicBook();
 			}
 		}
 		
@@ -463,48 +441,33 @@ public  class DummySectionFragment extends Fragment {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			
-			Boolean result=false;
+		//	Boolean result=false;
 			String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
-				HttpPost httpRequest =new HttpPost(httpUrl);
+			
 				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
 		
 		        
 				try{
 			
-					HttpClient httpclient=new DefaultHttpClient();
-			
-					httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
-		
-					HttpResponse httpResponse=httpclient.execute(httpRequest);
+					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
 					
-				
-					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
-						
-						
-
-						
-						String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
-						System.out.println("GetMyBook:"+strResult);
-						Gson gson = new Gson();
-						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+					String strResult=httpUtility.doPost();
+					System.out.println("GetMyBook:"+strResult);
+					Gson gson = new Gson();
+					bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
 					
-						
-						
-						 
-						  
-					}
 				}
 				catch(Exception e){
 					return false;
 				}
-				return result;
+		//		return result;
 			}
 			
-			return null;
+			return true;
 			
 		
 		}
@@ -642,17 +605,18 @@ public  class DummySectionFragment extends Fragment {
 			        params.add(new BasicNameValuePair("isbn",isbn));
 			        
 			        try{
-						
-						HttpClient httpclient=new DefaultHttpClient();
-				
-						httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
-			
-						HttpResponse httpResponse=httpclient.execute(httpRequest);
-						
+			        	
+			        	HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+			        	String resultStr=	httpUtility.doPost();
+			        	
+			        	JSONObject jsonObj=new JSONObject(resultStr);
+			        	
 					
-						if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
-							return true;
-						}
+			        	if(jsonObj.getString("Result")=="Success"){
+			        		
+			        		result=true;
+			        	}
+			        
 					
 				}
 				catch(Exception e){
@@ -681,41 +645,29 @@ public  class DummySectionFragment extends Fragment {
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
-					HttpPost httpRequest =new HttpPost(httpUrl);
+				//	HttpPost httpRequest =new HttpPost(httpUrl);
+					
 					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
 			        Gson gsonBookInfo=new Gson();
 					params.add(new BasicNameValuePair("bookbean",gsonBookInfo.toJson(bookBean)));
+				
+					
+					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+					
+			      
 			  
 					try{
-				
-						HttpClient httpclient=new DefaultHttpClient();
-				
-						httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
-			
-						HttpResponse httpResponse=httpclient.execute(httpRequest);
 						
-					
-						if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
-							
-							
-
-							
-							String strResult=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
-							System.out.println("客户端接收到的数据："+strResult);
-				
+							String strResult=httpUtility.doPost();
 							Gson gson = new Gson();
 							bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-						
-					
-							
-							 
-							  
-						}
 					}
 					catch(Exception e){
 						return false;
 					}
+					
+					
 					return result;
 				}
 				
@@ -737,6 +689,8 @@ public  class DummySectionFragment extends Fragment {
 			BookInfoDao.getInstance().deleteAll();
 			
 			for(BookBean book:bookList){
+				
+			
 				
 				BookInfoDao.getInstance().create(book);
 			}
@@ -766,16 +720,6 @@ public  class DummySectionFragment extends Fragment {
 		//			new String[]{"bookname"}, new int[]{R.id.book_name}, "_id", R.id.book_cover);
 			
 	    	
-	    	
-	    
-			
-	    	
-	 
-
-	    
-	     	
-		   
-			
 			
 		}
 		 
@@ -825,9 +769,7 @@ public  class DummySectionFragment extends Fragment {
 					}catch (Exception e) {  
 					e.printStackTrace();  
 					}  
-					
-				//	if(dbook==null)
-					//	System.out.println("1111");
+				
 					
 				//	return dbook;
 					return null;
@@ -839,22 +781,25 @@ public  class DummySectionFragment extends Fragment {
 		 
 		 public BookBean getBookInfo(InputStream inputStream){
 			 
-		//	 Long t1=System.currentTimeMillis();
+	
 			
 			 String str="";
 			 
 			 JSONObject json;
 
-			 byte[] b = new byte[1024];  
 			
-			 try {
-				 int i = 0;  
-				while ((i = inputStream.read(b)) != -1) {  
-					    
-					 str+=new String(b);  
-					    
-					 b = new byte[1024];   
-				}
+			 try{
+		
+			 
+			  BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			    StringBuffer buffer = new StringBuffer();
+			    String line = "";
+			    while ((line = in.readLine()) != null){
+			      buffer.append(line);
+			    }
+			    
+			    str=buffer.toString();
+		 
 			
 			 System.out.println(str);
 			 
@@ -877,7 +822,6 @@ public  class DummySectionFragment extends Fragment {
 				e.printStackTrace();
 			}  
 			 
-		//	 System.out.println(System.currentTimeMillis()-t1);
 			 
 			 return bookBean;
 			 
@@ -1026,9 +970,9 @@ public  class DummySectionFragment extends Fragment {
 	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
 				
 				
-		protected Boolean doInBackground(Void... params) {
+		protected Boolean doInBackground(Void... arg0) {
 		
-			 bookBean=  getResultByIsbn();
+			 	bookBean=  getResultByIsbn();
 			 
 			 
 				Boolean result=false;
@@ -1037,37 +981,21 @@ public  class DummySectionFragment extends Fragment {
 				if(LoginSingleton.isLoginSuccess()){
 					
 					HttpPost httpRequest =new HttpPost(httpUrl);
-					List <NameValuePair> params1 = new ArrayList <NameValuePair>(); 
-			        params1.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-			        params1.add(new BasicNameValuePair("isbn",isbn));
+					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+			        params.add(new BasicNameValuePair("isbn",isbn));
 			  
 					try{
-				
-						HttpClient httpclient=new DefaultHttpClient();
-				
-						httpRequest.setEntity(new UrlEncodedFormEntity(params1, HTTP.UTF_8)); 	
-			
-						HttpResponse httpResponse=httpclient.execute(httpRequest);
 						
-					
-						if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+						HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+				
+						String strResult=httpUtility.doPost();
+						System.out.println(strResult);
+						JSONObject jsonObject = new JSONObject(strResult) ;
+						Boolean actionResult=jsonObject.getBoolean("ActionResult");
 							
-							
-
-							String strResult=EntityUtils.toString(httpResponse.getEntity());
-								System.out.println(strResult);
-								JSONObject jsonObject = new JSONObject(strResult) ;
-								Boolean actionResult=jsonObject.getBoolean("ActionResult");
-							
-								if(actionResult){
-									 setHasLend();
-								}else{
-									setLend();
-								}
-					
-							
-							 
-							  
+						if(actionResult){
+							setHasLend();
 						}
 					}
 					catch(Exception e){
@@ -1100,6 +1028,15 @@ public  class DummySectionFragment extends Fragment {
 	        super.onResume();  
 	        if(SEC_NUMBER_INTEGER==1){
 	        	webview_BookForBorrow.reload();
+	        }else if(SEC_NUMBER_INTEGER==2){
+	        	
+	        }else if(SEC_NUMBER_INTEGER==3){
+	        	
+	        	Bundle bundle=getActivity().getIntent().getExtras();
+		    	if(bundle!=null){
+		    		nickname=bundle.getString("nickname");
+		    		text_nickname.setText("Welcome!"+nickname);
+		    	}
 	        }
 	    }  
 	 

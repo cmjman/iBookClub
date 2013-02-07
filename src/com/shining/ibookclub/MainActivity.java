@@ -53,6 +53,7 @@ public class MainActivity extends FragmentActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -96,12 +97,17 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
+		
+		//menu.getItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		//menu.getItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		
 		return true;
 	}
 	
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		  
 		 super.onOptionsItemSelected(item);
+		 
 	        switch(item.getItemId())
 	        {
 	        case R.id.menu_settings:
