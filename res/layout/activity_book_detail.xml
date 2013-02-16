@@ -6,7 +6,7 @@
     tools:context=".BookDetailActivity" >
 
    
-
+	
  
    <WebView
    	    android:id="@+id/webview_BookDetail"

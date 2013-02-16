@@ -10,7 +10,7 @@ function listBook(){
 	var array=eval("("+window.bookShelfControl.getBookResult()+")");
 	for(var i=0;i<array.length;i++){
 		var bookInfo=array[i];
-		var bookInfoElement=$('<li><input type="checkbox" value="'+bookInfo.isbn+'" name="isbn" '+' /><a href="" onClick="window.bookShelfControl.getDetail('+'\''+bookInfo.isbn+'\''+')">'+bookInfo.name+'<br>'+'<img src="'+bookInfo.image+'"/></a></li>');
+		var bookInfoElement=$('<li><input type="checkbox" value="'+bookInfo.isbn+'" name="isbn" '+' /><a href="" onClick="window.bookShelfControl.getDetail('+'\''+bookInfo.isbn+'\''+')">'+bookInfo.bookname+'<br>'+'<img src="'+bookInfo.bookcover+'"/></a></li>');
 
 		$("#results").append(bookInfoElement);
 	}

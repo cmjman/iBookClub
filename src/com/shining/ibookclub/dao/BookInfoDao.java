@@ -34,8 +34,14 @@ public class BookInfoDao {
 
 	private void createTables() {
 		database.execSQL("create table if not exists favorite_books("
-				+ " _id integer primary key autoincrement," + " name text,"
-				+ "isbn text," + "image text"+");");
+				+ " _id integer primary key autoincrement," 
+				+ "isbn text," 
+				+ "bookname text,"
+				+ "author text,"
+				+ "publisher text,"
+				+ "bookcover text,"
+				+ "price text,"
+				+ "summary text"+");");
 	}
 
 	public void deleteAll() {
@@ -45,7 +51,7 @@ public class BookInfoDao {
 		statement.close();
 	}
 
-	public void create(BookBean bookInfo) {
+	public void create(BookBean bookBean) {
 		
 		/*
 		SQLiteStatement statement = database
@@ -59,11 +65,15 @@ public class BookInfoDao {
 		 ContentValues cv = new ContentValues();  
 		
 		 
-		 cv.put("name", bookInfo.getBookname());
-		 cv.put("isbn",bookInfo.getIsbn());
-		 cv.put("image", bookInfo.getBookcover_url());
+		 cv.put("isbn",bookBean.getIsbn());
+		 cv.put("bookname", bookBean.getBookname());
+		 cv.put("author", bookBean.getAuthor());
+		 cv.put("publisher", bookBean.getPublisher());
+		 cv.put("bookcover", bookBean.getBookcover_url());
+		 cv.put("price", bookBean.getPrice());
+		 cv.put("summary", bookBean.getSummary());
 		 
-		 System.out.println("bookInfo.getBookname()"+bookInfo.getBookname());
+		 System.out.println("bookBean.getBookname()"+bookBean.getBookname());
 		
 		 database.insert("favorite_books", null, cv);
 	}
@@ -71,15 +81,15 @@ public class BookInfoDao {
 	public JSONArray list() {
 		JSONArray array = new JSONArray();
 
-		Cursor cursor = database.rawQuery("select name,isbn,image from favorite_books",
+		Cursor cursor = database.rawQuery("select bookname,isbn,bookcover from favorite_books",
 				new String[] {});
 
 		while (cursor.moveToNext()) {
 			JSONObject object = new JSONObject();
 			try {
-				object.put("name", cursor.getString(0));
+				object.put("bookname", cursor.getString(0));
 				object.put("isbn", cursor.getString(1));
-				object.put("image",cursor.getString(2));
+				object.put("bookcover",cursor.getString(2));
 				
 			//	System.out.println(cursor.getString(2));
 			} catch (JSONException e) {
@@ -108,17 +118,22 @@ public class BookInfoDao {
 	}
 
 	public BookBean get(String isbn) {
-		BookBean bookInfo = null;
+		BookBean bookBean = null;
 		Cursor cursor = database.rawQuery(
-				"select name from favorite_books where isbn=" + isbn,
+				"select * from favorite_books where isbn=" + isbn,
 				new String[] {});
 		if (cursor.moveToFirst()) {
-			bookInfo = new BookBean();
-			bookInfo.setBookname(cursor.getString(0));
-			bookInfo.setIsbn(isbn);
+			bookBean = new BookBean();
+			bookBean.setBookname(cursor.getString(2));
+			bookBean.setAuthor(cursor.getString(3));
+			bookBean.setPublisher(cursor.getString(4));
+			bookBean.setBookcover_url(cursor.getString(5));
+			bookBean.setPrice(cursor.getString(6));
+			bookBean.setSummary(cursor.getString(7));
+			bookBean.setIsbn(isbn);
 		}
 		cursor.close();
-		return bookInfo;
+		return bookBean;
 	}
 
 	public static void initBookInfoDao(Context context) {

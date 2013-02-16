@@ -1,6 +1,7 @@
 package com.shining.ibookclub;
 
 import com.shining.ibookclub.bean.BookBean;
+import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.util.SystemUiHider;
 
@@ -54,7 +55,9 @@ public class BookDetailActivity extends Activity {
 	
 	private BookBean bookBean;
 	
-	private MyBookDao dao;
+//	private MyBookDao myBookdao;
+	
+	private BookInfoDao dao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +134,8 @@ public class BookDetailActivity extends Activity {
 		findViewById(R.id.dummy_button).setOnTouchListener(
 				mDelayHideTouchListener);
 		
-		MyBookDao.initMyBookDao(this);
+	//	MyBookDao.initMyBookDao(this);
+		BookInfoDao.initBookInfoDao(this);
 		
 		
 		bookBean=dao.getInstance().get(isbn);
