@@ -14,7 +14,8 @@
     <string name="showpwd">显示密码</string>
     <string name="autologin">自动登录</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="title_activity_book_detail">BookDetailActivity</string>
+    <string name="dummy_button">借阅</string>
+    <string name="title_activity_book_detail">图书信息</string>
+    <string name="title_activity_borrow_book">借阅信息</string>
 
 </resources>

@@ -16,10 +16,10 @@
     <application
         android:name="com.shining.ibookclub.iBookClub"
         android:allowBackup="true"
-        android:uiOptions="splitActionBarWhenNarrow"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:uiOptions="splitActionBarWhenNarrow" >
         <activity
             android:name="com.shining.ibookclub.MainActivity"
             android:label="@string/app_name" >
@@ -193,6 +193,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_book_detail"
             android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="com.shining.ibookclub.BorrowBookActivity"
+            android:label="@string/title_activity_borrow_book" >
         </activity>
     </application>
 
