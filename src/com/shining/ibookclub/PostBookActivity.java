@@ -46,6 +46,8 @@ public class PostBookActivity extends Activity {
 	
 	private double longitude;
 	
+	private String provider;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class PostBookActivity extends Activity {
 			         locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
 			         
 			         
-			         String provider=LocationManager.NETWORK_PROVIDER;
+			        provider=LocationManager.NETWORK_PROVIDER;
 			         
 			         Location location=locationManager.getLastKnownLocation(provider); 
 			         
@@ -94,7 +96,7 @@ public class PostBookActivity extends Activity {
 			         
 			         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15)); 
 		                
-					  gmap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Marker")); 
+					 gmap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Marker")); 
 
 			}
 			
@@ -161,6 +163,24 @@ public class PostBookActivity extends Activity {
 		getMenuInflater().inflate(R.menu.post_book, menu);
 		return true;
 	}
+	
+	protected void onResume() {
+        super.onResume();
+    
+    
+   
+    //    locationManager.requestLocationUpdates(provider, 0, 0, locationListener );
+       
+     }
+
+     @Override
+     protected void onPause() {
+       super.onPause();
+   
+       if (locationManager != null) {
+    	   locationManager.removeUpdates(locationListener);
+       }
+  }
 
 
 
