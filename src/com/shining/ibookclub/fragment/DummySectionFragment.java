@@ -558,9 +558,15 @@ public  class DummySectionFragment extends Fragment {
 					//TODO 缺少判空操作，可能导致空指针崩溃，待修正,下同
 						//	BookInfoDao.getInstance().create(bookInfo);
 							
-							postBookToLibrary();
+				//			postBookToLibrary();
 						
-							setHasLend();
+				//			setHasLend();
+						
+						Intent intent=new Intent(getActivity(),PostBookActivity.class);
+					
+						intent.putExtra("bean", bookBean);
+						
+						startActivity(intent);
 						
 					}
 				});

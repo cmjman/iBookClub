@@ -9,151 +9,287 @@ package com.shining.ibookclub;
 
 public final class R {
     public static final class array {
-        public static final int country_codes=0x7f060000;
-        public static final int pref_example_list_titles=0x7f060001;
-        public static final int pref_example_list_values=0x7f060002;
-        public static final int pref_sync_frequency_titles=0x7f060003;
-        public static final int pref_sync_frequency_values=0x7f060004;
+        public static final int country_codes=0x7f080000;
+        public static final int pref_example_list_titles=0x7f080001;
+        public static final int pref_example_list_values=0x7f080002;
+        public static final int pref_sync_frequency_titles=0x7f080003;
+        public static final int pref_sync_frequency_values=0x7f080004;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int buttonBarButtonStyle=0x7f010001;
+        public static final int buttonBarButtonStyle=0x7f01000f;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int buttonBarStyle=0x7f010000;
+        public static final int buttonBarStyle=0x7f01000e;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cameraBearing=0x7f010001;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cameraTargetLat=0x7f010002;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cameraTargetLng=0x7f010003;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cameraTilt=0x7f010004;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int cameraZoom=0x7f010005;
+        /** <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>normal</code></td><td>1</td><td></td></tr>
+<tr><td><code>satellite</code></td><td>2</td><td></td></tr>
+<tr><td><code>terrain</code></td><td>3</td><td></td></tr>
+</table>
+         */
+        public static final int mapType=0x7f010000;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiCompass=0x7f010006;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiRotateGestures=0x7f010007;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiScrollGestures=0x7f010008;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiTiltGestures=0x7f010009;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiZoomControls=0x7f01000a;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int uiZoomGestures=0x7f01000b;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int useViewLifecycle=0x7f01000c;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int zOrderOnTop=0x7f01000d;
     }
     public static final class color {
-        public static final int black_overlay=0x7f07000b;
-        public static final int contents_text=0x7f070000;
-        public static final int encode_view=0x7f070001;
-        public static final int possible_result_points=0x7f070002;
+        public static final int black_overlay=0x7f09000b;
+        public static final int contents_text=0x7f090000;
+        public static final int encode_view=0x7f090001;
+        public static final int possible_result_points=0x7f090002;
         /**  Android standard ICS color 
          */
-        public static final int result_minor_text=0x7f070003;
-        public static final int result_points=0x7f070004;
+        public static final int result_minor_text=0x7f090003;
+        public static final int result_points=0x7f090004;
         /**  Android standard ICS color 
          */
-        public static final int result_text=0x7f070005;
-        public static final int result_view=0x7f070006;
-        public static final int status_text=0x7f070007;
-        public static final int transparent=0x7f070008;
-        public static final int viewfinder_laser=0x7f070009;
+        public static final int result_text=0x7f090005;
+        public static final int result_view=0x7f090006;
+        public static final int status_text=0x7f090007;
+        public static final int transparent=0x7f090008;
+        public static final int viewfinder_laser=0x7f090009;
         /**  Android standard ICS color 
          */
-        public static final int viewfinder_mask=0x7f07000a;
+        public static final int viewfinder_mask=0x7f09000a;
     }
     public static final class dimen {
-        public static final int half_padding=0x7f080001;
-        public static final int standard_padding=0x7f080000;
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+    
+         */
+        public static final int activity_horizontal_margin=0x7f0a0002;
+        public static final int activity_vertical_margin=0x7f0a0003;
+        public static final int half_padding=0x7f0a0001;
+        public static final int standard_padding=0x7f0a0000;
     }
     public static final class drawable {
-        public static final int button_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int launcher_icon=0x7f020002;
-        public static final int share_via_barcode=0x7f020003;
-        public static final int shopper_icon=0x7f020004;
+        public static final int button_location=0x7f020000;
+        public static final int button_search=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int launcher_icon=0x7f020003;
+        public static final int share_via_barcode=0x7f020004;
+        public static final int shopper_icon=0x7f020005;
     }
     public static final class id {
-        public static final int back_button=0x7f090034;
-        public static final int barcode_image_view=0x7f09001b;
-        public static final int book_cover=0x7f090031;
-        public static final int book_name=0x7f090032;
-        public static final int bookmark_title=0x7f090016;
-        public static final int bookmark_url=0x7f090017;
-        public static final int button_lend=0x7f09002f;
-        public static final int button_scan=0x7f09002c;
-        public static final int button_searchByIsbn=0x7f09002e;
-        public static final int button_searchByName=0x7f090028;
-        public static final int checkBox_autoLogin=0x7f090012;
-        public static final int checkBox_remPwd=0x7f090011;
-        public static final int checkBox_showPwd=0x7f090013;
-        public static final int contents_supplement_text_view=0x7f090022;
-        public static final int contents_text_view=0x7f090021;
-        public static final int decode=0x7f090000;
-        public static final int decode_failed=0x7f090001;
-        public static final int decode_succeeded=0x7f090002;
-        public static final int done_button=0x7f090035;
-        public static final int dummy_button=0x7f090009;
-        public static final int edittext_bookname=0x7f090027;
-        public static final int edittext_isbn=0x7f09002d;
-        public static final int email=0x7f09000e;
-        public static final int format_text_view=0x7f09001c;
-        public static final int fullscreen_content_controls=0x7f090008;
-        public static final int help_contents=0x7f090033;
-        public static final int history_detail=0x7f090037;
-        public static final int history_title=0x7f090036;
-        public static final int image_view=0x7f090026;
-        public static final int launch_product_query=0x7f090003;
-        public static final int list_owner=0x7f09000a;
-        public static final int login=0x7f090010;
-        public static final int login_form=0x7f09000d;
-        public static final int login_status=0x7f09000b;
-        public static final int login_status_message=0x7f09000c;
-        public static final int menu_encode=0x7f090049;
-        public static final int menu_forgot_password=0x7f090044;
-        public static final int menu_help=0x7f090048;
-        public static final int menu_history=0x7f090047;
-        public static final int menu_history_clear_text=0x7f09004b;
-        public static final int menu_history_send=0x7f09004a;
-        public static final int menu_logout=0x7f090045;
-        public static final int menu_search=0x7f09004c;
-        public static final int menu_settings=0x7f090043;
-        public static final int menu_share=0x7f090046;
-        public static final int meta_text_view=0x7f090020;
-        public static final int meta_text_view_label=0x7f09001f;
-        public static final int page_number_view=0x7f09003c;
-        public static final int pager=0x7f090015;
-        public static final int password=0x7f09000f;
-        public static final int preview_view=0x7f090018;
-        public static final int query_button=0x7f09003a;
-        public static final int query_text_view=0x7f090039;
-        public static final int quit=0x7f090004;
-        public static final int restart_preview=0x7f090005;
-        public static final int result_button_view=0x7f090023;
-        public static final int result_list_view=0x7f09003b;
-        public static final int result_view=0x7f09001a;
-        public static final int return_scan_result=0x7f090006;
-        public static final int share_app_button=0x7f09003e;
-        public static final int share_bookmark_button=0x7f09003f;
-        public static final int share_clipboard_button=0x7f090041;
-        public static final int share_contact_button=0x7f090040;
-        public static final int share_text_view=0x7f090042;
-        public static final int shopper_button=0x7f090024;
-        public static final int sign_in_button=0x7f090014;
-        public static final int snippet_view=0x7f09003d;
-        public static final int status_view=0x7f090025;
-        public static final int text_nickname=0x7f09002a;
-        public static final int textview_owner=0x7f090038;
-        public static final int time_text_view=0x7f09001e;
-        public static final int type_text_view=0x7f09001d;
-        public static final int viewfinder_view=0x7f090019;
-        public static final int webview_BookDetail=0x7f090007;
-        public static final int webview_BookForBorrow=0x7f090029;
-        public static final int webview_BookInfo=0x7f090030;
-        public static final int webview_MyBook=0x7f09002b;
+        public static final int action_settings=0x7f060055;
+        public static final int back_button=0x7f06003c;
+        public static final int barcode_image_view=0x7f060023;
+        public static final int book_cover=0x7f060039;
+        public static final int book_name=0x7f06003a;
+        public static final int bookmark_title=0x7f06001e;
+        public static final int bookmark_url=0x7f06001f;
+        public static final int button_getLocation=0x7f06001c;
+        public static final int button_lend=0x7f060037;
+        public static final int button_scan=0x7f060034;
+        public static final int button_searchByIsbn=0x7f060036;
+        public static final int button_searchByName=0x7f060030;
+        public static final int checkBox_autoLogin=0x7f060016;
+        public static final int checkBox_remPwd=0x7f060015;
+        public static final int checkBox_showPwd=0x7f060017;
+        public static final int contents_supplement_text_view=0x7f06002a;
+        public static final int contents_text_view=0x7f060029;
+        public static final int decode=0x7f060004;
+        public static final int decode_failed=0x7f060005;
+        public static final int decode_succeeded=0x7f060006;
+        public static final int done_button=0x7f06003d;
+        public static final int dummy_button=0x7f06000d;
+        public static final int edit_time=0x7f06001b;
+        public static final int edittext_bookname=0x7f06002f;
+        public static final int edittext_isbn=0x7f060035;
+        public static final int email=0x7f060012;
+        public static final int format_text_view=0x7f060024;
+        public static final int fragment_map=0x7f06001d;
+        public static final int fullscreen_content_controls=0x7f06000c;
+        public static final int help_contents=0x7f06003b;
+        public static final int history_detail=0x7f06003f;
+        public static final int history_title=0x7f06003e;
+        public static final int image_view=0x7f06002e;
+        public static final int launch_product_query=0x7f060007;
+        public static final int list_owner=0x7f06000e;
+        public static final int listview_book=0x7f06001a;
+        public static final int login=0x7f060014;
+        public static final int login_form=0x7f060011;
+        public static final int login_status=0x7f06000f;
+        public static final int login_status_message=0x7f060010;
+        public static final int menu_encode=0x7f060051;
+        public static final int menu_forgot_password=0x7f06004c;
+        public static final int menu_help=0x7f060050;
+        public static final int menu_history=0x7f06004f;
+        public static final int menu_history_clear_text=0x7f060053;
+        public static final int menu_history_send=0x7f060052;
+        public static final int menu_logout=0x7f06004d;
+        public static final int menu_search=0x7f060054;
+        public static final int menu_settings=0x7f06004b;
+        public static final int menu_share=0x7f06004e;
+        public static final int meta_text_view=0x7f060028;
+        public static final int meta_text_view_label=0x7f060027;
+        public static final int none=0x7f060000;
+        public static final int normal=0x7f060001;
+        public static final int page_number_view=0x7f060044;
+        public static final int pager=0x7f060019;
+        public static final int password=0x7f060013;
+        public static final int preview_view=0x7f060020;
+        public static final int query_button=0x7f060042;
+        public static final int query_text_view=0x7f060041;
+        public static final int quit=0x7f060008;
+        public static final int restart_preview=0x7f060009;
+        public static final int result_button_view=0x7f06002b;
+        public static final int result_list_view=0x7f060043;
+        public static final int result_view=0x7f060022;
+        public static final int return_scan_result=0x7f06000a;
+        public static final int satellite=0x7f060002;
+        public static final int share_app_button=0x7f060046;
+        public static final int share_bookmark_button=0x7f060047;
+        public static final int share_clipboard_button=0x7f060049;
+        public static final int share_contact_button=0x7f060048;
+        public static final int share_text_view=0x7f06004a;
+        public static final int shopper_button=0x7f06002c;
+        public static final int sign_in_button=0x7f060018;
+        public static final int snippet_view=0x7f060045;
+        public static final int status_view=0x7f06002d;
+        public static final int terrain=0x7f060003;
+        public static final int text_nickname=0x7f060032;
+        public static final int textview_owner=0x7f060040;
+        public static final int time_text_view=0x7f060026;
+        public static final int type_text_view=0x7f060025;
+        public static final int viewfinder_view=0x7f060021;
+        public static final int webview_BookDetail=0x7f06000b;
+        public static final int webview_BookForBorrow=0x7f060031;
+        public static final int webview_BookInfo=0x7f060038;
+        public static final int webview_MyBook=0x7f060033;
     }
     public static final class layout {
         public static final int activity_book_detail=0x7f030000;
         public static final int activity_borrow_book=0x7f030001;
         public static final int activity_login=0x7f030002;
         public static final int activity_main=0x7f030003;
-        public static final int bookmark_picker_list_item=0x7f030004;
-        public static final int capture=0x7f030005;
-        public static final int encode=0x7f030006;
-        public static final int fragment_borrow=0x7f030007;
-        public static final int fragment_info=0x7f030008;
-        public static final int fragment_lend=0x7f030009;
-        public static final int gridview_mybook=0x7f03000a;
-        public static final int help=0x7f03000b;
-        public static final int history_list_item=0x7f03000c;
-        public static final int listview_owner=0x7f03000d;
-        public static final int search_book_contents=0x7f03000e;
-        public static final int search_book_contents_header=0x7f03000f;
-        public static final int search_book_contents_list_item=0x7f030010;
-        public static final int share=0x7f030011;
+        public static final int activity_post_book=0x7f030004;
+        public static final int bookmark_picker_list_item=0x7f030005;
+        public static final int capture=0x7f030006;
+        public static final int encode=0x7f030007;
+        public static final int fragment_borrow=0x7f030008;
+        public static final int fragment_info=0x7f030009;
+        public static final int fragment_lend=0x7f03000a;
+        public static final int gridview_mybook=0x7f03000b;
+        public static final int help=0x7f03000c;
+        public static final int history_list_item=0x7f03000d;
+        public static final int listview_owner=0x7f03000e;
+        public static final int search_book_contents=0x7f03000f;
+        public static final int search_book_contents_header=0x7f030010;
+        public static final int search_book_contents_list_item=0x7f030011;
+        public static final int share=0x7f030012;
     }
     public static final class menu {
         public static final int activity_borrow_book=0x7f0c0000;
@@ -163,181 +299,227 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int encode=0x7f0c0004;
         public static final int history=0x7f0c0005;
         public static final int menu_search=0x7f0c0006;
+        public static final int post_book=0x7f0c0007;
     }
     public static final class raw {
         public static final int beep=0x7f050000;
     }
     public static final class string {
-        public static final int action_sign_in_register=0x7f0a008a;
-        public static final int action_sign_in_short=0x7f0a008b;
-        public static final int app_name=0x7f0a0000;
-        public static final int app_picker_name=0x7f0a0001;
-        public static final int autologin=0x7f0a0082;
-        public static final int bookmark_picker_name=0x7f0a0002;
-        public static final int button_add_calendar=0x7f0a0003;
-        public static final int button_add_contact=0x7f0a0004;
-        public static final int button_back=0x7f0a0005;
-        public static final int button_book_search=0x7f0a0006;
-        public static final int button_cancel=0x7f0a0007;
-        public static final int button_custom_product_search=0x7f0a0008;
-        public static final int button_dial=0x7f0a0009;
-        public static final int button_done=0x7f0a000a;
-        public static final int button_email=0x7f0a000b;
-        public static final int button_get_directions=0x7f0a000c;
-        public static final int button_google_shopper=0x7f0a000d;
-        public static final int button_mms=0x7f0a000e;
-        public static final int button_ok=0x7f0a000f;
-        public static final int button_open_browser=0x7f0a0010;
-        public static final int button_product_search=0x7f0a0011;
-        public static final int button_search_book_contents=0x7f0a0012;
-        public static final int button_share_app=0x7f0a0013;
-        public static final int button_share_bookmark=0x7f0a0014;
-        public static final int button_share_by_email=0x7f0a0015;
-        public static final int button_share_by_sms=0x7f0a0016;
-        public static final int button_share_clipboard=0x7f0a0017;
-        public static final int button_share_contact=0x7f0a0018;
-        public static final int button_show_map=0x7f0a0019;
-        public static final int button_sms=0x7f0a001a;
-        public static final int button_web_search=0x7f0a001b;
-        public static final int button_wifi=0x7f0a001c;
-        public static final int contents_contact=0x7f0a001d;
-        public static final int contents_email=0x7f0a001e;
-        public static final int contents_location=0x7f0a001f;
-        public static final int contents_phone=0x7f0a0020;
-        public static final int contents_sms=0x7f0a0021;
-        public static final int contents_text=0x7f0a0022;
-        public static final int dummy_button=0x7f0a0084;
-        public static final int dummy_content=0x7f0a0083;
-        public static final int error_field_required=0x7f0a0091;
-        public static final int error_incorrect_password=0x7f0a0090;
-        public static final int error_invalid_email=0x7f0a008e;
-        public static final int error_invalid_password=0x7f0a008f;
-        public static final int hello_world=0x7f0a007c;
-        public static final int history_clear_one_history_text=0x7f0a0024;
-        public static final int history_clear_text=0x7f0a0023;
-        public static final int history_email_title=0x7f0a0025;
-        public static final int history_empty=0x7f0a0026;
-        public static final int history_empty_detail=0x7f0a0027;
-        public static final int history_send=0x7f0a0028;
-        public static final int history_title=0x7f0a0029;
-        public static final int login_progress_signing_in=0x7f0a008d;
-        public static final int menu_encode_mecard=0x7f0a002a;
-        public static final int menu_encode_vcard=0x7f0a002b;
-        public static final int menu_forgot_password=0x7f0a008c;
-        public static final int menu_help=0x7f0a002c;
-        public static final int menu_history=0x7f0a002d;
-        public static final int menu_logout=0x7f0a007d;
-        public static final int menu_search=0x7f0a007e;
-        public static final int menu_settings=0x7f0a002e;
-        public static final int menu_share=0x7f0a002f;
-        public static final int msg_bulk_mode_scanned=0x7f0a0030;
-        public static final int msg_camera_framework_bug=0x7f0a0031;
-        public static final int msg_default_format=0x7f0a0032;
-        public static final int msg_default_meta=0x7f0a0033;
-        public static final int msg_default_mms_subject=0x7f0a0034;
-        public static final int msg_default_status=0x7f0a0035;
-        public static final int msg_default_time=0x7f0a0036;
-        public static final int msg_default_type=0x7f0a0037;
-        public static final int msg_encode_contents_failed=0x7f0a0038;
-        public static final int msg_google_books=0x7f0a0039;
-        public static final int msg_google_product=0x7f0a003a;
-        public static final int msg_google_shopper_missing=0x7f0a003b;
-        public static final int msg_install_google_shopper=0x7f0a003c;
-        public static final int msg_intent_failed=0x7f0a003d;
-        public static final int msg_redirect=0x7f0a003e;
-        public static final int msg_sbc_book_not_searchable=0x7f0a003f;
-        public static final int msg_sbc_failed=0x7f0a0040;
-        public static final int msg_sbc_no_page_returned=0x7f0a0041;
-        public static final int msg_sbc_page=0x7f0a0042;
-        public static final int msg_sbc_results=0x7f0a0043;
-        public static final int msg_sbc_searching_book=0x7f0a0044;
-        public static final int msg_sbc_snippet_unavailable=0x7f0a0045;
-        public static final int msg_sbc_unknown_page=0x7f0a0046;
-        public static final int msg_share_explanation=0x7f0a0047;
-        public static final int msg_share_subject_line=0x7f0a0048;
-        public static final int msg_share_text=0x7f0a0049;
-        public static final int msg_sure=0x7f0a004a;
-        public static final int msg_unmount_usb=0x7f0a004b;
-        public static final int pref_default_display_name=0x7f0a0097;
-        public static final int pref_description_social_recommendations=0x7f0a0095;
+        public static final int action_settings=0x7f070093;
+        public static final int action_sign_in_register=0x7f070097;
+        public static final int action_sign_in_short=0x7f070098;
+        public static final int app_name=0x7f07000b;
+        public static final int app_picker_name=0x7f07000c;
+        public static final int autologin=0x7f07008d;
+        public static final int bookmark_picker_name=0x7f07000d;
+        public static final int button_add_calendar=0x7f07000e;
+        public static final int button_add_contact=0x7f07000f;
+        public static final int button_back=0x7f070010;
+        public static final int button_book_search=0x7f070011;
+        public static final int button_cancel=0x7f070012;
+        public static final int button_custom_product_search=0x7f070013;
+        public static final int button_dial=0x7f070014;
+        public static final int button_done=0x7f070015;
+        public static final int button_email=0x7f070016;
+        public static final int button_get_directions=0x7f070017;
+        public static final int button_google_shopper=0x7f070018;
+        public static final int button_mms=0x7f070019;
+        public static final int button_ok=0x7f07001a;
+        public static final int button_open_browser=0x7f07001b;
+        public static final int button_product_search=0x7f07001c;
+        public static final int button_search_book_contents=0x7f07001d;
+        public static final int button_share_app=0x7f07001e;
+        public static final int button_share_bookmark=0x7f07001f;
+        public static final int button_share_by_email=0x7f070020;
+        public static final int button_share_by_sms=0x7f070021;
+        public static final int button_share_clipboard=0x7f070022;
+        public static final int button_share_contact=0x7f070023;
+        public static final int button_show_map=0x7f070024;
+        public static final int button_sms=0x7f070025;
+        public static final int button_web_search=0x7f070026;
+        public static final int button_wifi=0x7f070027;
+        /**  Button in confirmation dialog to enable Google Play services.  Clicking it
+        will direct user to application settings of Google Play services where they
+        can enable it [CHAR LIMIT=30] 
+         */
+        public static final int common_google_play_services_enable_button=0x7f070006;
+        /**  Message in confirmation dialog informing user they need to enable
+        Google Play services in application settings [CHAR LIMIT=NONE] 
+         */
+        public static final int common_google_play_services_enable_text=0x7f070005;
+        /**  Title of confirmation dialog informing user they need to enable
+        Google Play services in application settings [CHAR LIMIT=40] 
+         */
+        public static final int common_google_play_services_enable_title=0x7f070004;
+        /**  Button in confirmation dialog for installing Google Play services [CHAR LIMIT=30] 
+         */
+        public static final int common_google_play_services_install_button=0x7f070003;
+        /**  (For phones) Message in confirmation dialog informing user that
+        they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
+         */
+        public static final int common_google_play_services_install_text_phone=0x7f070001;
+        /**  (For tablets) Message in confirmation dialog informing user that
+        they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
+         */
+        public static final int common_google_play_services_install_text_tablet=0x7f070002;
+        /**  Title of confirmation dialog informing user that they need to install
+        Google Play services (from Play Store) [CHAR LIMIT=40] 
+         */
+        public static final int common_google_play_services_install_title=0x7f070000;
+        /**  Message in confirmation dialog informing user there is an unknow issue in Google Player
+        services [CHAR LIMIT=NONE] 
+         */
+        public static final int common_google_play_services_unknown_issue=0x7f070009;
+        /**  Button in confirmation dialog for updating Google Play services [CHAR LIMIT=20] 
+         */
+        public static final int common_google_play_services_update_button=0x7f07000a;
+        /**  Message in confirmation dialog informing user that they need to update
+        Google Play services (from Play Store) [CHAR LIMIT=NONE] 
+         */
+        public static final int common_google_play_services_update_text=0x7f070008;
+        /**  Title of confirmation dialog informing user that they need to update
+        Google Play services (from Play Store) [CHAR LIMIT=40] 
+         */
+        public static final int common_google_play_services_update_title=0x7f070007;
+        public static final int contents_contact=0x7f070028;
+        public static final int contents_email=0x7f070029;
+        public static final int contents_location=0x7f07002a;
+        public static final int contents_phone=0x7f07002b;
+        public static final int contents_sms=0x7f07002c;
+        public static final int contents_text=0x7f07002d;
+        public static final int dummy_button=0x7f07008f;
+        public static final int dummy_content=0x7f07008e;
+        public static final int error_field_required=0x7f07009e;
+        public static final int error_incorrect_password=0x7f07009d;
+        public static final int error_invalid_email=0x7f07009b;
+        public static final int error_invalid_password=0x7f07009c;
+        public static final int hello_world=0x7f070087;
+        public static final int history_clear_one_history_text=0x7f07002f;
+        public static final int history_clear_text=0x7f07002e;
+        public static final int history_email_title=0x7f070030;
+        public static final int history_empty=0x7f070031;
+        public static final int history_empty_detail=0x7f070032;
+        public static final int history_send=0x7f070033;
+        public static final int history_title=0x7f070034;
+        public static final int login_progress_signing_in=0x7f07009a;
+        public static final int menu_encode_mecard=0x7f070035;
+        public static final int menu_encode_vcard=0x7f070036;
+        public static final int menu_forgot_password=0x7f070099;
+        public static final int menu_help=0x7f070037;
+        public static final int menu_history=0x7f070038;
+        public static final int menu_logout=0x7f070088;
+        public static final int menu_search=0x7f070089;
+        public static final int menu_settings=0x7f070039;
+        public static final int menu_share=0x7f07003a;
+        public static final int msg_bulk_mode_scanned=0x7f07003b;
+        public static final int msg_camera_framework_bug=0x7f07003c;
+        public static final int msg_default_format=0x7f07003d;
+        public static final int msg_default_meta=0x7f07003e;
+        public static final int msg_default_mms_subject=0x7f07003f;
+        public static final int msg_default_status=0x7f070040;
+        public static final int msg_default_time=0x7f070041;
+        public static final int msg_default_type=0x7f070042;
+        public static final int msg_encode_contents_failed=0x7f070043;
+        public static final int msg_google_books=0x7f070044;
+        public static final int msg_google_product=0x7f070045;
+        public static final int msg_google_shopper_missing=0x7f070046;
+        public static final int msg_install_google_shopper=0x7f070047;
+        public static final int msg_intent_failed=0x7f070048;
+        public static final int msg_redirect=0x7f070049;
+        public static final int msg_sbc_book_not_searchable=0x7f07004a;
+        public static final int msg_sbc_failed=0x7f07004b;
+        public static final int msg_sbc_no_page_returned=0x7f07004c;
+        public static final int msg_sbc_page=0x7f07004d;
+        public static final int msg_sbc_results=0x7f07004e;
+        public static final int msg_sbc_searching_book=0x7f07004f;
+        public static final int msg_sbc_snippet_unavailable=0x7f070050;
+        public static final int msg_sbc_unknown_page=0x7f070051;
+        public static final int msg_share_explanation=0x7f070052;
+        public static final int msg_share_subject_line=0x7f070053;
+        public static final int msg_share_text=0x7f070054;
+        public static final int msg_sure=0x7f070055;
+        public static final int msg_unmount_usb=0x7f070056;
+        public static final int pref_default_display_name=0x7f0700a4;
+        public static final int pref_description_social_recommendations=0x7f0700a2;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f0a0099;
+        public static final int pref_header_data_sync=0x7f0700a6;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f0a0093;
+        public static final int pref_header_general=0x7f0700a0;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f0a009c;
-        public static final int pref_ringtone_silent=0x7f0a009f;
-        public static final int pref_title_add_friends_to_messages=0x7f0a0098;
-        public static final int pref_title_display_name=0x7f0a0096;
-        public static final int pref_title_new_message_notifications=0x7f0a009d;
-        public static final int pref_title_ringtone=0x7f0a009e;
-        public static final int pref_title_social_recommendations=0x7f0a0094;
-        public static final int pref_title_sync_frequency=0x7f0a009a;
-        public static final int pref_title_system_sync_settings=0x7f0a009b;
-        public static final int pref_title_vibrate=0x7f0a00a0;
-        public static final int preferences_actions_title=0x7f0a004c;
-        public static final int preferences_auto_focus_title=0x7f0a004d;
-        public static final int preferences_bulk_mode_summary=0x7f0a004e;
-        public static final int preferences_bulk_mode_title=0x7f0a004f;
-        public static final int preferences_copy_to_clipboard_title=0x7f0a0050;
-        public static final int preferences_custom_product_search_summary=0x7f0a0051;
-        public static final int preferences_custom_product_search_title=0x7f0a0052;
-        public static final int preferences_decode_1D_title=0x7f0a0053;
-        public static final int preferences_decode_Data_Matrix_title=0x7f0a0054;
-        public static final int preferences_decode_QR_title=0x7f0a0055;
-        public static final int preferences_device_bug_workarounds_title=0x7f0a0056;
-        public static final int preferences_disable_continuous_focus_summary=0x7f0a0057;
-        public static final int preferences_disable_continuous_focus_title=0x7f0a0058;
-        public static final int preferences_disable_exposure_title=0x7f0a0059;
-        public static final int preferences_front_light_summary=0x7f0a005a;
-        public static final int preferences_front_light_title=0x7f0a005b;
-        public static final int preferences_general_title=0x7f0a005c;
-        public static final int preferences_name=0x7f0a005d;
-        public static final int preferences_play_beep_title=0x7f0a005e;
-        public static final int preferences_remember_duplicates_summary=0x7f0a005f;
-        public static final int preferences_remember_duplicates_title=0x7f0a0060;
-        public static final int preferences_result_title=0x7f0a0061;
-        public static final int preferences_scanning_title=0x7f0a0062;
-        public static final int preferences_search_country=0x7f0a0063;
-        public static final int preferences_supplemental_summary=0x7f0a0066;
-        public static final int preferences_supplemental_title=0x7f0a0067;
-        public static final int preferences_try_bsplus=0x7f0a0064;
-        public static final int preferences_try_bsplus_summary=0x7f0a0065;
-        public static final int preferences_vibrate_title=0x7f0a0068;
+        public static final int pref_header_notifications=0x7f0700a9;
+        public static final int pref_ringtone_silent=0x7f0700ac;
+        public static final int pref_title_add_friends_to_messages=0x7f0700a5;
+        public static final int pref_title_display_name=0x7f0700a3;
+        public static final int pref_title_new_message_notifications=0x7f0700aa;
+        public static final int pref_title_ringtone=0x7f0700ab;
+        public static final int pref_title_social_recommendations=0x7f0700a1;
+        public static final int pref_title_sync_frequency=0x7f0700a7;
+        public static final int pref_title_system_sync_settings=0x7f0700a8;
+        public static final int pref_title_vibrate=0x7f0700ad;
+        public static final int preferences_actions_title=0x7f070057;
+        public static final int preferences_auto_focus_title=0x7f070058;
+        public static final int preferences_bulk_mode_summary=0x7f070059;
+        public static final int preferences_bulk_mode_title=0x7f07005a;
+        public static final int preferences_copy_to_clipboard_title=0x7f07005b;
+        public static final int preferences_custom_product_search_summary=0x7f07005c;
+        public static final int preferences_custom_product_search_title=0x7f07005d;
+        public static final int preferences_decode_1D_title=0x7f07005e;
+        public static final int preferences_decode_Data_Matrix_title=0x7f07005f;
+        public static final int preferences_decode_QR_title=0x7f070060;
+        public static final int preferences_device_bug_workarounds_title=0x7f070061;
+        public static final int preferences_disable_continuous_focus_summary=0x7f070062;
+        public static final int preferences_disable_continuous_focus_title=0x7f070063;
+        public static final int preferences_disable_exposure_title=0x7f070064;
+        public static final int preferences_front_light_summary=0x7f070065;
+        public static final int preferences_front_light_title=0x7f070066;
+        public static final int preferences_general_title=0x7f070067;
+        public static final int preferences_name=0x7f070068;
+        public static final int preferences_play_beep_title=0x7f070069;
+        public static final int preferences_remember_duplicates_summary=0x7f07006a;
+        public static final int preferences_remember_duplicates_title=0x7f07006b;
+        public static final int preferences_result_title=0x7f07006c;
+        public static final int preferences_scanning_title=0x7f07006d;
+        public static final int preferences_search_country=0x7f07006e;
+        public static final int preferences_supplemental_summary=0x7f070071;
+        public static final int preferences_supplemental_title=0x7f070072;
+        public static final int preferences_try_bsplus=0x7f07006f;
+        public static final int preferences_try_bsplus_summary=0x7f070070;
+        public static final int preferences_vibrate_title=0x7f070073;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0a0088;
-        public static final int prompt_password=0x7f0a0089;
-        public static final int rempwd=0x7f0a0080;
-        public static final int result_address_book=0x7f0a0069;
-        public static final int result_calendar=0x7f0a006a;
-        public static final int result_email_address=0x7f0a006b;
-        public static final int result_geo=0x7f0a006c;
-        public static final int result_isbn=0x7f0a006d;
-        public static final int result_product=0x7f0a006e;
-        public static final int result_sms=0x7f0a006f;
-        public static final int result_tel=0x7f0a0070;
-        public static final int result_text=0x7f0a0071;
-        public static final int result_uri=0x7f0a0072;
-        public static final int result_wifi=0x7f0a0073;
-        public static final int sbc_name=0x7f0a0074;
-        public static final int share_name=0x7f0a0075;
-        public static final int showpwd=0x7f0a0081;
-        public static final int title_activity_book_detail=0x7f0a0085;
-        public static final int title_activity_borrow_book=0x7f0a0086;
-        public static final int title_activity_login=0x7f0a0087;
-        public static final int title_activity_settings=0x7f0a0092;
-        public static final int title_section1=0x7f0a007b;
-        public static final int title_section2=0x7f0a007a;
-        public static final int title_section3=0x7f0a0079;
-        public static final int unsigned=0x7f0a007f;
-        public static final int wifi_changing_network=0x7f0a0076;
-        public static final int wifi_ssid_label=0x7f0a0077;
-        public static final int wifi_type_label=0x7f0a0078;
+        public static final int prompt_email=0x7f070095;
+        public static final int prompt_password=0x7f070096;
+        public static final int rempwd=0x7f07008b;
+        public static final int result_address_book=0x7f070074;
+        public static final int result_calendar=0x7f070075;
+        public static final int result_email_address=0x7f070076;
+        public static final int result_geo=0x7f070077;
+        public static final int result_isbn=0x7f070078;
+        public static final int result_product=0x7f070079;
+        public static final int result_sms=0x7f07007a;
+        public static final int result_tel=0x7f07007b;
+        public static final int result_text=0x7f07007c;
+        public static final int result_uri=0x7f07007d;
+        public static final int result_wifi=0x7f07007e;
+        public static final int sbc_name=0x7f07007f;
+        public static final int share_name=0x7f070080;
+        public static final int showpwd=0x7f07008c;
+        public static final int title_activity_book_detail=0x7f070090;
+        public static final int title_activity_borrow_book=0x7f070091;
+        public static final int title_activity_login=0x7f070094;
+        public static final int title_activity_post_book=0x7f070092;
+        public static final int title_activity_settings=0x7f07009f;
+        public static final int title_section1=0x7f070086;
+        public static final int title_section2=0x7f070085;
+        public static final int title_section3=0x7f070084;
+        public static final int unsigned=0x7f07008a;
+        public static final int wifi_changing_network=0x7f070081;
+        public static final int wifi_ssid_label=0x7f070082;
+        public static final int wifi_type_label=0x7f070083;
     }
     public static final class style {
         /** 
@@ -403,7 +585,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            @see #ButtonBarContainerTheme_buttonBarStyle
          */
         public static final int[] ButtonBarContainerTheme = {
-            0x7f010000, 0x7f010001
+            0x7f01000e, 0x7f01000f
         };
         /**
           <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#buttonBarButtonStyle}
@@ -425,5 +607,248 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           @attr name android:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
+        /** Attributes that can be used with a MapAttrs.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #MapAttrs_cameraBearing com.shining.ibookclub:cameraBearing}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_cameraTargetLat com.shining.ibookclub:cameraTargetLat}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_cameraTargetLng com.shining.ibookclub:cameraTargetLng}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_cameraTilt com.shining.ibookclub:cameraTilt}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_cameraZoom com.shining.ibookclub:cameraZoom}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_mapType com.shining.ibookclub:mapType}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiCompass com.shining.ibookclub:uiCompass}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiRotateGestures com.shining.ibookclub:uiRotateGestures}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiScrollGestures com.shining.ibookclub:uiScrollGestures}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiTiltGestures com.shining.ibookclub:uiTiltGestures}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiZoomControls com.shining.ibookclub:uiZoomControls}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_uiZoomGestures com.shining.ibookclub:uiZoomGestures}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_useViewLifecycle com.shining.ibookclub:useViewLifecycle}</code></td><td></td></tr>
+           <tr><td><code>{@link #MapAttrs_zOrderOnTop com.shining.ibookclub:zOrderOnTop}</code></td><td></td></tr>
+           </table>
+           @see #MapAttrs_cameraBearing
+           @see #MapAttrs_cameraTargetLat
+           @see #MapAttrs_cameraTargetLng
+           @see #MapAttrs_cameraTilt
+           @see #MapAttrs_cameraZoom
+           @see #MapAttrs_mapType
+           @see #MapAttrs_uiCompass
+           @see #MapAttrs_uiRotateGestures
+           @see #MapAttrs_uiScrollGestures
+           @see #MapAttrs_uiTiltGestures
+           @see #MapAttrs_uiZoomControls
+           @see #MapAttrs_uiZoomGestures
+           @see #MapAttrs_useViewLifecycle
+           @see #MapAttrs_zOrderOnTop
+         */
+        public static final int[] MapAttrs = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007,
+            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b,
+            0x7f01000c, 0x7f01000d
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#cameraBearing}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cameraBearing
+        */
+        public static final int MapAttrs_cameraBearing = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#cameraTargetLat}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cameraTargetLat
+        */
+        public static final int MapAttrs_cameraTargetLat = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#cameraTargetLng}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cameraTargetLng
+        */
+        public static final int MapAttrs_cameraTargetLng = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#cameraTilt}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cameraTilt
+        */
+        public static final int MapAttrs_cameraTilt = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#cameraZoom}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cameraZoom
+        */
+        public static final int MapAttrs_cameraZoom = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#mapType}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>normal</code></td><td>1</td><td></td></tr>
+<tr><td><code>satellite</code></td><td>2</td><td></td></tr>
+<tr><td><code>terrain</code></td><td>3</td><td></td></tr>
+</table>
+          @attr name android:mapType
+        */
+        public static final int MapAttrs_mapType = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiCompass}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiCompass
+        */
+        public static final int MapAttrs_uiCompass = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiRotateGestures}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiRotateGestures
+        */
+        public static final int MapAttrs_uiRotateGestures = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiScrollGestures}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiScrollGestures
+        */
+        public static final int MapAttrs_uiScrollGestures = 8;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiTiltGestures}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiTiltGestures
+        */
+        public static final int MapAttrs_uiTiltGestures = 9;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiZoomControls}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiZoomControls
+        */
+        public static final int MapAttrs_uiZoomControls = 10;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#uiZoomGestures}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:uiZoomGestures
+        */
+        public static final int MapAttrs_uiZoomGestures = 11;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#useViewLifecycle}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:useViewLifecycle
+        */
+        public static final int MapAttrs_useViewLifecycle = 12;
+        /**
+          <p>This symbol is the offset where the {@link com.shining.ibookclub.R.attr#zOrderOnTop}
+          attribute's value can be found in the {@link #MapAttrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:zOrderOnTop
+        */
+        public static final int MapAttrs_zOrderOnTop = 13;
     };
 }

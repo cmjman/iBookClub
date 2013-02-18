@@ -74,6 +74,8 @@ public class MainActivity extends FragmentActivity implements
 						actionBar.setSelectedNavigationItem(position);
 					}
 				});
+		
+		
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -85,6 +87,8 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		mViewPager.setCurrentItem(1);
 		
 		 BookInfoDao.initBookInfoDao(this);
 		 MyBookDao.initMyBookDao(this);

@@ -17,5 +17,7 @@
     <string name="dummy_button">借阅</string>
     <string name="title_activity_book_detail">图书信息</string>
     <string name="title_activity_borrow_book">借阅信息</string>
+    <string name="title_activity_post_book">PostBookActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

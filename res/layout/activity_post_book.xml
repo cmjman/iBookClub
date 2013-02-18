@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+     android:orientation="vertical"
+    tools:context=".PostBookActivity" >
+
+    <ListView
+        android:id="@+id/listview_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+    
+     <EditText
+        android:id="@+id/edit_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="出租时长" />
+     
+     <ImageButton 
+         android:id="@+id/button_getLocation"
+         android:src="@drawable/button_location"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         />
+     
+    <fragment 
+  		android:id="@+id/fragment_map"
+  		android:layout_width="match_parent"
+  		android:layout_height="wrap_content"
+  		class="com.google.android.gms.maps.MapFragment"/>
+     
+ 
+
+</LinearLayout>
