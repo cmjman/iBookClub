@@ -130,7 +130,7 @@ public class BorrowBookActivity extends Activity {
 			
 			 
 			 listItemAdapter = new ArrayAdapter<String>(BorrowBookActivity.this,android.R.layout.simple_list_item_1,owner_nickname);
-			listOwner.setAdapter(listItemAdapter);
+			 listOwner.setAdapter(listItemAdapter);
 		 }
 	}
 	

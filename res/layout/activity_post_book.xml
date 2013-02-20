@@ -8,12 +8,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
      android:orientation="vertical"
     tools:context=".PostBookActivity" >
-
-    <ListView
-        android:id="@+id/listview_book"
+	
+    <ScrollView
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         />
+        >
+    	<ListView
+	        android:id="@+id/listview_book"
+	        android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+         	/>
+    </ScrollView>
+    
+    
     
      <EditText
         android:id="@+id/edit_time"
@@ -21,12 +29,26 @@
         android:layout_height="wrap_content"
         android:hint="出租时长" />
      
-     <ImageButton 
-         android:id="@+id/button_getLocation"
-         android:src="@drawable/button_location"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-         />
+     <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+     	>	
+	     <ImageButton 
+	         android:id="@+id/button_getLocation"
+	         android:src="@drawable/button_location"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         />
+	     
+	     <ImageButton 
+	         android:id="@+id/button_postbook"
+	         android:src="@drawable/button_postbook"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         />
+	</LinearLayout>     
+	     
      
     <fragment 
   		android:id="@+id/fragment_map"

@@ -77,6 +77,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,7 +106,9 @@ public  class DummySectionFragment extends Fragment {
 	
 	private TextView text_nickname;
 	
-	private GridView grid_mybook;
+	private SearchView searchView;
+	
+	
 	
 	
 	private Handler handler = new Handler();
@@ -186,23 +189,27 @@ public  class DummySectionFragment extends Fragment {
 		    	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
 		    	getPublicBook.execute((Void)null);
 		    	
-		    	edittext_name=(EditText)getActivity().findViewById(R.id.edittext_bookname);
-		    	button_searchByName=(ImageButton)getActivity().findViewById(R.id.button_searchByName);
+		    	searchView=(SearchView)getActivity().findViewById(R.id.searchView);
 		    	
-		    	button_searchByName.setOnClickListener(new OnClickListener(){
+		    	searchView.setOnQueryTextListener(new OnQueryTextListener(){
 
-				
-					public void onClick(View arg0) {
-					keyword=edittext_name.getText().toString();
-					
-					SearchPublicBookTask search=new SearchPublicBookTask();
-					search.execute((Void) null);
-						
-						
+					@Override
+					public boolean onQueryTextChange(String arg0) {
+						// TODO Auto-generated method stub
+						return false;
 					}
-		    		
-		    		
+
+					@Override
+					public boolean onQueryTextSubmit(String arg0) {
+						
+						keyword=searchView.getQuery().toString();
+						
+						SearchPublicBookTask search=new SearchPublicBookTask();
+						search.execute((Void) null);
+						return true;
+					}
 		    	});
+		    	
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
@@ -555,18 +562,22 @@ public  class DummySectionFragment extends Fragment {
 				button_lend.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-					//TODO 缺少判空操作，可能导致空指针崩溃，待修正,下同
-						//	BookInfoDao.getInstance().create(bookInfo);
+				
+					
 							
 				//			postBookToLibrary();
 						
 				//			setHasLend();
 						
-						Intent intent=new Intent(getActivity(),PostBookActivity.class);
-					
-						intent.putExtra("bean", bookBean);
+						if(bookBean.getIsbn()!=null){
 						
-						startActivity(intent);
+							Intent intent=new Intent(getActivity(),PostBookActivity.class);
+					
+							intent.putExtra("bean", bookBean);
+						
+							startActivity(intent);
+						}else
+							Toast.makeText(getActivity(), "请先扫描或者搜索需要发布的图书！", Toast.LENGTH_SHORT).show();
 						
 					}
 				});
@@ -588,8 +599,8 @@ public  class DummySectionFragment extends Fragment {
 			
 		private void postBookToLibrary(){
 			
-			PostBookTask postBookTask=new PostBookTask();
-			postBookTask.execute((Void)null);
+		//	PostBookTask postBookTask=new PostBookTask();
+		//	postBookTask.execute((Void)null);
 			
 		}
 		
@@ -645,53 +656,7 @@ public  class DummySectionFragment extends Fragment {
 			
 		}
 		
-		public class PostBookTask extends AsyncTask<Void, Void, Boolean> {
-
-			@Override
-			protected Boolean doInBackground(Void... arg0) {
-			
-				Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"AddBookServlet";
-				
-				if(LoginSingleton.isLoginSuccess()){
-					
-				//	HttpPost httpRequest =new HttpPost(httpUrl);
-					
-					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-			        Gson gsonBookInfo=new Gson();
-					params.add(new BasicNameValuePair("bookbean",gsonBookInfo.toJson(bookBean)));
-				
-					
-					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
-					
-			      
-			  
-					try{
-						
-							String strResult=httpUtility.doPost();
-							Gson gson = new Gson();
-							bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-					}
-					catch(Exception e){
-						return false;
-					}
-					
-					
-					return result;
-				}
-				
-				return null;
-			}
-			
-			protected void onPostExecute(final Boolean success) {
-				
-				 LoadMyBook();
-			}
-			
-			
-			
-		}
+		
 		
 		
 		public void LoadPublicBook(){
@@ -722,13 +687,7 @@ public  class DummySectionFragment extends Fragment {
 				MyBookDao.getInstance().create(book);
 			}
 			
-			//TODO 需补充具体sql语句
-	    //	String sql="select * from my_books";
-	  //  	cursor=MyBookDao.getInstance().query(sql, null);
-	    	
-	   // 	gridAdapter=new GridAdapter(getActivity(), R.layout.gridview_mybook, cursor, 
-		//			new String[]{"bookname"}, new int[]{R.id.book_name}, "_id", R.id.book_cover);
-			
+	
 	    	
 			
 		}
