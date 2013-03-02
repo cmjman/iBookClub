@@ -2,6 +2,8 @@ package com.shining.ibookclub.support;
 
 
 import java.util.List;
+
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -40,10 +42,15 @@ public class HttpUtility {
 			
 			httpClient=new DefaultHttpClient();
 			
+			
 			if(params!=null)
 	
 				postRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
+			
+			postRequest.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5" );
 
+			
+			
 			httpResponse=httpClient.execute(postRequest);
 			
 			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){

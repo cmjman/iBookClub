@@ -681,15 +681,11 @@ public  class DummySectionFragment extends Fragment {
 			//	isbn=book_isbn;
 			//   searchBookTask=new SearchBookTask();
 			//   searchBookTask.execute((Void) null);
-			//	System.out.println(book.getBookname());
 				
 			 //  BookInfoDao.getInstance().create(book);
 				MyBookDao.getInstance().create(book);
 			}
-			
-	
 	    	
-			
 		}
 		 
 		 private void checkNetworkInfo(){
@@ -709,12 +705,6 @@ public  class DummySectionFragment extends Fragment {
 		 
 		 
 		 private BookBean getResultByIsbn(){
-				//	BookInfo dbook=null;
-					
-	
-					
-			//		checkNetworkInfo();
-					
 		
 				
 					

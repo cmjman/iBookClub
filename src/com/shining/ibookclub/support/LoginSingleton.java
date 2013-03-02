@@ -25,11 +25,12 @@ public class LoginSingleton {
 	
     private static LoginSingleton loginInstance = null;  
     
-    public static final String SERVER_URL ="http://192.168.1.103:8003/iBookClubServer/"; 
+  //  public static final String SERVER_URL ="http://192.168.126.50:8003/iBookClubServer/"; 
+    
+    public static final String SERVER_URL ="http://1.ibookclubserver.sinaapp.com/"; 
       
     
     public static HttpClient httpClient = null;  
-      
    
     public static String loginEmail = null;  
     private static String loginPassword = null;  
@@ -37,7 +38,6 @@ public class LoginSingleton {
 	public static String nickname;
     private static Boolean actionResult=false;
     
-  //  public Application application;
 
 
   
@@ -45,8 +45,6 @@ public class LoginSingleton {
         this.loginEmail = loginEmail;  
         this.loginPassword = loginPassword;  
         
-     
-          
         Login();
      
     }  
@@ -64,50 +62,24 @@ public class LoginSingleton {
     
 private static Boolean Login(){
 		
-	
 		String httpUrl=SERVER_URL+"LoginServlet";
 		
-		HttpPost httpRequest =new HttpPost(httpUrl);
 		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
         params.add(new BasicNameValuePair("email", loginEmail)); 
         params.add(new BasicNameValuePair("password", loginPassword)); 
-      
-		
+        
 		try{
-	
-			HttpClient httpclient=new DefaultHttpClient();
+			
+			HttpUtility httpUtility=new HttpUtility(httpUrl,params);
 
-			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
-			HttpResponse httpResponse=httpclient.execute(httpRequest);
-		
-			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
-				
-				
-				List<Cookie> cookies = ((AbstractHttpClient) httpclient).getCookieStore().getCookies();    
-				if (cookies.isEmpty()) {    
-				//	Log.i(TAG, "-------Cookie NONE---------");    
-				} 
-				else {                   
-			//		for (int i = 0; i < cookies.size(); i++ ){    
-				
-				//		Cookie cookie = cookies.get(i);    
-					//	Log.d(TAG, cookies.get(i).getName() "=" cookies.get(i).getValue() );    
-			//		}
-				}  
-
-				
-				String strResult=EntityUtils.toString(httpResponse.getEntity());
-				System.out.println("LoginSingleton:"+strResult);
-				JSONObject jsonObject = new JSONObject(strResult) ;
-				actionResult=jsonObject.getBoolean("ActionResult");
-				nickname=jsonObject.getString("nickname");
-				//System.out.println(actionResult+nickname);
-				
-				 
-				  
-			}
+			String strResult=httpUtility.doPost();
+			System.out.println("LoginSingleton:"+strResult);
+			JSONObject jsonObject = new JSONObject(strResult) ;
+			actionResult=jsonObject.getBoolean("ActionResult");
+			nickname=jsonObject.getString("nickname");	
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			return false;
 		}
 		return actionResult;
