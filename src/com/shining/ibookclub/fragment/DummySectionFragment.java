@@ -45,7 +45,9 @@ import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -117,6 +119,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_searchByIsbn;
 	
+	private Button button_buyBook;
+	
 	private ImageButton button_searchByName;
 	
 	private Button button_lend;
@@ -186,8 +190,8 @@ public  class DummySectionFragment extends Fragment {
 		    if(SEC_NUMBER_INTEGER==1){
 		    	
 		    	
-		    	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
-		    	getPublicBook.execute((Void)null);
+		    //	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
+		    //	getPublicBook.execute((Void)null);
 		    	
 		    	searchView=(SearchView)getActivity().findViewById(R.id.searchView);
 		    	
@@ -195,7 +199,7 @@ public  class DummySectionFragment extends Fragment {
 
 					@Override
 					public boolean onQueryTextChange(String arg0) {
-						// TODO Auto-generated method stub
+						
 						return false;
 					}
 
@@ -213,39 +217,23 @@ public  class DummySectionFragment extends Fragment {
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
-		    	webview_BookForBorrow.getSettings().setSupportZoom(false);
-		    	webview_BookForBorrow.getSettings().setJavaScriptCanOpenWindowsAutomatically(
-						true);
-		    	webview_BookForBorrow.getSettings().setJavaScriptEnabled(true);
-
-		    	webview_BookForBorrow.loadUrl("file:///android_asset/book_list_borrow.html");
+		    	button_buyBook=(Button)getActivity().findViewById(R.id.button_buybook);
 		    	
-		    	webview_BookForBorrow.addJavascriptInterface(new Object() {
-					public String getBookResult() {
-						return BookInfoDao.getInstance().list().toString();
-					}
+		    	button_buyBook.setOnClickListener(new OnClickListener(){
 
-			
-				
-
-					public void getDetail(final String isbn) {
+					
+					public void onClick(View v) {
 						
-						handler.post(new Runnable() {
-							@Override
-							public void run() {
-								Intent intent = new Intent();
-								intent.setClass(getActivity(),
-										BookDetailActivity.class);
-								intent.putExtra("ISBN", isbn);
-								startActivity(intent);
-							}
-						});
+						Intent intent=new Intent(getActivity(),BuyBookActivity.class);
+						startActivity(intent);
+						
 					}
 					
-				
 
-			
-				}, "bookShelfControl");
+		    		
+		    	});
+		    	
+		
 		    }
 		    else if(SEC_NUMBER_INTEGER==2){
 		    	
@@ -278,8 +266,6 @@ public  class DummySectionFragment extends Fragment {
 		        	 public void onClick(View view){
 		        		 if(edittext_isbn.getText()!=null){
 		        			 isbn=edittext_isbn.getText().toString();
-		        		//	  LoadBookInfo();  
-		        		//	  searchBookThread.start();  
 		        			   searchBookTask=new SearchBookTask();
 		        			   searchBookTask.execute((Void) null);
 		        			
@@ -372,38 +358,88 @@ public  class DummySectionFragment extends Fragment {
 		 Boolean result=false;
 		 String httpUrl=LoginSingleton.SERVER_URL+"SearchBookServlet";
 		 
-		if(LoginSingleton.isLoginSuccess()){
+		 if(LoginSingleton.isLoginSuccess()){
 		 
-		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-	    params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail)); 
-	    params.add(new BasicNameValuePair("keyword",keyword));
+			 List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+			 params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail)); 
+			 params.add(new BasicNameValuePair("keyword",keyword));
 			
-			try{
+			 try{
 				
 				HttpUtility httpUtility=new HttpUtility(httpUrl,params);
-		
 				String strResult=httpUtility.doPost();
-					
+						
 				System.out.println("SearchPublicBook:"+strResult);
 				Gson gson = new Gson();
 				bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-			}
+				result=true;
+			 }
 			catch(Exception e){
+				e.printStackTrace();
 				return false;
 			}
 		}
-			return result;
-			
-			
-		}
+		return result;
+	}
 		 
 	 
 	 
-	 protected void onPostExeute(final Boolean success){
+	 protected void onPostExecute(final Boolean success){
+	
+		BookInfoDao.getInstance().deleteAll();
+		
+		
 			
-	 }
-}
+			for(BookBean book:bookList){
+					
+				BookInfoDao.getInstance().create(book);
+			}
+			
+		    LoadSearchResult();
+		    
+		    webview_BookForBorrow.reload();
 	 
+		
+	}
+}
+	private void LoadSearchResult(){
+		
+		webview_BookForBorrow.getSettings().setSupportZoom(false);
+    	webview_BookForBorrow.getSettings().setJavaScriptCanOpenWindowsAutomatically(
+				true);
+    	webview_BookForBorrow.getSettings().setJavaScriptEnabled(true);
+
+    	webview_BookForBorrow.loadUrl("file:///android_asset/book_list_borrow.html");
+    	
+    	webview_BookForBorrow.addJavascriptInterface(new Object() {
+			public String getBookResult() {
+				return BookInfoDao.getInstance().list().toString();
+			}
+
+	
+		
+
+			public void getDetail(final String isbn) {
+				
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						Intent intent = new Intent();
+						intent.setClass(getActivity(),
+								BookDetailActivity.class);
+						intent.putExtra("ISBN", isbn);
+						startActivity(intent);
+					}
+				});
+			}
+			
+		
+
+	
+		}, "bookShelfControl");
+	}
+	 
+	/*
 	 
 	 public class GetPublicBookInfo extends AsyncTask<Void, Void, Boolean> {
 
@@ -444,7 +480,7 @@ public  class DummySectionFragment extends Fragment {
 				 LoadPublicBook();
 			}
 		}
-		
+		*/
 	 
 	 public class GetMyBookInfo  extends AsyncTask<Void, Void, Boolean> {
 
@@ -485,7 +521,13 @@ public  class DummySectionFragment extends Fragment {
 		
 		protected void onPostExecute(final Boolean success) {
 			
-			 LoadMyBook();
+			MyBookDao.getInstance().deleteAll();
+			
+			for(BookBean book:bookList){
+		
+				MyBookDao.getInstance().create(book);
+			}
+			
 		}
 		
 		 
@@ -499,15 +541,9 @@ public  class DummySectionFragment extends Fragment {
 			  return;
 	
 		if (requestCode == 0) {
-		
-		
-		
 	
-	   
 	   isbn=data.getStringExtra("SCAN_RESULT");
-	   
 	
-	   
 	   searchBookTask=new SearchBookTask();
 	   searchBookTask.execute((Void) null);
 	  
@@ -597,13 +633,6 @@ public  class DummySectionFragment extends Fragment {
 				});
 			}
 			
-		private void postBookToLibrary(){
-			
-		//	PostBookTask postBookTask=new PostBookTask();
-		//	postBookTask.execute((Void)null);
-			
-		}
-		
 		private void deleteBookFromLibray(){
 			
 			DeleteBookTask deleteBookTask =new DeleteBookTask();
@@ -657,84 +686,29 @@ public  class DummySectionFragment extends Fragment {
 		}
 		
 		
-		
-		
-		public void LoadPublicBook(){
-			
-			BookInfoDao.getInstance().deleteAll();
-			
-			for(BookBean book:bookList){
-				
-			
-				
-				BookInfoDao.getInstance().create(book);
-			}
-		}
-		
-		public void LoadMyBook(){
-			
-			//TODO 写入数据到本地缓存SQLITE并刷新
-			MyBookDao.getInstance().deleteAll();
-			
-			for(BookBean book:bookList){
-			
-			//	isbn=book_isbn;
-			//   searchBookTask=new SearchBookTask();
-			//   searchBookTask.execute((Void) null);
-				
-			 //  BookInfoDao.getInstance().create(book);
-				MyBookDao.getInstance().create(book);
-			}
-	    	
-		}
-		 
-		 private void checkNetworkInfo(){
-			  
-				ConnectivityManager conMan = (ConnectivityManager)getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
-				State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
-				State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-			 
-				if(mobile==State.CONNECTED||mobile==State.CONNECTING) return;
-				if(wifi==State.CONNECTED||wifi==State.CONNECTING) return;
-				
-				Toast.makeText(getActivity(), "无可用网络，请打开网络连接！", Toast.LENGTH_SHORT).show();  
-				
-				startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-			 
-			  }
+	
 		 
 		 
 		 private BookBean getResultByIsbn(){
 		
-				
-					
+	
 					try{	
 					
 					URL url = new URL(URL+isbn+"?apikey="+APIKey);      
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
 					conn.setConnectTimeout(5 * 1000);      
 					conn.setRequestMethod("GET");      
-				
-					
-					/////////////////////
+			
 					
 					InputStream inStream = conn.getInputStream(); 
-					
-					/////////////////////
-				
-					
-				//	dbook = getBookInfo(inStream);
+			
 					return getBookInfo(inStream);
 					}catch (Exception e) {  
 					e.printStackTrace();  
 					}  
-				
-					
-				//	return dbook;
+			
 					return null;
-					
-					
-					}
+		}
 		 
 		 
 		 
@@ -786,145 +760,6 @@ public  class DummySectionFragment extends Fragment {
 			 
 		 }
 		 
-		 /*
-			
-			public BookBean getBookInfo(InputStream inputStream) {
-				
-			//	BookInfo bookInfo1 = new BookInfo();
-				
-				Long t1=System.currentTimeMillis();
-			
-				
-				try{
-				
-				XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-				factory.setNamespaceAware(true);
-				XmlPullParser parser = factory.newPullParser();
-				parser.setInput(inputStream, "UTF-8");
-				
-				
-				
-				bookBean=new BookBean();
-				bookBean.setIsbn(isbn);
-				
-			
-				
-				
-					for (int i = parser.getEventType(); i != XmlPullParser.END_DOCUMENT; i = parser.next()) {
-					
-					if (i == XmlPullParser.START_TAG
-							&& parser.getName().equals("attribute")
-							&& parser.getAttributeValue(0).equals("title")) {
-						bookBean.setBookname(parser.nextText());
-					//	Log.v("SearchBook", "title>>" + bookInfo.getName());
-						continue;
-					}
-					if (i == XmlPullParser.START_TAG
-							&& parser.getName().equals("attribute")
-							&& parser.getAttributeValue(0).equals("author")) {
-						bookBean.setAuthor(parser.nextText());
-					//	Log.v("SearchBook", "author>>" + bookInfo.getAuthor());
-						continue;
-					}
-					if (i == XmlPullParser.START_TAG
-							&& parser.getName().equals("attribute")
-							&& parser.getAttributeValue(0).equals("publisher")) {
-						bookBean.setPublisher(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookBean.getPublisher());
-						continue;
-					}
-					if (i == XmlPullParser.START_TAG
-							&& parser.getName().equals("attribute")
-							&& parser.getAttributeValue(0).equals("price")) {
-						bookBean.setPrice(parser.nextText());
-						Log.v("SearchBook", "author>>" + bookBean.getPrice());
-						continue;
-					}
-					if (i == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-						if (parser.getAttributeValue(1).equals("image")) {
-							bookBean.setBookcover_url(parser.getAttributeValue(0));
-						//	Log.v("SearchBook", "image>>" + bookInfo.getImageUrl());
-						}
-						continue;
-					}
-					if (i == XmlPullParser.START_TAG
-							&& parser.getName().equals("summary")) {
-						bookBean.setSummary(parser.nextText());
-						//Log.v("SearchBook", "summary>>" + bookInfo.getSummary());
-						continue;
-					}
-					
-				}
-				Log.v("SearchBook", ">>>>> parse end.");
-				
-			//	if(bookInfo==null)
-				//	System.out.println("5678");
-				
-				
-			//	notify();
-				 
-			
-				
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-				
-				System.out.println(System.currentTimeMillis()-t1);
-
-				return bookBean;
-			}*/
-			
-			/*
-
-
-			public byte[] downImage(String imageUrl) {
-
-					try{
-					 URL url = new URL(imageUrl);      
-					 HttpURLConnection conn = (HttpURLConnection) url.openConnection();      
-					 conn.setConnectTimeout(5 * 1000);      
-					 conn.setRequestMethod("GET");      
-					 InputStream inStream = conn.getInputStream();      
-					 
-					 if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){      
-					        
-						 return readStream(inStream);      
-					 }      
-					 
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
-					    
-					 return null;      
-					}
-					
-					public static byte[] readStream(InputStream inStream) throws Exception{      
-					ByteArrayOutputStream outStream = new ByteArrayOutputStream();      
-					byte[] buffer = new byte[1024];      
-					int len = 0;      
-					while( (len=inStream.read(buffer)) != -1){      
-					    outStream.write(buffer, 0, len);      
-					}      
-					outStream.close();      
-					inStream.close();      
-					return outStream.toByteArray();      
-					}    
-					
-					public void saveFile(Bitmap bm, String fileName) throws IOException {   
-					File dirFile = new File(PATH_COVER);   
-					if(!dirFile.exists()){   
-					    dirFile.mkdir();   
-					}   
-					File captureFile = new File(PATH_COVER + fileName);   
-					BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(captureFile));   
-					bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);   
-					bos.flush();   
-					bos.close();   
-					}   
-	 
-	*/
-			
 			
 	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
 				

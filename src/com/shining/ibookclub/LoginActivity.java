@@ -31,10 +31,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo.State;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -197,6 +200,16 @@ public class LoginActivity extends Activity {
 					}
 				});
 		
+		findViewById(R.id.register_button).setOnClickListener(	
+				new View.OnClickListener() {
+					
+					public void onClick(View view) {
+						Intent intent=new Intent(getBaseContext(),RegisterActivity.class);
+						
+						startActivity(intent);
+					}
+				});
+		
 		if(mAutoLoginSp.getBoolean("AUTO_ISCHECK", true)){
 			
 			mEmailView.setText(mAutoLoginSp.getString("email",""));
@@ -253,7 +266,12 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		} else if(mEmail.length()==11 && !mEmail.startsWith("1")){
+			mEmailView.setError(getString(R.string.error_invalid_phonenumber));
+			focusView=mEmailView;
+			cancel=true;
+		}
+		else if (!mEmail.contains("@")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -264,10 +282,7 @@ public class LoginActivity extends Activity {
         }  
 		
 		if(mAutoLogin.isChecked()){
-    		//	mAuthTask.execute((Void) null);
-			
-		
-    			
+    	
     			mAutoLoginSp
     		    .edit()
     		    .putString("email", mEmail)
@@ -287,6 +302,7 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
+			checkNetworkInfo();
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -337,47 +353,7 @@ public class LoginActivity extends Activity {
 	
 	
 	
-	/*
 	
-	public static Boolean Register(String Email, String PassWord,
-            String NickName) {
-         
-        Boolean actionResult=false;   
-        String httpUrl=SERVER_URL+"RegisterServlet";
-     
-        HttpPost httpRequest =new HttpPost(httpUrl);
-    	List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-        params.add(new BasicNameValuePair("email", Email)); 
-        params.add(new BasicNameValuePair("password", PassWord)); 
-        params.add(new BasicNameValuePair("nickname",NickName));
-          
-        try
-        {
-       
-            HttpClient httpclient=new DefaultHttpClient();
-            
-    		httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 		
-            
-            HttpResponse  httpResponse=httpclient.execute(httpRequest);
-             
-            if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
-            {
-             
-                String strResult=EntityUtils.toString(httpResponse.getEntity());
-                 
-                JSONObject jsonObject = new JSONObject(strResult) ;
-         
-                actionResult=jsonObject.getBoolean("ActionResult");
-            }
-        }
-        catch(Exception e)
-        {
-            return false;
-             
-        }
-        return actionResult;
-    }
-    */
 	
 	private void savePassword() {//保存密码方法，数据放入SharedPreferences文件  
         /*  
@@ -427,6 +403,21 @@ public class LoginActivity extends Activity {
     	
     		
     }  
+	
+	private void checkNetworkInfo(){
+		  
+		ConnectivityManager conMan = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
+		State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+	 
+		if(mobile==State.CONNECTED||mobile==State.CONNECTING) return;
+		if(wifi==State.CONNECTED||wifi==State.CONNECTING) return;
+		
+		Toast.makeText(getBaseContext(), "无可用网络，请打开网络连接！", Toast.LENGTH_SHORT).show();  
+		
+		startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+	 
+	  }
 
 
 	/**
@@ -440,6 +431,8 @@ public class LoginActivity extends Activity {
 
 		//	Weibo weibo = new Weibo("XXX@sina.com","XXX");
 		//	weibo.setHttpConnectionTimeout(5000);
+			
+			
 			
 			try {
 				LoginSingleton.getInstance(mEmail, mPassword);

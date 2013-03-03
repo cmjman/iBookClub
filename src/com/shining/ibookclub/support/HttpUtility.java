@@ -47,7 +47,7 @@ public class HttpUtility {
 	
 				postRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8)); 	
 			
-			postRequest.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5" );
+		//	postRequest.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5" );
 
 			
 			

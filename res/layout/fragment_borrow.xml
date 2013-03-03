@@ -12,7 +12,7 @@
         android:queryHint="请在此输入需要借的书名"
         ></SearchView>
     
-
+	
 
      <WebView
    	     android:id="@+id/webview_BookForBorrow"
@@ -20,7 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
   
-
+	<Button
+	    android:id="@+id/button_buybook"
+	    android:text="找不到需要的书？点此购买新书"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    />
+	
     
     
     

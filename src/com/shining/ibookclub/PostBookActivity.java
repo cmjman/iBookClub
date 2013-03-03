@@ -95,7 +95,6 @@ public class PostBookActivity extends Activity {
 	            
 			        
 			         Geocoder gc=new Geocoder(getBaseContext(),Locale.getDefault());  
-			         
 			         locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
 			         
 			         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -114,10 +113,6 @@ public class PostBookActivity extends Activity {
 			         
 			         latitude=location.getLatitude();
 			         longitude=location.getLongitude();
-			       
-			         
-			         
-			         System.out.println(latitude + " " +longitude);
 			         
 			         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15)); 
 		                
@@ -207,7 +202,6 @@ public class PostBookActivity extends Activity {
 		
 		protected void onPostExecute(final Boolean success) {
 			
-		//	 LoadMyBook();
 			
 			Toast.makeText(getApplicationContext(), "发布成功！", Toast.LENGTH_SHORT).show();
 			

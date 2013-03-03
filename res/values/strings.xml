@@ -19,5 +19,8 @@
     <string name="title_activity_borrow_book">借阅信息</string>
     <string name="title_activity_post_book">PostBookActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_buy_book">BuyBookActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
 
 </resources>
