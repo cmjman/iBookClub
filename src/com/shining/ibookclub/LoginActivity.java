@@ -266,13 +266,12 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if(mEmail.length()==11 && !mEmail.startsWith("1")){
-			mEmailView.setError(getString(R.string.error_invalid_phonenumber));
-			focusView=mEmailView;
-			cancel=true;
+		} else if(mEmail.length()==11 && mEmail.startsWith("1")||mEmail.contains("@")){
+			
+			
 		}
-		else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
+		else{
+			mEmailView.setError(getString(R.string.error_invalid_username));
 			focusView = mEmailView;
 			cancel = true;
 		}
@@ -467,11 +466,6 @@ public class LoginActivity extends Activity {
 				}
 			}
 			
-			
-			
-			
-		
-		//	Register(mEmail,mPassword,mEmail);
 			
 			return false;
 		}

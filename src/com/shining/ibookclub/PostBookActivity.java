@@ -151,6 +151,8 @@ public class PostBookActivity extends Activity {
 		  data.add("作者："+bean.getAuthor());
 		  
 		  data.add("出版社："+bean.getPublisher());
+		  
+		  data.add("简介："+bean.getSummary());
 		       
 		       
 		  return data;

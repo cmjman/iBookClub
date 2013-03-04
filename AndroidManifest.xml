@@ -26,6 +26,7 @@
         android:targetSdkVersion="16" />
 
     <application
+        android:windowSoftInputMode="adjustUnspecified|stateHidden" 
         android:name="com.shining.ibookclub.iBookClub"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -37,13 +38,14 @@
             android:value="AIzaSyCSTmvX7_IGXH2iGm02BVE6NES1Qp7gp78" />
 
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name="com.shining.ibookclub.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.shining.ibookclub.LoginActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

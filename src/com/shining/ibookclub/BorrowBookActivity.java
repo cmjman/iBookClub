@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,13 +20,20 @@ import com.shining.ibookclub.support.LoginSingleton;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class BorrowBookActivity extends Activity {
 	
@@ -39,6 +47,8 @@ public class BorrowBookActivity extends Activity {
 	
 	
 	private ArrayAdapter<String> listItemAdapter;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +75,62 @@ public class BorrowBookActivity extends Activity {
 		
 	}
 	
+	public class RecordBorrowTask extends  AsyncTask<String, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(String... nickname) {
+			
+			Boolean actionResult=false;
+			
+			String httpUrl=LoginSingleton.SERVER_URL+"RecordBookServlet";
+			
+			if(LoginSingleton.isLoginSuccess()){
+				
+				HttpPost httpRequest =new HttpPost(httpUrl);
+				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+		        params.add(new BasicNameValuePair("isbn", isbn)); 
+		        params.add(new BasicNameValuePair("nickname",nickname[0]));
+		  
+				try{
+					
+					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+			
+					String strResult=httpUtility.doPost();
+				
+		            JSONObject jsonObject = new JSONObject(strResult) ;
+		         
+		            actionResult=jsonObject.getBoolean("ActionResult");
+				
+					
+			
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+			}
+		
+			
+			
+			return actionResult;
+		}
+		
+		 protected void onPostExecute(final Boolean success){
+			 
+			 if(success){
+				 Toast.makeText(getBaseContext(), "借阅成功！", Toast.LENGTH_SHORT).show();
+				 BorrowBookActivity.this.finish();
+			 }else{
+				 Toast.makeText(getBaseContext(), "借阅失败！", Toast.LENGTH_SHORT).show();
+			 }
+			 
+		 }
+	}
+	
 	public class BorrowBookTask extends AsyncTask<Void, Void, Boolean> {
 		
-	
-		String[] owner_nickname={
-				 "123",
-				 "321"
-		 };
-		
+		private String[] owner_nickname=new String[10];
+
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
@@ -98,17 +156,14 @@ public class BorrowBookActivity extends Activity {
 					ownerTable = gson.fromJson(strResult, new TypeToken<Hashtable<Integer,String>>(){}.getType());
 					Iterator it=ownerTable.keySet().iterator();
 					
-					
 					for(int i=0;it.hasNext();i++){
-						
-						
-						
-				//		owner_nickname[i]=new String();
+			
+						owner_nickname[i]=new String();
 						
 					
-				//		owner_nickname[i]=ownerTable.get(it.next());
+						owner_nickname[i]=ownerTable.get(it.next());
 					
-						
+						System.out.println(owner_nickname[i]);
 						
 					}
 					
@@ -123,14 +178,47 @@ public class BorrowBookActivity extends Activity {
 			
 		}
 		
-		 protected void onPostExeute(final Boolean success){
+		 protected void onPostExecute(final Boolean success){
 				
 			
-			// owner_nickname;
-			
+			if(success){
 			 
 			 listItemAdapter = new ArrayAdapter<String>(BorrowBookActivity.this,android.R.layout.simple_list_item_1,owner_nickname);
 			 listOwner.setAdapter(listItemAdapter);
+			 listOwner.setOnItemClickListener(new OnItemClickListener() {
+		            
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						final int position, long arg3) {
+						
+					new AlertDialog.Builder(getBaseContext())
+						.setIcon(R.drawable.ic_launcher)
+						.setTitle("确定借阅")
+						.setPositiveButton("确定", new OnClickListener(){
+
+						
+							public void onClick(DialogInterface arg0, int arg1) {
+								
+								RecordBorrowTask recordTask=new RecordBorrowTask();
+								
+								recordTask.execute(owner_nickname[position]);
+								
+							}
+							
+						})
+						.setNegativeButton("取消	", new OnClickListener(){
+
+						
+							public void onClick(DialogInterface arg0, int arg1) {
+								
+								
+							}
+							
+						}).create();
+				}
+				
+		      });
+			 
+			}
 		 }
 	}
 	

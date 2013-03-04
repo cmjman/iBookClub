@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 
@@ -43,6 +44,7 @@ import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.support.HttpUtility;
+import com.shining.ibookclub.support.KeywordsFlow;
 import com.shining.ibookclub.support.LoginSingleton;
 
 import android.app.AlertDialog;
@@ -110,7 +112,7 @@ public  class DummySectionFragment extends Fragment {
 	
 	private SearchView searchView;
 	
-	
+	private KeywordsFlow keywordsFlow; 
 	
 	
 	private Handler handler = new Handler();
@@ -133,7 +135,17 @@ public  class DummySectionFragment extends Fragment {
 	
 	private String keyword; 
 	
+	 public static final String[] keywords = { 
+		 "谁是谷歌想要的人才","看见","Java并发编程实战",
+		 "观念的水位","打造Facebook","知日·妖怪","白夜行",
+		 "逃离德黑兰","百年孤独","全世界人民都知道","青春",
+		 "我所理解的生活","浪潮之巅","黑客与画家","编程珠玑",
+		 "平凡的世界","追风筝的人","你好，旧时光","活着",
+		 "不能承受的生命之轻","云图","1Q84","动物农场"
+	 };  
 	
+	
+	 private Button btnIn, btnOut; 
 	
 	private static BookBean bookBean=new BookBean();
 	
@@ -214,8 +226,45 @@ public  class DummySectionFragment extends Fragment {
 					}
 		    	});
 		    	
+		    	 btnIn = (Button) getActivity().findViewById(R.id.button1);  
+		    	    btnOut = (Button)getActivity(). findViewById(R.id.button2);  
+		    	  
+		    	
+		    	  keywordsFlow = (KeywordsFlow)getActivity().findViewById(R.id.keyWordsFlow);  
+		    	   keywordsFlow.setDuration(800l);  
+		    	
+		    			   
+		    		OnClickListener listener =	 new OnClickListener(){
+		    			   
+		    			   public void onClick(View v) {  
+		    		    
+		    				   if (v == btnIn) {  
+			    		        keywordsFlow.rubKeywords(); 
+			    		        feedKeywordsFlow(keywordsFlow, keywords);  
+			    		        keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);  
+		    				   
+		    				   } else if (v == btnOut) {  
+		    		        
+		    					   keywordsFlow.rubKeywords();  
+		    					   feedKeywordsFlow(keywordsFlow, keywords);  
+		    					   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT);  
+		    				   } else if (v instanceof TextView) {  
+		    					   String keyword = ((TextView) v).getText().toString();  
+//		    		       
+		    				   }  
+		    			   }
+		    	   }; 
+		    	   
+		    	   btnIn.setOnClickListener(listener);  
+		    	    btnOut.setOnClickListener(listener);  
+		    	   
+		    	   feedKeywordsFlow(keywordsFlow, keywords);  
+		    	   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);  
+		    	
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
+		    	
+		    	webview_BookForBorrow.setVisibility(View.GONE);
 		    	
 		    	button_buyBook=(Button)getActivity().findViewById(R.id.button_buybook);
 		    	
@@ -340,7 +389,7 @@ public  class DummySectionFragment extends Fragment {
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
-		    		text_nickname.setText("Welcome!"+nickname);
+		    		text_nickname.setText(nickname);
 		    	}
 		    	
 		    }
@@ -348,6 +397,15 @@ public  class DummySectionFragment extends Fragment {
 	     
 	 
 	}
+	 
+	 private static void feedKeywordsFlow(KeywordsFlow keywordsFlow, String[] arr) {  
+		    Random random = new Random();  
+		    for (int i = 0; i < KeywordsFlow.MAX; i++) {  
+		        int ran = random.nextInt(arr.length);  
+		        String tmp = arr[ran];  
+		        keywordsFlow.feedKeyword(tmp);  
+		    }  
+		}  
 
 	 
 
@@ -404,6 +462,8 @@ public  class DummySectionFragment extends Fragment {
 }
 	private void LoadSearchResult(){
 		
+		webview_BookForBorrow.setVisibility(View.VISIBLE);
+		
 		webview_BookForBorrow.getSettings().setSupportZoom(false);
     	webview_BookForBorrow.getSettings().setJavaScriptCanOpenWindowsAutomatically(
 				true);
@@ -437,6 +497,8 @@ public  class DummySectionFragment extends Fragment {
 
 	
 		}, "bookShelfControl");
+    	
+    	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
 	}
 	 
 	/*
@@ -555,7 +617,7 @@ public  class DummySectionFragment extends Fragment {
 	 
 	public void LoadBookInfo(){
 		 
-	webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
+		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
 		
 		
 	
@@ -584,6 +646,10 @@ public  class DummySectionFragment extends Fragment {
 			
 		}, "bookDetail");
      	
+     	getActivity().findViewById(R.id.image).setVisibility(View.GONE);
+     	getActivity().findViewById(R.id.button1).setVisibility(View.GONE);
+     	getActivity().findViewById(R.id.button2).setVisibility(View.GONE);
+     	
 	   }
 		
 	//}
@@ -599,11 +665,6 @@ public  class DummySectionFragment extends Fragment {
 					@Override
 					public void onClick(View v) {
 				
-					
-							
-				//			postBookToLibrary();
-						
-				//			setHasLend();
 						
 						if(bookBean.getIsbn()!=null){
 						

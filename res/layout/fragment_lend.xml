@@ -35,7 +35,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 	
-   
+   	<ImageView
+   	    android:id="@+id/image"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:src="@drawable/read"
+   	    />
  
  
 </LinearLayout>

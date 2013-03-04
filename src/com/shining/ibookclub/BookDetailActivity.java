@@ -142,11 +142,7 @@ public class BookDetailActivity extends Activity {
 		
 		
 		bookBean=dao.getInstance().get(isbn);
-		
-	//	System.out.println(bookBean.getBookcover_url());
-		
 	
-		
 		
 		webview_BookDetail.loadUrl("file:///android_asset/book_detail.html");
 		
