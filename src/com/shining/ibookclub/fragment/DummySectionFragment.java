@@ -125,6 +125,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	private ImageButton button_searchByName;
 	
+	private ImageButton button_findNearbyBook;
+	
 	private Button button_lend;
 	
 	private EditText edittext_isbn;
@@ -226,6 +228,17 @@ public  class DummySectionFragment extends Fragment {
 					}
 		    	});
 		    	
+		      	button_findNearbyBook=(ImageButton)getActivity().findViewById(R.id.button_findNearbyBook);
+		    	
+		    	button_findNearbyBook.setOnClickListener(new OnClickListener(){
+
+					public void onClick(View v) {
+					
+						Intent intent=new Intent(getActivity(),FindNearbyBookActivity.class);
+						startActivity(intent);
+					}
+		    	});
+		    	
 		    	 btnIn = (Button) getActivity().findViewById(R.id.button1);  
 		    	    btnOut = (Button)getActivity(). findViewById(R.id.button2);  
 		    	  
@@ -233,6 +246,7 @@ public  class DummySectionFragment extends Fragment {
 		    	  keywordsFlow = (KeywordsFlow)getActivity().findViewById(R.id.keyWordsFlow);  
 		    	   keywordsFlow.setDuration(800l);  
 		    	
+		    	   
 		    			   
 		    		OnClickListener listener =	 new OnClickListener(){
 		    			   
@@ -249,8 +263,7 @@ public  class DummySectionFragment extends Fragment {
 		    					   feedKeywordsFlow(keywordsFlow, keywords);  
 		    					   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT);  
 		    				   } else if (v instanceof TextView) {  
-		    					   String keyword = ((TextView) v).getText().toString();  
-//		    		       
+		    					   String keyword = ((TextView) v).getText().toString();  	    		       
 		    				   }  
 		    			   }
 		    	   }; 
@@ -300,6 +313,7 @@ public  class DummySectionFragment extends Fragment {
 		        	 
 		        	 public void onClick(View view){
 		        		 
+		        		 //条形码扫描入口，Intent指向ZXING解析核心库，点击扫描按钮后，可跳转到摄像头解析界面
 		        		 Intent intent = new Intent("com.shining.iBookClub.library.com.google.zxing.client.android.SCAN");
 		        	     intent.putExtra("SCAN_MODE", "ONE_D_MODE");
 		        	     startActivityForResult(intent, 0);
@@ -596,23 +610,18 @@ public  class DummySectionFragment extends Fragment {
 		 
 	 }
 
-	 
+	 //处理解析得到的返回值，即相应的ISBN编号
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 	
 		  if (null == data) 
 			  return;
 	
-		if (requestCode == 0) {
+		  if (requestCode == 0) {
 	
-	   isbn=data.getStringExtra("SCAN_RESULT");
-	
-	   searchBookTask=new SearchBookTask();
-	   searchBookTask.execute((Void) null);
-	  
-	   
-	
-	   
-	 }
+			   isbn=data.getStringExtra("SCAN_RESULT");
+			   searchBookTask=new SearchBookTask();
+			   searchBookTask.execute((Void) null);
+		  }
 	 }
 	 
 	public void LoadBookInfo(){
@@ -824,11 +833,9 @@ public  class DummySectionFragment extends Fragment {
 			
 	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
 				
-				
 		protected Boolean doInBackground(Void... arg0) {
 		
 			 	bookBean=  getResultByIsbn();
-			 
 			 
 				Boolean result=false;
 				String httpUrl=LoginSingleton.SERVER_URL+"CheckBookServlet";
@@ -890,7 +897,7 @@ public  class DummySectionFragment extends Fragment {
 	        	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
-		    		text_nickname.setText("Welcome!"+nickname);
+		    		text_nickname.setText(nickname);
 		    	}
 	        }
 	    }  

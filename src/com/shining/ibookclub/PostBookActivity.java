@@ -42,12 +42,8 @@ import android.widget.Toast;
 public class PostBookActivity extends Activity {
 	
 	private BookBean bookBean;
-	
 
-	
 	private GoogleMap gmap;
-	
-	
 	
 	private LocationManager locationManager;
 	
@@ -90,37 +86,29 @@ public class PostBookActivity extends Activity {
 		
 			public void onClick(View arg0) {
 				
-				
-				
-	            
-			        
+					
 			         Geocoder gc=new Geocoder(getBaseContext(),Locale.getDefault());  
 			         locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
-			         
+			          
 			         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			        	 provider=LocationManager.GPS_PROVIDER;
 			         else if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 			        	 provider=LocationManager.NETWORK_PROVIDER;
 			         else
-			        	 Toast.makeText(getBaseContext(), "No Provider!Please open network or gps", Toast.LENGTH_SHORT).show();
-			         
+			        	 Toast.makeText(getBaseContext(), "没有可用的位置数据，请打开GPS或者连接网络！", Toast.LENGTH_SHORT).show();
+			      
 			         Location location=locationManager.getLastKnownLocation(provider); 
-			         
+			   
 			         if(location == null){ 
 			             locationManager.requestLocationUpdates(provider, 0, 0, locationListener );
 			             location =locationManager.getLastKnownLocation(provider);
-			        } 
+			         } 
 			         
-			         latitude=location.getLatitude();
-			         longitude=location.getLongitude();
-			         
-			         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15)); 
-		                
+			         latitude=location.getLatitude();//纬度
+			         longitude=location.getLongitude();//经度
+			      
+			         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));  
 					 gmap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Marker")); 
-					 
-					 
-					
-
 			}
 			
 		
