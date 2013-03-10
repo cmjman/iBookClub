@@ -36,28 +36,7 @@
 	        android:layout_weight="1"
 	         >
 	</com.shining.ibookclub.support.KeywordsFlow>
-	
-	  <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:layout_alignParentBottom="true">
-            
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="In" 
-            android:layout_weight="1"/>
-        
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Out" 
-            android:layout_weight="1"/>
-        </LinearLayout>
-    
+
 	<Button
 	    android:id="@+id/button_buybook"
 	    android:text="找不到需要的书？点此购买新书"

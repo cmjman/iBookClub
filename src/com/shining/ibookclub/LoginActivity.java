@@ -347,19 +347,9 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	private void savePassword() {//保存密码方法，数据放入SharedPreferences文件  
-        /*  
-         * 参数简述：  
-         * Name—获得SharedPreferences之后，将会在应用程序的私有文件夹中保存着一个XML文件，第一个参数name就是这个文件名字  
-         * 。 Mode—XML文件的保存模式，默认为0，也就是MODE_PRIVATE  
-         */ 
+
+	private void savePassword() {
+ 
         mPasswordSp = this.getSharedPreferences("passwordFile", MODE_PRIVATE);  
         mRemPwd.setChecked(true);// 默认为记住密码  
         mEmailView.setThreshold(1);// 输入1个字母就开始自动提示  
@@ -385,13 +375,13 @@ public class LoginActivity extends Activity {
             @Override 
             public void beforeTextChanged(CharSequence s, int start, int count,  
                     int after) {  
-                // TODO Auto-generated method stub  
+                
  
             }  
  
             @Override 
             public void afterTextChanged(Editable s) {  
-                // TODO Auto-generated method stub  
+          
                 // 自动输入密码  
             	mPasswordView.setText(mPasswordSp.getString(mEmailView.getText().toString(),  
                         ""));  

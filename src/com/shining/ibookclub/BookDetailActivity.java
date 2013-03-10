@@ -57,9 +57,9 @@ public class BookDetailActivity extends Activity {
 	
 	private BookBean bookBean;
 	
-//	private MyBookDao myBookdao;
+	private MyBookDao mydao;
 	
-	private BookInfoDao dao;
+	private BookInfoDao bookdao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,12 +137,13 @@ public class BookDetailActivity extends Activity {
 			//	mDelayHideTouchListener);
 		findViewById(R.id.dummy_button).setOnClickListener(mBorrowBookClickListener);
 		
-	//	MyBookDao.initMyBookDao(this);
+		MyBookDao.initMyBookDao(this);
 		BookInfoDao.initBookInfoDao(this);
 		
 		
-		bookBean=dao.getInstance().get(isbn);
-	
+		bookBean=bookdao.getInstance().get(isbn);
+		if(bookBean==null)
+			bookBean=mydao.getInstance().get(isbn);
 		
 		webview_BookDetail.loadUrl("file:///android_asset/book_detail.html");
 		

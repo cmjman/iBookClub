@@ -1,12 +1,8 @@
 package com.shining.ibookclub.fragment;
 
 
-import java.io.BufferedOutputStream;
+
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -17,25 +13,12 @@ import java.util.Random;
 
 
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
+import org.apache.http.NameValuePair;
+
+import org.apache.http.message.BasicNameValuePair;
+
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,38 +30,27 @@ import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.KeywordsFlow;
 import com.shining.ibookclub.support.LoginSingleton;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo.State;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
+
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.StrictMode;
-import android.provider.Settings;
+
 import android.support.v4.app.Fragment;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
+
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -123,7 +95,7 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_buyBook;
 	
-	private ImageButton button_searchByName;
+	private Button button_editInfo;
 	
 	private ImageButton button_findNearbyBook;
 	
@@ -131,7 +103,6 @@ public  class DummySectionFragment extends Fragment {
 	
 	private EditText edittext_isbn;
 	
-	private EditText edittext_name;
 	
 	private String isbn;
 	
@@ -160,6 +131,8 @@ public  class DummySectionFragment extends Fragment {
 	private static String nickname;
 	
 	
+	
+	
 	ArrayList<BookBean> bookList=new ArrayList<BookBean>();
 	
 //	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
@@ -174,11 +147,15 @@ public  class DummySectionFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// Create a new TextView and set its text to the fragment's section
 		// number argument value.
+		
+		
+		
 		SEC_NUMBER_INTEGER=getArguments().getInt(ARG_SECTION_NUMBER);
 		TextView textView = new TextView(getActivity());
 		textView.setGravity(Gravity.CENTER);
 		textView.setText(Integer.toString(getArguments().getInt(
 				ARG_SECTION_NUMBER)));
+		textView.setTypeface(iBookClub.typeFace);
 	
 		if(SEC_NUMBER_INTEGER==1){
 			
@@ -191,8 +168,6 @@ public  class DummySectionFragment extends Fragment {
 		else if(SEC_NUMBER_INTEGER==3){
 			return inflater.inflate(R.layout.fragment_info, container,false);
 		}
-		
-	//	if()
 		
 		return textView;
 	}
@@ -239,45 +214,26 @@ public  class DummySectionFragment extends Fragment {
 					}
 		    	});
 		    	
-		    	 btnIn = (Button) getActivity().findViewById(R.id.button1);  
-		    	    btnOut = (Button)getActivity(). findViewById(R.id.button2);  
-		    	  
+		    	
 		    	
 		    	  keywordsFlow = (KeywordsFlow)getActivity().findViewById(R.id.keyWordsFlow);  
-		    	   keywordsFlow.setDuration(800l);  
-		    	
-		    	   
-		    			   
-		    		OnClickListener listener =	 new OnClickListener(){
-		    			   
-		    			   public void onClick(View v) {  
-		    		    
-		    				   if (v == btnIn) {  
-			    		        keywordsFlow.rubKeywords(); 
-			    		        feedKeywordsFlow(keywordsFlow, keywords);  
-			    		        keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);  
-		    				   
-		    				   } else if (v == btnOut) {  
-		    		        
-		    					   keywordsFlow.rubKeywords();  
-		    					   feedKeywordsFlow(keywordsFlow, keywords);  
-		    					   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT);  
-		    				   } else if (v instanceof TextView) {  
-		    					   String keyword = ((TextView) v).getText().toString();  	    		       
-		    				   }  
-		    			   }
-		    	   }; 
-		    	   
-		    	   btnIn.setOnClickListener(listener);  
-		    	    btnOut.setOnClickListener(listener);  
-		    	   
-		    	   feedKeywordsFlow(keywordsFlow, keywords);  
-		    	   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);  
+		    	  keywordsFlow.setDuration(800l);  
+		    
+		    	   keywordsFlow.rubKeywords(); 
+	    		   feedKeywordsFlow(keywordsFlow, keywords);  
+		    	  
+		    	   if(Math.random()>0.5){
+		    		   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);
+		    	   }
+		    	   else{
+		    		   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT); 
+		    	   }
 		    	
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
 		    	webview_BookForBorrow.setVisibility(View.GONE);
+		    	
 		    	
 		    	button_buyBook=(Button)getActivity().findViewById(R.id.button_buybook);
 		    	
@@ -290,10 +246,9 @@ public  class DummySectionFragment extends Fragment {
 						startActivity(intent);
 						
 					}
-					
-
-		    		
 		    	});
+		    	
+		    	button_buyBook.setTypeface(iBookClub.typeFace);
 		    	
 		
 		    }
@@ -319,8 +274,10 @@ public  class DummySectionFragment extends Fragment {
 		        	     startActivityForResult(intent, 0);
 		        	 }
 		         });
+		         button_scan.setTypeface(iBookClub.typeFace);
 		         
 		         edittext_isbn=(EditText)getActivity().findViewById(R.id.edittext_isbn);
+		         edittext_isbn.setTypeface(iBookClub.typeFace);
 		         
 		         button_searchByIsbn=(Button)getActivity().findViewById(R.id.button_searchByIsbn);
 		         
@@ -337,7 +294,10 @@ public  class DummySectionFragment extends Fragment {
 		        	 }
 		         });
 		         
+		         button_searchByIsbn.setTypeface(iBookClub.typeFace);
+		         
 		         button_lend=(Button)getActivity().findViewById(R.id.button_lend);
+		         button_lend.setTypeface(iBookClub.typeFace);
 		         setLend();
 		         
 		         
@@ -355,6 +315,7 @@ public  class DummySectionFragment extends Fragment {
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
+		    	text_nickname.setTypeface(iBookClub.typeFace);
 		    	
 		    	webview_MyBook=(WebView)getActivity().findViewById(R.id.webview_MyBook);
 		    	
@@ -390,21 +351,17 @@ public  class DummySectionFragment extends Fragment {
 							}
 						});
 					}
-					
-				
-
 			
 				}, "mybook");
-		    
-		    	
-		    	
-		    
-		    	 
+		
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
 		    		text_nickname.setText(nickname);
 		    	}
+		    	
+		    	button_editInfo=(Button)getActivity().findViewById(R.id.button_editInfo);
+		    	button_editInfo.setTypeface(iBookClub.typeFace);
 		    	
 		    }
 		   
@@ -515,56 +472,11 @@ public  class DummySectionFragment extends Fragment {
     	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
 	}
 	 
-	/*
-	 
-	 public class GetPublicBookInfo extends AsyncTask<Void, Void, Boolean> {
-
-			
-			protected Boolean doInBackground(Void... arg0) {
-				
-			//	Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
-				
-				try{
-					
-					HttpUtility httpUtility=new HttpUtility(httpUrl,null);
-				
-		
-						
-						String strResult=httpUtility.doPost();
-			
-						Gson gson = new Gson();
-						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-						
-						System.out.println("GetPublicBookInfo"+strResult);
-						
-					//	result=true;
-					
-				}
-				catch(Exception e){
-				//	return false;
-					e.printStackTrace();
-				}
-				return true;
-				
-			}
-			
-			protected void onPostExecute(final Boolean success) {
-				
-				 System.out.println("GetPublicBookInfo onPostExeute");
-				
-				 LoadPublicBook();
-			}
-		}
-		*/
-	 
 	 public class GetMyBookInfo  extends AsyncTask<Void, Void, Boolean> {
 
 	
 		protected Boolean doInBackground(Void... arg0) {
-			
-			
-		//	Boolean result=false;
+	
 			String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
 			
 			if(LoginSingleton.isLoginSuccess()){
@@ -587,12 +499,9 @@ public  class DummySectionFragment extends Fragment {
 				catch(Exception e){
 					return false;
 				}
-		//		return result;
+	
 			}
-			
 			return true;
-			
-		
 		}
 		
 		protected void onPostExecute(final Boolean success) {
@@ -605,9 +514,6 @@ public  class DummySectionFragment extends Fragment {
 			}
 			
 		}
-		
-		 
-		 
 	 }
 
 	 //处理解析得到的返回值，即相应的ISBN编号
@@ -627,12 +533,8 @@ public  class DummySectionFragment extends Fragment {
 	public void LoadBookInfo(){
 		 
 		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
-		
-		
 	
      	webview_BookInfo.addJavascriptInterface(new Object() {
-     		
-     		
      		
      		
 			public String getBookName() {
@@ -656,18 +558,9 @@ public  class DummySectionFragment extends Fragment {
 		}, "bookDetail");
      	
      	getActivity().findViewById(R.id.image).setVisibility(View.GONE);
-     	getActivity().findViewById(R.id.button1).setVisibility(View.GONE);
-     	getActivity().findViewById(R.id.button2).setVisibility(View.GONE);
      	
 	   }
 		
-	//}
-     	
-	
-	 
-
-	 
-	 
 		 private void setLend(){
 				button_lend.setText("发布到图书馆");
 				button_lend.setOnClickListener(new OnClickListener() {
@@ -719,7 +612,6 @@ public  class DummySectionFragment extends Fragment {
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
-					HttpPost httpRequest =new HttpPost(httpUrl);
 					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
 			        params.add(new BasicNameValuePair("isbn",isbn));
@@ -842,7 +734,6 @@ public  class DummySectionFragment extends Fragment {
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
-					HttpPost httpRequest =new HttpPost(httpUrl);
 					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
 			        params.add(new BasicNameValuePair("isbn",isbn));

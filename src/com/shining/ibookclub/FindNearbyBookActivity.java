@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -45,9 +46,7 @@ import android.widget.Toast;
 
 public class FindNearbyBookActivity extends Activity {
 	
-	private static final double EARTH_RADIUS = 6378100.0;
-	    
-	private int offset;
+
 	
 	private GoogleMap gmap;
 	
@@ -68,27 +67,70 @@ public class FindNearbyBookActivity extends Activity {
 		
 		 gmap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragment_map)).getMap(); 
 		 
-		 locationListener=new MyLocationListener();
+		 locationListener=new LocationListener(){
+			 
+			 public void onLocationChanged(Location location) {
+			        longitude = location.getLongitude();
+			        latitude = location.getLatitude();
+			    }
+
+		
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+		 };
 		
 		 Geocoder gc=new Geocoder(getBaseContext(),Locale.getDefault());  
 	     locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+	     
+	     
 	          
-	     if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+	     if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
         	 provider=LocationManager.GPS_PROVIDER;
+	     }
          else if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
         	 provider=LocationManager.NETWORK_PROVIDER;
          else
         	 Toast.makeText(getBaseContext(), "没有可用的位置数据，请打开GPS或者连接网络！", Toast.LENGTH_SHORT).show();
-      
+	    
+        	 
+	     /*
+	        Criteria criteria = new Criteria();
+	        criteria.setAccuracy(Criteria.ACCURACY_FINE); 
+	        criteria.setAltitudeRequired(false);
+	        criteria.setBearingRequired(false);
+	        criteria.setCostAllowed(true);
+	        criteria.setPowerRequirement(Criteria.POWER_LOW);
+	        provider = locationManager.getBestProvider(criteria, true);
+      */
          Location location=locationManager.getLastKnownLocation(provider); 
-   
-         if(location == null){ 
-             locationManager.requestLocationUpdates(provider, 0, 0, locationListener );
-             location =locationManager.getLastKnownLocation(provider);
-         } 
          
-         latitude=location.getLatitude();//纬度
-         longitude=location.getLongitude();//经度
+         locationManager.requestLocationUpdates(provider, 10000, 10, locationListener );
+         location =locationManager.getLastKnownLocation(provider);
+   
+         if(location != null){ 
+            
+        	 latitude=location.getLatitude();//纬度
+             longitude=location.getLongitude();//经度
+         }else{
+        	 locationManager.requestLocationUpdates(provider, 10000, 10, locationListener );
+         }
+         
+        
       
          gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 15));  
 	
@@ -170,7 +212,7 @@ public class FindNearbyBookActivity extends Activity {
 	private class MyLocationListener implements LocationListener{
 
 		@Override
-		public void onLocationChanged(Location location) {
+		public void onLocationChanged(final Location location) {
 			
 			
 			 latitude = location.getLatitude();
@@ -191,15 +233,28 @@ public class FindNearbyBookActivity extends Activity {
 
 		@Override
 		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-			// TODO Auto-generated method stub
+			 locationManager.requestLocationUpdates(provider, 10000, 10, locationListener );
 			
 		}
 		
 	}
 
+	public  void onPause(){
+		
+		super.onPause();
+		if(locationManager!=null)
+			locationManager.removeUpdates(locationListener);
+	}
+	
+	public void onResume(){
+		
+		super.onResume();
+		locationManager.requestLocationUpdates(provider, 10000, 10, locationListener);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+
 		getMenuInflater().inflate(R.menu.find_nearby_book, menu);
 		return true;
 	}
