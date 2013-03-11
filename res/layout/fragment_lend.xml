@@ -1,46 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-   <Button 
-       android:id="@+id/button_scan"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:text="点此启动扫描"
-       />
-   <EditText
-       android:id="@+id/edittext_isbn"
-       android:layout_width="match_parent"
-   	   android:layout_height="wrap_content"
-       android:hint="请在此输入ISBN编号"
-       android:textSize="24sp"
-       />
-   <Button 
-       android:id="@+id/button_searchByIsbn"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:text="点此根据ISBN号搜索书目"
-       />
-  
-   <Button 
-       android:id="@+id/button_lend"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       />
-     <WebView
-   	     android:id="@+id/webview_BookInfo"
+    
+      <Button 
+        android:id="@+id/button_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
-	
-   	<ImageView
-   	    android:id="@+id/image"
-   	    android:layout_width="match_parent"
-   	    android:layout_height="wrap_content"
-   	    android:src="@drawable/read"
-   	    />
+        android:layout_alignParentBottom="true"
+        android:text="点此发布闲置书"
+        />
+    
+    <com.shining.ibookclub.support.PullToRefreshListView
+        android:id="@+id/pullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button_post"
+         />
+    
+  
+
  
  
-</LinearLayout>
+ 
+</RelativeLayout>

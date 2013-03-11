@@ -3,11 +3,14 @@ package com.shining.ibookclub.fragment;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +23,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import org.json.JSONObject;
 
+
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.*;
@@ -27,11 +32,19 @@ import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.support.HttpUtility;
+import com.shining.ibookclub.support.ImageLoaderTask;
 import com.shining.ibookclub.support.KeywordsFlow;
+import com.shining.ibookclub.support.LazyAdapter;
+import com.shining.ibookclub.support.LazyScrollView;
+import com.shining.ibookclub.support.LazyScrollView.OnScrollListener;
 import com.shining.ibookclub.support.LoginSingleton;
+import com.shining.ibookclub.support.PullToRefreshListView;
+import com.shining.ibookclub.support.PullToRefreshListView.OnRefreshListener;
+import com.shining.ibookclub.support.TaskParam;
 
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,16 +53,22 @@ import android.os.Handler;
 
 import android.support.v4.app.Fragment;
 
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import android.widget.ImageButton;
 import android.widget.SearchView;
@@ -72,13 +91,13 @@ public  class DummySectionFragment extends Fragment {
 	
 	private int SEC_NUMBER_INTEGER;
 	
-	private SearchBookTask searchBookTask;
+
 	
 	private WebView webview_BookForBorrow;
 	
-	private WebView webview_BookInfo;
 	
-	private WebView webview_MyBook;
+	private Handler handler = new Handler();
+	
 	
 	private TextView text_nickname;
 	
@@ -86,25 +105,24 @@ public  class DummySectionFragment extends Fragment {
 	
 	private KeywordsFlow keywordsFlow; 
 	
+	private PullToRefreshListView pullToRefreshView;
 	
-	private Handler handler = new Handler();
 	
-	private Button button_scan;
+
 	
-	private Button button_searchByIsbn;
+	private Button button_post;
+	
+	private Button button_myborrow;
 	
 	private Button button_buyBook;
 	
-	private Button button_editInfo;
+
 	
 	private ImageButton button_findNearbyBook;
 	
-	private Button button_lend;
+
 	
-	private EditText edittext_isbn;
-	
-	
-	private String isbn;
+//	private String isbn;
 	
 	private String keyword; 
 	
@@ -117,16 +135,7 @@ public  class DummySectionFragment extends Fragment {
 		 "不能承受的生命之轻","云图","1Q84","动物农场"
 	 };  
 	
-	
-	 private Button btnIn, btnOut; 
-	
-	private static BookBean bookBean=new BookBean();
-	
-	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
-	
-//	private static String URL = "http://api.douban.com/book/subject/isbn/";
-	
-	private static String URL = "https://api.douban.com/v2/book/isbn/";
+	  private LinkedList<String> mListItems;
 	
 	private static String nickname;
 	
@@ -135,7 +144,23 @@ public  class DummySectionFragment extends Fragment {
 	
 	ArrayList<BookBean> bookList=new ArrayList<BookBean>();
 	
-//	private static String PATH_COVER = Environment.getExternalStorageDirectory() + "/iBookClubData/";   
+
+	
+	
+	private LazyScrollView waterfall_scroll;
+	private LinearLayout waterfall_container;
+	private ArrayList<LinearLayout> waterfall_items;
+	private Display display;
+	private AssetManager assetManager;
+	private List<String> image_filenames;
+	private final String image_path = "images";
+
+	private int itemWidth;
+
+	private int column_count = 3;// 显示列数
+	private int page_count = 15;// 每次加载15张图片
+
+	private int current_page = 0;
 	
 
 	public DummySectionFragment() {
@@ -254,120 +279,299 @@ public  class DummySectionFragment extends Fragment {
 		    }
 		    else if(SEC_NUMBER_INTEGER==2){
 		    	
-		    	/*
+		    
+		    	button_post=(Button)getActivity().findViewById(R.id.button_post);
 		    	
-		    	if (android.os.Build.VERSION.SDK_INT >= 9) {
-		    	      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		    	      StrictMode.setThreadPolicy(policy);
-		    	    }
-		    	    
-		    	    */
-		    	
-		    	 button_scan=(Button)getActivity().findViewById(R.id.button_scan);
-		         button_scan.setOnClickListener(new OnClickListener(){
-		        	 
-		        	 public void onClick(View view){
-		        		 
-		        		 //条形码扫描入口，Intent指向ZXING解析核心库，点击扫描按钮后，可跳转到摄像头解析界面
-		        		 Intent intent = new Intent("com.shining.iBookClub.library.com.google.zxing.client.android.SCAN");
-		        	     intent.putExtra("SCAN_MODE", "ONE_D_MODE");
-		        	     startActivityForResult(intent, 0);
-		        	 }
-		         });
-		         button_scan.setTypeface(iBookClub.typeFace);
-		         
-		         edittext_isbn=(EditText)getActivity().findViewById(R.id.edittext_isbn);
-		         edittext_isbn.setTypeface(iBookClub.typeFace);
-		         
-		         button_searchByIsbn=(Button)getActivity().findViewById(R.id.button_searchByIsbn);
-		         
-		         button_searchByIsbn.setOnClickListener(new OnClickListener(){
-		        	 
-		        	 public void onClick(View view){
-		        		 if(edittext_isbn.getText()!=null){
-		        			 isbn=edittext_isbn.getText().toString();
-		        			   searchBookTask=new SearchBookTask();
-		        			   searchBookTask.execute((Void) null);
-		        			
-		        		 }
-		        		 
-		        	 }
-		         });
-		         
-		         button_searchByIsbn.setTypeface(iBookClub.typeFace);
-		         
-		         button_lend=(Button)getActivity().findViewById(R.id.button_lend);
-		         button_lend.setTypeface(iBookClub.typeFace);
-		         setLend();
-		         
-		         
-		     	webview_BookInfo = (WebView)getActivity().findViewById(R.id.webview_BookInfo);
-		     	webview_BookInfo.getSettings().setSupportZoom(false);
-		     	webview_BookInfo.getSettings().setJavaScriptCanOpenWindowsAutomatically(
-						true);
-		     	webview_BookInfo.getSettings().setJavaScriptEnabled(true);
+		    	button_post.setOnClickListener(new OnClickListener(){
 
-		     
+					
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(),PostActivity.class);
+						startActivity(intent);
+						
+					}
+		    		
+		    	});
+		    	
+		    	
+		    	pullToRefreshView=(PullToRefreshListView)getActivity().findViewById(R.id.pullToRefresh);
+		    	
+		    	pullToRefreshView.setOnRefreshListener(new OnRefreshListener() {
+		            @Override
+		            public void onRefresh() {
+		                // Do work to refresh the list here.
+		                new GetDataTask().execute();
+		            }
+		        });
+
+		        mListItems = new LinkedList<String>();
+		        mListItems.addAll(Arrays.asList(mStrings));
+
+		    //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+		       //         android.R.layout.simple_list_item_1, mListItems);
+		        
+		        LazyAdapter  adapter=new LazyAdapter(getActivity(), mStrings);
+
+		        pullToRefreshView.setAdapter(adapter);
 
 
 		    	
 		    }
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
+		    	
+		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
 		    	text_nickname.setTypeface(iBookClub.typeFace);
 		    	
-		    	webview_MyBook=(WebView)getActivity().findViewById(R.id.webview_MyBook);
+		    	button_myborrow=(Button)getActivity().findViewById(R.id.button_myborrow);
 		    	
-		       	webview_MyBook.getSettings().setSupportZoom(false);
-		    	webview_MyBook.getSettings().setJavaScriptCanOpenWindowsAutomatically(
-						true);
-		    	webview_MyBook.getSettings().setJavaScriptEnabled(true);
-		    	
-		    	GetMyBookInfo getMyBook=new GetMyBookInfo();
-		    	getMyBook.execute((Void)null);
-		    	
-		    	webview_MyBook.loadUrl("file:///android_asset/mybook.html");
-				
-		    	
-		    	webview_MyBook.addJavascriptInterface(new Object() {
-					public String getMyBook() {
-						return MyBookDao.getInstance().list().toString();
-					}
+		    	button_myborrow.setOnClickListener(new OnClickListener(){
 
-			
-				
-
-					public void getDetail(final String isbn) {
+					
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(),BorrowActivity.class);
+						startActivity(intent);
 						
-						handler.post(new Runnable() {
-							@Override
-							public void run() {
-								Intent intent = new Intent();
-								intent.setClass(getActivity(),
-										BookDetailActivity.class);
-								intent.putExtra("ISBN", isbn);
-								startActivity(intent);
-							}
-						});
 					}
-			
-				}, "mybook");
-		
+		    		
+		    	});
+		    	
+		    	
+		    	
+		    	
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
 		    		text_nickname.setText(nickname);
 		    	}
 		    	
-		    	button_editInfo=(Button)getActivity().findViewById(R.id.button_editInfo);
-		    	button_editInfo.setTypeface(iBookClub.typeFace);
+		    	display = getActivity().getWindowManager().getDefaultDisplay();
+				itemWidth = display.getWidth() / column_count;// 根据屏幕大小计算每列大小
+				assetManager = getActivity().getAssets();
+
+				InitLayout();
+		    	
+		    	
 		    	
 		    }
 		   
 	     
 	 
 	}
+	 
+	 private void InitLayout() {
+			waterfall_scroll = (LazyScrollView) getActivity().findViewById(R.id.waterfall_scroll);
+			waterfall_scroll.getView();
+			waterfall_scroll.setOnScrollListener(new OnScrollListener() {
+
+				@Override
+				public void onTop() {
+					// 滚动到最顶端
+					Log.d("LazyScroll", "Scroll to top");
+				}
+
+				@Override
+				public void onScroll() {
+					// 滚动中
+					Log.d("LazyScroll", "Scroll");
+				}
+
+				@Override
+				public void onBottom() {
+					// 滚动到最低端
+					AddItemToContainer(++current_page, page_count);
+				}
+			});
+
+			waterfall_container = (LinearLayout) getActivity()
+					.findViewById(R.id.waterfall_container);
+			waterfall_items = new ArrayList<LinearLayout>();
+
+			for (int i = 0; i < column_count; i++) {
+				LinearLayout itemLayout = new LinearLayout(getActivity());
+				LinearLayout.LayoutParams itemParam = new LinearLayout.LayoutParams(
+						itemWidth, LayoutParams.WRAP_CONTENT);
+				// itemParam.width = itemWidth;
+				// itemParam.height = LayoutParams.WRAP_CONTENT;
+				itemLayout.setPadding(2, 2, 2, 2);
+				itemLayout.setOrientation(LinearLayout.VERTICAL);
+
+				itemLayout.setLayoutParams(itemParam);
+				waterfall_items.add(itemLayout);
+				waterfall_container.addView(itemLayout);
+			}
+
+			// 加载所有图片路径
+
+			try {
+				image_filenames = Arrays.asList(assetManager.list(image_path));
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// 第一次加载
+			AddItemToContainer(current_page, page_count);
+		}
+
+		private void AddItemToContainer(int pageindex, int pagecount) {
+			int j = 0;
+			int imagecount = image_filenames.size();
+			for (int i = pageindex * pagecount; i < pagecount * (pageindex + 1)
+					&& i < imagecount; i++) {
+				j = j >= column_count ? j = 0 : j;
+				AddImage(image_filenames.get(i), j++);
+
+			}
+
+		}
+
+		private void AddImage(String filename, int columnIndex) {
+			ImageView item = (ImageView) LayoutInflater.from(getActivity()).inflate(
+					R.layout.waterfallitem, null);
+			waterfall_items.get(columnIndex).addView(item);
+
+			TaskParam param = new TaskParam();
+			param.setAssetManager(assetManager);
+			param.setFilename(image_path + "/" + filename);
+			param.setItemWidth(itemWidth);
+			ImageLoaderTask task = new ImageLoaderTask(item);
+			task.execute(param);
+
+		}
+	 
+	 private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+	        @Override
+	        protected String[] doInBackground(Void... params) {
+	            // Simulates a background job.
+	            try {
+	                Thread.sleep(2000);
+	            } catch (InterruptedException e) {
+	                ;
+	            }
+	            return mStrings;
+	        }
+
+	        @Override
+	        protected void onPostExecute(String[] result) {
+	            mListItems.addFirst("Added after refresh...");
+
+	            // Call onRefreshComplete when the list has been refreshed.
+	            pullToRefreshView.onRefreshComplete();
+
+	            super.onPostExecute(result);
+	        }
+	    }
+
+	 private String[] mStrings={
+	            "http://a3.twimg.com/profile_images/670625317/aam-logo-v3-twitter.png",
+	            "http://a3.twimg.com/profile_images/740897825/AndroidCast-350_normal.png",
+	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
+	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
+	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook.png",
+	            "http://a3.twimg.com/profile_images/768060227/ap4u_normal.jpg",
+	            "http://a1.twimg.com/profile_images/74724754/android_logo_normal.png",
+	            "http://a3.twimg.com/profile_images/681537837/SmallAvatarx150_normal.png",
+	            "http://a1.twimg.com/profile_images/63737974/2008-11-06_1637_normal.png",
+	            "http://a3.twimg.com/profile_images/548410609/icon_8_73.png",
+	            "http://a1.twimg.com/profile_images/612232882/nexusoneavatar_normal.jpg",
+	            "http://a1.twimg.com/profile_images/213722080/Bugdroid-phone_normal.png",
+	            "http://a1.twimg.com/profile_images/645523828/OT_icon_090918_android_normal.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/121630227/Droid.jpg",
+	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
+	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
+	            "http://a3.twimg.com/profile_images/670625317/aam-logo-v3-twitter_normal.png",
+	            "http://a3.twimg.com/profile_images/740897825/AndroidCast-350_normal.png",
+	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
+	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
+	            "http://a1.twimg.com/profile_images/97470808/icon.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
+	            "http://a3.twimg.com/profile_images/768060227/ap4u_normal.jpg",
+	            "http://a1.twimg.com/profile_images/74724754/android_logo.png",
+	            "http://a3.twimg.com/profile_images/681537837/SmallAvatarx150_normal.png",
+	            "http://a1.twimg.com/profile_images/63737974/2008-11-06_1637_normal.png",
+	            "http://a3.twimg.com/profile_images/548410609/icon_8_73_normal.png",
+	            "http://a1.twimg.com/profile_images/612232882/nexusoneavatar_normal.jpg",
+	            "http://a1.twimg.com/profile_images/213722080/Bugdroid-phone_normal.png",
+	            "http://a1.twimg.com/profile_images/645523828/OT_icon_090918_android.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
+	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
+	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
+	            "http://a1.twimg.com/profile_images/957149154/twitterhalf.jpg",
+	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
+	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
+	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
+	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
+	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
+	            "http://a1.twimg.com/profile_images/349012784/android_logo_small.jpg",
+	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
+	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
+	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png"
+	    };
 	 
 	 private static void feedKeywordsFlow(KeywordsFlow keywordsFlow, String[] arr) {  
 		    Random random = new Random();  
@@ -472,309 +676,10 @@ public  class DummySectionFragment extends Fragment {
     	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
 	}
 	 
-	 public class GetMyBookInfo  extends AsyncTask<Void, Void, Boolean> {
-
 	
-		protected Boolean doInBackground(Void... arg0) {
-	
-			String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
-			
-			if(LoginSingleton.isLoginSuccess()){
-				
-			
-				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-		
-		        
-				try{
-			
-					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
-					
-					String strResult=httpUtility.doPost();
-					System.out.println("GetMyBook:"+strResult);
-					Gson gson = new Gson();
-					bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
-					
-				}
-				catch(Exception e){
-					return false;
-				}
-	
-			}
-			return true;
-		}
-		
-		protected void onPostExecute(final Boolean success) {
-			
-			MyBookDao.getInstance().deleteAll();
-			
-			for(BookBean book:bookList){
-		
-				MyBookDao.getInstance().create(book);
-			}
-			
-		}
-	 }
-
-	 //处理解析得到的返回值，即相应的ISBN编号
-	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		 	
-		  if (null == data) 
-			  return;
-	
-		  if (requestCode == 0) {
-	
-			   isbn=data.getStringExtra("SCAN_RESULT");
-			   searchBookTask=new SearchBookTask();
-			   searchBookTask.execute((Void) null);
-		  }
-	 }
-	 
-	public void LoadBookInfo(){
-		 
-		webview_BookInfo.loadUrl("file:///android_asset/book_info.html");
-	
-     	webview_BookInfo.addJavascriptInterface(new Object() {
-     		
-     		
-			public String getBookName() {
-				return bookBean.getBookname();
-			}
-
-			public String getBookSummary() {
-				return bookBean.getSummary();
-			}
-
-			public String getBookImageUrl() {
-				return bookBean.getBookcover_url();
-			}
-
-			public String getBookAuthor() {
-				return bookBean.getAuthor();
-			}
-			
-     		
-			
-		}, "bookDetail");
-     	
-     	getActivity().findViewById(R.id.image).setVisibility(View.GONE);
-     	
-	   }
-		
-		 private void setLend(){
-				button_lend.setText("发布到图书馆");
-				button_lend.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-				
-						
-						if(bookBean.getIsbn()!=null){
-						
-							Intent intent=new Intent(getActivity(),PostBookActivity.class);
-					
-							intent.putExtra("bean", bookBean);
-						
-							startActivity(intent);
-						}else
-							Toast.makeText(getActivity(), "请先扫描或者搜索需要发布的图书！", Toast.LENGTH_SHORT).show();
-						
-					}
-				});
-			}
-
-			private void setHasLend() {
-				button_lend.setText("已发布,点此可下架");
-				button_lend.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						
-					//	BookInfoDao.getInstance().delete(bookInfo.getIsbn());
-						deleteBookFromLibray();
-						setLend();
-						
-					}
-				});
-			}
-			
-		private void deleteBookFromLibray(){
-			
-			DeleteBookTask deleteBookTask =new DeleteBookTask();
-			deleteBookTask.execute((Void)null);
-			
-		}
-		
-		public class DeleteBookTask extends AsyncTask<Void,Void,Boolean>{
-			
-			protected Boolean doInBackground(Void... arg0){
-				
-				Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"DeleteBookServlet";
-				
-				if(LoginSingleton.isLoginSuccess()){
-					
-					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-			        params.add(new BasicNameValuePair("isbn",isbn));
-			        
-			        try{
-			        	
-			        	HttpUtility httpUtility=new HttpUtility(httpUrl,params);
-			        	String resultStr=	httpUtility.doPost();
-			        	
-			        	JSONObject jsonObj=new JSONObject(resultStr);
-			        	
-					
-			        	if(jsonObj.getString("Result")=="Success"){
-			        		
-			        		result=true;
-			        	}
-			        
-					
-				}
-				catch(Exception e){
-					return false;
-				}
-			        return result;
-				}	
-			        
-				
-				
-				return null;
-				
-				
-			}
-			
-			
-		}
-		
 		
 	
-		 
-		 
-		 private BookBean getResultByIsbn(){
-		
 	
-					try{	
-					
-					URL url = new URL(URL+isbn+"?apikey="+APIKey);      
-					HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-					conn.setConnectTimeout(5 * 1000);      
-					conn.setRequestMethod("GET");      
-			
-					
-					InputStream inStream = conn.getInputStream(); 
-			
-					return getBookInfo(inStream);
-					}catch (Exception e) {  
-					e.printStackTrace();  
-					}  
-			
-					return null;
-		}
-		 
-		 
-		 
-		 public BookBean getBookInfo(InputStream inputStream){
-			 
-	
-			
-			 String str="";
-			 
-			 JSONObject json;
-
-			
-			 try{
-		
-			 
-			  BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-			    StringBuffer buffer = new StringBuffer();
-			    String line = "";
-			    while ((line = in.readLine()) != null){
-			      buffer.append(line);
-			    }
-			    
-			    str=buffer.toString();
-		 
-			
-			 System.out.println(str);
-			 
-		
-			 
-			 json = new JSONObject(str);
-			 
-			
-			 bookBean.setAuthor(json.getString("author"));
-			 bookBean.setBookcover_url(json.getString("image"));
-			 bookBean.setBookname(json.getString("title"));
-			 bookBean.setIsbn(isbn);
-			 bookBean.setPrice(json.getString("price"));
-			 bookBean.setPublisher(json.getString("publisher"));
-			 bookBean.setSummary(json.getString("summary"));
-			 
-				
-			 
-			 } catch (Exception e) {
-				e.printStackTrace();
-			}  
-			 
-			 
-			 return bookBean;
-			 
-		 }
-		 
-			
-	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
-				
-		protected Boolean doInBackground(Void... arg0) {
-		
-			 	bookBean=  getResultByIsbn();
-			 
-				Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"CheckBookServlet";
-				
-				if(LoginSingleton.isLoginSuccess()){
-					
-					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
-			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
-			        params.add(new BasicNameValuePair("isbn",isbn));
-			  
-					try{
-						
-						HttpUtility httpUtility=new HttpUtility(httpUrl,params);
-				
-						String strResult=httpUtility.doPost();
-						System.out.println(strResult);
-						JSONObject jsonObject = new JSONObject(strResult) ;
-						Boolean actionResult=jsonObject.getBoolean("ActionResult");
-							
-						if(actionResult){
-							setHasLend();
-						}
-					}
-					catch(Exception e){
-						return false;
-					}
-					return result;
-				}
-				
-			 
-			 
-	
-			
-			return true;
-		}
-		
-		protected void onPostExecute(final Boolean success) {
-			
-			 LoadBookInfo();
-		}
-		
-		protected void onCancelled() {
-			
-		}
-		
-		
-	}
 	 
 	 public void onResume() {  
 		  

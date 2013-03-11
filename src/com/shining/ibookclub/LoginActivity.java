@@ -396,7 +396,9 @@ public class LoginActivity extends Activity {
 	private void checkNetworkInfo(){
 		  
 		ConnectivityManager conMan = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
+		State mobile=null;
+		if(conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)!=null)
+			mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
 		State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
 	 
 		if(mobile==State.CONNECTED||mobile==State.CONNECTING) return;

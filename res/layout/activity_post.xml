@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".PostActivity" >
+
+     <Button 
+       android:id="@+id/button_scan"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:text="点此启动扫描"
+       />
+   <EditText
+       android:id="@+id/edittext_isbn"
+       android:layout_width="match_parent"
+   	   android:layout_height="wrap_content"
+       android:hint="请在此输入ISBN编号"
+       android:textSize="24sp"
+       />
+   <Button 
+       android:id="@+id/button_searchByIsbn"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="点此根据ISBN号搜索书目"
+       />
+  
+   <Button 
+       android:id="@+id/button_lend"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       />
+     <WebView
+   	     android:id="@+id/webview_BookInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+	
+   	<ImageView
+   	    android:id="@+id/image"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:src="@drawable/read"
+   	    />
+
+</LinearLayout>

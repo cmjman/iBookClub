@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,56 +11,34 @@
  	    android:layout_width="match_parent"
  	    android:layout_height="wrap_content"
  	    />
- 	<TextView
- 	    android:text="我发布的书："
- 	    android:textSize="32dp"
- 	    android:layout_gravity="center"
+ 	
+ 	<Button
+ 	    android:id="@+id/button_myborrow"
  	    android:layout_width="match_parent"
  	    android:layout_height="wrap_content"
+ 	    android:text="点此查看我借阅的书"
+ 	    android:layout_alignParentBottom="true"
  	    />
  	
-	<ScrollView 
-	    android:layout_width="match_parent"
-	    android:layout_height="155dp"
-	    android:fadingEdgeLength="1dp"
-	    android:requiresFadingEdge="vertical"
-	    >
-		
-	    <WebView
-	   	    android:id="@+id/webview_MyBook"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	       />
-	    
-    </ScrollView>
-    
-	<TextView
- 	    android:text="我借阅的书："
- 	    android:textSize="32dp"
- 	    android:layout_marginTop="10dp"
- 	    android:layout_gravity="center"
- 	    android:layout_width="match_parent"
- 	    android:layout_height="wrap_content"
- 	    />
-	
-	<ScrollView 
-	    android:layout_width="match_parent"
-	  	android:layout_height="155dp"
-	    >
-		
-	    <WebView
-	        android:id="@+id/webview_MyBorrowBook"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	         />
-	    
-    </ScrollView>
+ 	<com.shining.ibookclub.support.LazyScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	  	android:id="@+id/waterfall_scroll"
+	  	android:layout_above="@id/button_myborrow"
+     >
 
-	<Button
-	    android:id="@+id/button_editInfo"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_weight="1"
-	    android:text="修改个人资料" />
+	    <LinearLayout
+	        android:id="@+id/waterfall_container"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:background="@android:color/white" >
+	    </LinearLayout>
 
-</LinearLayout>
+	</com.shining.ibookclub.support.LazyScrollView>
+ 	
+ 	
+ 	    
+ 	
+ 	
+ 	
+</RelativeLayout>

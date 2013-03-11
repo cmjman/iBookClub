@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">iBookClub</string>
-    <string name="title_section3">个人</string>
-    <string name="title_section2">发布</string>
+    <string name="title_section3">发现</string>
+    <string name="title_section2">个人</string>
     <string name="title_section1">借书</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
@@ -23,5 +23,11 @@
     <string name="title_activity_buy_book">BuyBookActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_find_nearby_book">FindNearbyBookActivity</string>
+    <string name="pull_to_refresh_pull_label">Pull to refresh...</string>
+    <string name="pull_to_refresh_release_label">Release to refresh...</string>
+    <string name="pull_to_refresh_refreshing_label">Loading...</string>
+    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
+    <string name="title_activity_post">PostActivity</string>
+    <string name="title_activity_borrow">BorrowActivity</string>
 
 </resources>

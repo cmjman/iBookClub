@@ -83,11 +83,11 @@
 		        android:text="@string/showpwd" /> 
 			</LinearLayout>
 			
-             <LinearLayout
+             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                >
 			
             <Button
                 android:id="@+id/sign_in_button"
@@ -96,6 +96,8 @@
                 android:layout_marginTop="16dp"
                 android:paddingLeft="48dp"
                 android:paddingRight="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
                 android:text="登录"/>
             
             <Button
@@ -106,9 +108,11 @@
                 android:layout_marginLeft="24dp"
                 android:paddingLeft="48dp"
                 android:paddingRight="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
                 android:text="注册"
                 />
-            </LinearLayout>
+            </RelativeLayout>
            
             <Button
                 android:id="@+id/button_weibo_sign_in"

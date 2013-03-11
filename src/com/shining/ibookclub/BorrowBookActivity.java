@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
-import com.shining.ibookclub.fragment.DummySectionFragment.SearchBookTask;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
