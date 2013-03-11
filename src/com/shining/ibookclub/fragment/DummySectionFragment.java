@@ -122,8 +122,6 @@ public  class DummySectionFragment extends Fragment {
 	
 
 	
-//	private String isbn;
-	
 	private String keyword; 
 	
 	 public static final String[] keywords = { 
@@ -135,7 +133,7 @@ public  class DummySectionFragment extends Fragment {
 		 "不能承受的生命之轻","云图","1Q84","动物农场"
 	 };  
 	
-	  private LinkedList<String> mListItems;
+	  private ArrayList<BookBean> mListItems;
 	
 	private static String nickname;
 	
@@ -161,6 +159,8 @@ public  class DummySectionFragment extends Fragment {
 	private int page_count = 15;// 每次加载15张图片
 
 	private int current_page = 0;
+	
+	private LazyAdapter  adapter;
 	
 
 	public DummySectionFragment() {
@@ -304,13 +304,13 @@ public  class DummySectionFragment extends Fragment {
 		            }
 		        });
 
-		        mListItems = new LinkedList<String>();
-		        mListItems.addAll(Arrays.asList(mStrings));
+		        mListItems = new ArrayList<BookBean>();
+		        mListItems.addAll(bookList);
 
 		    //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 		       //         android.R.layout.simple_list_item_1, mListItems);
 		        
-		        LazyAdapter  adapter=new LazyAdapter(getActivity(), mStrings);
+		        adapter=new LazyAdapter(getActivity(), bookList);
 
 		        pullToRefreshView.setAdapter(adapter);
 
@@ -440,22 +440,46 @@ public  class DummySectionFragment extends Fragment {
 
 		}
 	 
-	 private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	 private class GetDataTask extends AsyncTask<Void, Void, ArrayList<BookBean>> {
 
 	        @Override
-	        protected String[] doInBackground(Void... params) {
-	            // Simulates a background job.
-	            try {
-	                Thread.sleep(2000);
-	            } catch (InterruptedException e) {
-	                ;
-	            }
-	            return mStrings;
+	        protected ArrayList<BookBean> doInBackground(Void... arg0) {
+	           
+	        	
+	        	String httpUrl=LoginSingleton.SERVER_URL+"GetRecentBookServlet";
+				
+				if(LoginSingleton.isLoginSuccess()){
+					
+				
+					List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+			        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+			
+					try{
+				
+						HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+						
+						String strResult=httpUtility.doPost();
+						System.out.println("GetRecentBook:"+strResult);
+						Gson gson = new Gson();
+						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+						
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+		
+				}
+				
+	            return bookList;
 	        }
 
 	        @Override
-	        protected void onPostExecute(String[] result) {
-	            mListItems.addFirst("Added after refresh...");
+	        protected void onPostExecute(ArrayList<BookBean> result) {
+	          //  mListItems.addFirst("Added after refresh...");
+	            
+	            adapter=new LazyAdapter(getActivity(), result);
+	            
+	            pullToRefreshView.setAdapter(adapter);
 
 	            // Call onRefreshComplete when the list has been refreshed.
 	            pullToRefreshView.onRefreshComplete();
@@ -464,115 +488,6 @@ public  class DummySectionFragment extends Fragment {
 	        }
 	    }
 
-	 private String[] mStrings={
-	            "http://a3.twimg.com/profile_images/670625317/aam-logo-v3-twitter.png",
-	            "http://a3.twimg.com/profile_images/740897825/AndroidCast-350_normal.png",
-	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
-	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
-	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook.png",
-	            "http://a3.twimg.com/profile_images/768060227/ap4u_normal.jpg",
-	            "http://a1.twimg.com/profile_images/74724754/android_logo_normal.png",
-	            "http://a3.twimg.com/profile_images/681537837/SmallAvatarx150_normal.png",
-	            "http://a1.twimg.com/profile_images/63737974/2008-11-06_1637_normal.png",
-	            "http://a3.twimg.com/profile_images/548410609/icon_8_73.png",
-	            "http://a1.twimg.com/profile_images/612232882/nexusoneavatar_normal.jpg",
-	            "http://a1.twimg.com/profile_images/213722080/Bugdroid-phone_normal.png",
-	            "http://a1.twimg.com/profile_images/645523828/OT_icon_090918_android_normal.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/121630227/Droid.jpg",
-	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
-	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet.png",
-	            "http://a3.twimg.com/profile_images/670625317/aam-logo-v3-twitter_normal.png",
-	            "http://a3.twimg.com/profile_images/740897825/AndroidCast-350_normal.png",
-	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
-	            "http://a1.twimg.com/profile_images/957149154/twitterhalf_normal.jpg",
-	            "http://a1.twimg.com/profile_images/97470808/icon.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
-	            "http://a3.twimg.com/profile_images/768060227/ap4u_normal.jpg",
-	            "http://a1.twimg.com/profile_images/74724754/android_logo.png",
-	            "http://a3.twimg.com/profile_images/681537837/SmallAvatarx150_normal.png",
-	            "http://a1.twimg.com/profile_images/63737974/2008-11-06_1637_normal.png",
-	            "http://a3.twimg.com/profile_images/548410609/icon_8_73_normal.png",
-	            "http://a1.twimg.com/profile_images/612232882/nexusoneavatar_normal.jpg",
-	            "http://a1.twimg.com/profile_images/213722080/Bugdroid-phone_normal.png",
-	            "http://a1.twimg.com/profile_images/645523828/OT_icon_090918_android.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small_normal.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png",
-	            "http://a1.twimg.com/profile_images/850960042/elandroidelibre-logo_300x300_normal.jpg",
-	            "http://a1.twimg.com/profile_images/655119538/andbook_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/121630227/Droid_normal.jpg",
-	            "http://a1.twimg.com/profile_images/957149154/twitterhalf.jpg",
-	            "http://a1.twimg.com/profile_images/97470808/icon_normal.png",
-	            "http://a3.twimg.com/profile_images/511790713/AG_normal.png",
-	            "http://a3.twimg.com/profile_images/956404323/androinica-avatar_normal.png",
-	            "http://a1.twimg.com/profile_images/909231146/Android_Biz_Man_normal.png",
-	            "http://a3.twimg.com/profile_images/72774055/AndroidHomme-LOGO_normal.jpg",
-	            "http://a1.twimg.com/profile_images/349012784/android_logo_small.jpg",
-	            "http://a1.twimg.com/profile_images/841338368/ea-twitter-icon_normal.png",
-	            "http://a3.twimg.com/profile_images/64827025/android-wallpaper6_2560x160_normal.png",
-	            "http://a3.twimg.com/profile_images/77641093/AndroidPlanet_normal.png"
-	    };
-	 
 	 private static void feedKeywordsFlow(KeywordsFlow keywordsFlow, String[] arr) {  
 		    Random random = new Random();  
 		    for (int i = 0; i < KeywordsFlow.MAX; i++) {  
