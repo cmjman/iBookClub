@@ -173,7 +173,7 @@ public class FindNearbyBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"GetNearbyServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"getNearby.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

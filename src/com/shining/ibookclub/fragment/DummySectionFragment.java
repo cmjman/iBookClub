@@ -446,7 +446,7 @@ public  class DummySectionFragment extends Fragment {
 	        protected ArrayList<BookBean> doInBackground(Void... arg0) {
 	           
 	        	
-	        	String httpUrl=LoginSingleton.SERVER_URL+"GetRecentBookServlet";
+	        	String httpUrl=LoginSingleton.SERVER_URL+"getRecentBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -504,7 +504,7 @@ public  class DummySectionFragment extends Fragment {
 	 protected Boolean doInBackground(Void... arg0){
 		 
 		 Boolean result=false;
-		 String httpUrl=LoginSingleton.SERVER_URL+"SearchBookServlet";
+		 String httpUrl=LoginSingleton.SERVER_URL+"searchBook.action";
 		 
 		 if(LoginSingleton.isLoginSuccess()){
 		 

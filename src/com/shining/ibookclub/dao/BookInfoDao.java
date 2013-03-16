@@ -91,7 +91,6 @@ public class BookInfoDao {
 				object.put("isbn", cursor.getString(1));
 				object.put("bookcover",cursor.getString(2));
 				
-			//	System.out.println(cursor.getString(2));
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}
@@ -99,7 +98,6 @@ public class BookInfoDao {
 		}
 
 		cursor.close();
-
 		return array;
 	}
 	

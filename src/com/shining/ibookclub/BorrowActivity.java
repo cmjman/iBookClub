@@ -89,7 +89,7 @@ public class BorrowActivity extends Activity {
 			
 			protected Boolean doInBackground(Void... arg0) {
 		
-				String httpUrl=LoginSingleton.SERVER_URL+"GetBookServlet";
+				String httpUrl=LoginSingleton.SERVER_URL+"getBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					

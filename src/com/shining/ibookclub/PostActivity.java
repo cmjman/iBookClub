@@ -121,7 +121,7 @@ public class PostActivity extends Activity {
 			 	bookBean=  getResultByIsbn();
 			 
 				Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"CheckBookServlet";
+				String httpUrl=LoginSingleton.SERVER_URL+"checkBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -179,7 +179,7 @@ public class PostActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0){
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"DeleteBookServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"deleteBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

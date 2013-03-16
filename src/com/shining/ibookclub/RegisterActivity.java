@@ -72,7 +72,7 @@ public class RegisterActivity extends Activity {
 		
 		protected Boolean doInBackground(String... str) {
 			
-			String httpUrl=LoginSingleton.SERVER_URL+"RegisterServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"register.action";
 			Boolean actionResult=false;
 			
 			List <NameValuePair> params = new ArrayList <NameValuePair>(); 

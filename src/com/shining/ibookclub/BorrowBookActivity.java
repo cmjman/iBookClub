@@ -81,7 +81,7 @@ public class BorrowBookActivity extends Activity {
 			
 			Boolean actionResult=false;
 			
-			String httpUrl=LoginSingleton.SERVER_URL+"RecordBookServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"recordBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
@@ -133,7 +133,7 @@ public class BorrowBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"BorrowBookServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"borrowBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

@@ -152,7 +152,7 @@ public class PostBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 		
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"AddBookServlet";
+			String httpUrl=LoginSingleton.SERVER_URL+"addBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
