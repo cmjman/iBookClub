@@ -10,6 +10,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
+import android.graphics.Paint.Style;
 /**
  * 防止溢出
  *
@@ -91,7 +95,7 @@ public class BitmapCache {
 
 		return bitmapImage;
 	}
-
+	
 	private void cleanCache() {
 		BtimapRef ref = null;
 		while ((ref = (BtimapRef) q.poll()) != null) {

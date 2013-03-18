@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.Overlay;
 import com.google.gson.Gson;
+import com.shining.ibookclub.support.BitmapCache;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -42,6 +43,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class FindNearbyBookActivity extends Activity {
@@ -59,7 +62,7 @@ public class FindNearbyBookActivity extends Activity {
 	private double longitude;
 	
 	private String provider;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -153,7 +156,8 @@ public class FindNearbyBookActivity extends Activity {
 	
 	 private Bitmap getBitmap(int radius) {
 		
-	        Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2, Config.ARGB_8888);
+	      	Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2, Config.ARGB_4444);
+	      	System.out.println("Bitmap Size:"+bitmap.getByteCount());
 	        Canvas canvas = new Canvas(bitmap);
 	        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	        
@@ -187,6 +191,8 @@ public class FindNearbyBookActivity extends Activity {
 	
 				try{
 					
+						System.out.println("GetNearbyTask location:"+String.valueOf(latitude)+String.valueOf(longitude));
+						
 						String strResult=httpUtility.doPost();
 						
 						System.out.println(strResult);
