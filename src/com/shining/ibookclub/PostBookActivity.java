@@ -160,11 +160,12 @@ public class PostBookActivity extends Activity {
 				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
 		        Gson gsonBookInfo=new Gson();
-				params.add(new BasicNameValuePair("bookbean",gsonBookInfo.toJson(bookBean)));
-				
+				params.add(new BasicNameValuePair("bookbean_gson",gsonBookInfo.toJson(bookBean)));
+				System.out.println("PostBookTask gson:"+gsonBookInfo.toJson(bookBean));
 				params.add(new BasicNameValuePair("latitude",String.valueOf(latitude)));
 				params.add(new BasicNameValuePair("longitude",String.valueOf(longitude)));
 			
+		
 				
 				HttpUtility httpUtility=new HttpUtility(httpUrl,params);
 				
@@ -175,6 +176,8 @@ public class PostBookActivity extends Activity {
 						String strResult=httpUtility.doPost();
 					//	Gson gson = new Gson();
 					//	bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+						
+						System.out.println("PostBookActivity:"+strResult);
 						
 						JSONObject jsonObj=new JSONObject(strResult);
 						result=jsonObj.getBoolean("ActionResult");

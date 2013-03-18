@@ -10,6 +10,7 @@ public class BookBean implements Serializable{
 	private String author;
 	private String bookcover_url;
 	private String summary;
+
 	private String price;
 	
 	public void setIsbn(String isbn){

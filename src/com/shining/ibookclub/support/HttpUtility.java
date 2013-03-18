@@ -55,7 +55,7 @@ public class HttpUtility {
 			
 			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
 				
-				result=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("UTF-8"));
+				result=new String(EntityUtils.toString(httpResponse.getEntity()).getBytes("ISO-8859-1"),"UTF-8");
 				
 				System.out.println("HttpUtility："+result);
 			}

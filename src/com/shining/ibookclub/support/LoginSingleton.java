@@ -26,7 +26,7 @@ public class LoginSingleton {
     private static LoginSingleton loginInstance = null;  
     
   //  public static final String SERVER_URL ="http://192.168.126.50:8004/iBookClubServer/"; 
-    
+   
     public static final String SERVER_URL ="http://1.ibookclubserver.sinaapp.com/"; 
       
     
@@ -79,6 +79,7 @@ private static Boolean Login(){
 			JSONObject jsonObject = new JSONObject(strResult) ;
 			actionResult=jsonObject.getBoolean("ActionResult");
 			nickname=jsonObject.getString("nickname");	
+			System.out.println("Nickname :"+nickname);
 		}
 		catch(Exception e){
 			e.printStackTrace();
