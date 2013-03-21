@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.MyBookDao;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -89,7 +90,7 @@ public class BorrowActivity extends Activity {
 			
 			protected Boolean doInBackground(Void... arg0) {
 		
-				String httpUrl=LoginSingleton.SERVER_URL+"getBook.action";
+				String httpUrl=FinalConstants.SERVER_URL+"getBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					

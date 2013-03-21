@@ -7,6 +7,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -72,7 +73,7 @@ public class RegisterActivity extends Activity {
 		
 		protected Boolean doInBackground(String... str) {
 			
-			String httpUrl=LoginSingleton.SERVER_URL+"register.action";
+			String httpUrl=FinalConstants.SERVER_URL+"register.action";
 			Boolean actionResult=false;
 			
 			List <NameValuePair> params = new ArrayList <NameValuePair>(); 

@@ -18,6 +18,7 @@ import com.google.android.maps.MapController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -152,7 +153,7 @@ public class PostBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 		
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"addBook.action";
+			String httpUrl=FinalConstants.SERVER_URL+"addBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

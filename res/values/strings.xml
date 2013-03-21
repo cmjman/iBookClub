@@ -29,5 +29,6 @@
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="title_activity_post">PostActivity</string>
     <string name="title_activity_borrow">BorrowActivity</string>
+    <string name="title_activity_buy_book_detail">BuyBookDetailActivity</string>
 
 </resources>

@@ -23,6 +23,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.Overlay;
 import com.google.gson.Gson;
 import com.shining.ibookclub.support.BitmapCache;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -177,7 +178,7 @@ public class FindNearbyBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"getNearby.action";
+			String httpUrl=FinalConstants.SERVER_URL+"getNearby.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

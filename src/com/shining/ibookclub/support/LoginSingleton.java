@@ -25,9 +25,7 @@ public class LoginSingleton {
 	
     private static LoginSingleton loginInstance = null;  
     
-  //  public static final String SERVER_URL ="http://192.168.126.50:8004/iBookClubServer/"; 
-   
-    public static final String SERVER_URL ="http://1.ibookclubserver.sinaapp.com/"; 
+
       
     
     public static HttpClient httpClient = null;  
@@ -61,10 +59,8 @@ public class LoginSingleton {
     }
     
 private static Boolean Login(){
-		
-	//	String httpUrl=SERVER_URL+"LoginServlet";
 	
-		String httpUrl=SERVER_URL+"login.action";
+		String httpUrl=FinalConstants.SERVER_URL+"login.action";
 		
 		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
         params.add(new BasicNameValuePair("email", loginEmail)); 

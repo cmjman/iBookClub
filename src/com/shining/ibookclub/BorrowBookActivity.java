@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -81,7 +82,7 @@ public class BorrowBookActivity extends Activity {
 			
 			Boolean actionResult=false;
 			
-			String httpUrl=LoginSingleton.SERVER_URL+"recordBook.action";
+			String httpUrl=FinalConstants.SERVER_URL+"recordBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
@@ -133,7 +134,7 @@ public class BorrowBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"borrowBook.action";
+			String httpUrl=FinalConstants.SERVER_URL+"borrowBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

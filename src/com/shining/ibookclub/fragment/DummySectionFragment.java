@@ -31,6 +31,7 @@ import com.shining.ibookclub.*;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.ImageLoaderTask;
 import com.shining.ibookclub.support.KeywordsFlow;
@@ -87,7 +88,7 @@ public  class DummySectionFragment extends Fragment {
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 	
-	public static final Object lock = new Object();  
+//	public static final Object lock = new Object();  
 	
 	private int SEC_NUMBER_INTEGER;
 	
@@ -224,6 +225,7 @@ public  class DummySectionFragment extends Fragment {
 						
 						SearchPublicBookTask search=new SearchPublicBookTask();
 						search.execute((Void) null);
+						
 						return true;
 					}
 		    	});
@@ -268,12 +270,15 @@ public  class DummySectionFragment extends Fragment {
 					public void onClick(View v) {
 						
 						Intent intent=new Intent(getActivity(),BuyBookActivity.class);
+						intent.putExtra("keyword", keyword);
 						startActivity(intent);
 						
 					}
 		    	});
 		    	
 		    	button_buyBook.setTypeface(iBookClub.typeFace);
+		    	
+		    	
 		    	
 		
 		    }
@@ -446,7 +451,7 @@ public  class DummySectionFragment extends Fragment {
 	        protected ArrayList<BookBean> doInBackground(Void... arg0) {
 	           
 	        	
-	        	String httpUrl=LoginSingleton.SERVER_URL+"getRecentBook.action";
+	        	String httpUrl=FinalConstants.SERVER_URL+"getRecentBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -504,7 +509,7 @@ public  class DummySectionFragment extends Fragment {
 	 protected Boolean doInBackground(Void... arg0){
 		 
 		 Boolean result=false;
-		 String httpUrl=LoginSingleton.SERVER_URL+"searchBook.action";
+		 String httpUrl=FinalConstants.SERVER_URL+"searchBook.action";
 		 
 		 if(LoginSingleton.isLoginSuccess()){
 		 
@@ -589,6 +594,7 @@ public  class DummySectionFragment extends Fragment {
 		}, "bookShelfControl");
     	
     	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
+    	button_buyBook.setVisibility(View.VISIBLE);
 	}
 	 
 	

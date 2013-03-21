@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 
 import com.shining.ibookclub.bean.BookBean;
+import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -48,9 +49,9 @@ public class PostActivity extends Activity {
 	
 	private static BookBean bookBean=new BookBean();
 	
-	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
+//	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
 	
-	private static String URL = "https://api.douban.com/v2/book/isbn/";
+//	private static String URL = "https://api.douban.com/v2/book/isbn/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +122,7 @@ public class PostActivity extends Activity {
 			 	bookBean=  getResultByIsbn();
 			 
 				Boolean result=false;
-				String httpUrl=LoginSingleton.SERVER_URL+"checkBook.action";
+				String httpUrl=FinalConstants.SERVER_URL+"checkBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -179,7 +180,7 @@ public class PostActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0){
 			
 			Boolean result=false;
-			String httpUrl=LoginSingleton.SERVER_URL+"deleteBook.action";
+			String httpUrl=FinalConstants.SERVER_URL+"deleteBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
@@ -227,7 +228,7 @@ public class PostActivity extends Activity {
 
 				try{	
 				
-				URL url = new URL(URL+isbn+"?apikey="+APIKey);      
+				URL url = new URL(FinalConstants.Douban_ISBN_URL+isbn+"?apikey="+FinalConstants.Douban_API_KEY);      
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
 				conn.setConnectTimeout(5 * 1000);      
 				conn.setRequestMethod("GET");      
@@ -277,7 +278,7 @@ public class PostActivity extends Activity {
 		 bookBean.setAuthor(json.getString("author"));
 		 bookBean.setBookcover_url(json.getString("image"));
 		 bookBean.setBookname(json.getString("title"));
-		 bookBean.setIsbn(isbn);
+		 bookBean.setIsbn(json.getString("isbn13"));
 		 bookBean.setPrice(json.getString("price"));
 		 bookBean.setPublisher(json.getString("publisher"));
 		 bookBean.setSummary(json.getString("summary"));
