@@ -98,8 +98,9 @@ public class BuyBookActivity extends Activity {
 				 while ((line = in.readLine()) != null){
 				      
 					 sb.append(line);
-					 returnStr=sb.toString();
+					
 				 }
+				 returnStr=sb.toString();
 				 
 				if(returnStr!=null && returnStr!="" && returnStr.startsWith("{")){
 					

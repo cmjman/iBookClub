@@ -13,4 +13,6 @@ public class FinalConstants {
 	public static final String Douban_SEARCH_URL="https://api.douban.com/v2/book/search?q=";
 	
 	public static final String Douban_BOOK_URL="http://book.douban.com/isbn/";
+	
+	public static final String APP_CACHE_URI="sdcard/iBookclubCache/";
 }
