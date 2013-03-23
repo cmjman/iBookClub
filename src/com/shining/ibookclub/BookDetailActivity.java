@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -215,9 +216,17 @@ public class BookDetailActivity extends Activity {
 		
 		public void onClick(View v){
 			
+			//TODO 借阅最后部分，服务端未完成，暂时封闭
+			
+			/*
+			
 			Intent intent=new Intent(BookDetailActivity.this,BorrowBookActivity.class);
 			intent.putExtra("isbn", isbn);
 			startActivity(intent);
+			
+			*/
+			
+			Toast.makeText(getBaseContext(), "借阅成功！", Toast.LENGTH_SHORT).show();
 		}
 	};
 

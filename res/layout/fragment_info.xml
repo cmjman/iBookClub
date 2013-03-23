@@ -12,19 +12,13 @@
  	    android:layout_height="wrap_content"
  	    />
  	
- 	<Button
- 	    android:id="@+id/button_myborrow"
- 	    android:layout_width="match_parent"
- 	    android:layout_height="wrap_content"
- 	    android:text="点此查看我借阅的书"
- 	    android:layout_alignParentBottom="true"
- 	    />
+ 	
  	
  	<com.shining.ibookclub.support.LazyScrollView 
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	  	android:id="@+id/waterfall_scroll"
-	  	android:layout_above="@id/button_myborrow"
+	 	
      >
 
 	    <LinearLayout

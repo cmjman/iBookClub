@@ -298,6 +298,19 @@ public  class DummySectionFragment extends Fragment {
 		    		
 		    	});
 		    	
+		    	button_myborrow=(Button)getActivity().findViewById(R.id.button_myborrow);
+		    	
+		    	button_myborrow.setOnClickListener(new OnClickListener(){
+
+					
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(),BorrowActivity.class);
+						startActivity(intent);
+						
+					}
+		    		
+		    	});
+		    	
 		    	
 		    	pullToRefreshView=(PullToRefreshListView)getActivity().findViewById(R.id.pullToRefresh);
 		    	
@@ -308,6 +321,8 @@ public  class DummySectionFragment extends Fragment {
 		                new GetDataTask().execute();
 		            }
 		        });
+		    	
+		    	pullToRefreshView.onRefresh();
 
 		        mListItems = new ArrayList<BookBean>();
 		        mListItems.addAll(bookList);
@@ -329,18 +344,7 @@ public  class DummySectionFragment extends Fragment {
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
 		    	text_nickname.setTypeface(iBookClub.typeFace);
 		    	
-		    	button_myborrow=(Button)getActivity().findViewById(R.id.button_myborrow);
-		    	
-		    	button_myborrow.setOnClickListener(new OnClickListener(){
-
-					
-					public void onClick(View v) {
-						Intent intent=new Intent(getActivity(),BorrowActivity.class);
-						startActivity(intent);
-						
-					}
-		    		
-		    	});
+		    
 		    	
 		    	
 		    	

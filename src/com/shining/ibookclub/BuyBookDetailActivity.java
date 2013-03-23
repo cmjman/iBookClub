@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.LazyAdapter;
 import android.os.AsyncTask;
@@ -29,6 +30,8 @@ import android.view.Menu;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BuyBookDetailActivity extends Activity {
@@ -39,11 +42,18 @@ public class BuyBookDetailActivity extends Activity {
 	
 	private WebView webview;
 	
+	private TextView textview;
+	
+	
+	private BookBean bookBean;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_buy_book_detail);
-
+		
+		textview=(TextView)findViewById(R.id.textview_book);
+	
 		webview=(WebView)findViewById(R.id.webview_buybook);
 		
 		webview.getSettings().setSupportZoom(true);
@@ -59,6 +69,9 @@ public class BuyBookDetailActivity extends Activity {
         });
 		
     	url=getIntent().getStringExtra("url");
+    	bookBean=(BookBean)getIntent().getSerializableExtra("bookbean");
+    	
+    	textview.setText(bookBean.getBookname()+"\n"+bookBean.getAuthor());
     	
     	HtmlParser htmlParser=new HtmlParser();
     	htmlParser.execute(url);
@@ -107,11 +120,14 @@ public class BuyBookDetailActivity extends Activity {
 				
 				Elements elements= document.getElementsByClass("noline");
 				
-				String html="<html><body><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>" +elements.html()+"</body></html>";
+				String html="<html><body style='font-size:24px;font-weight:bold;'>" +
+						"<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>" +
+						"<img src='"+bookBean.getBookcover_url().replace("mpic", "lpic")+"' style='vertical-align:middle;'>"+ 
+						elements.html()+"</body></html>";
 
 				if(elements.isEmpty()){
 					
-					Toast.makeText(getBaseContext(), "网店暂无该书出售！", Toast.LENGTH_SHORT);
+					Toast.makeText(getBaseContext(), "网店暂无该书出售！", Toast.LENGTH_SHORT).show();
 				}
 				else{
 					

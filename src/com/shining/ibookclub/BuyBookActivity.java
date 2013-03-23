@@ -56,6 +56,7 @@ public class BuyBookActivity extends Activity {
 				
 				Intent intent=new Intent(getBaseContext(),BuyBookDetailActivity.class);
 				intent.putExtra("url", url);
+				intent.putExtra("bookbean", list.get(position));
 				startActivity(intent);
 			}	
 		});

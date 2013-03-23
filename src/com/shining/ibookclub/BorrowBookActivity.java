@@ -61,13 +61,13 @@ public class BorrowBookActivity extends Activity {
 		
 		System.out.println("isbn:"+isbn+"传递成功");
 		
-		new BorrowBookTask().execute((Void) null);
+	//	new BorrowBookTask().execute((Void) null);
 		
-		listOwner=(ListView)findViewById(R.id.list_owner);
+	//	listOwner=(ListView)findViewById(R.id.list_owner);
 		
-		listItem= new ArrayList<Hashtable<Integer, String>>();  
+	//	listItem= new ArrayList<Hashtable<Integer, String>>();  
 		
-	
+		
 		
 		
 		
