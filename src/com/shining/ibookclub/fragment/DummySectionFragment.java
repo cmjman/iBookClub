@@ -65,6 +65,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -117,20 +119,18 @@ public  class DummySectionFragment extends Fragment {
 	
 	private Button button_buyBook;
 	
-
+	private Button button_findNearbyBook;
 	
-	private ImageButton button_findNearbyBook;
-	
-
+	private ImageButton button_tweet;
 	
 	private String keyword; 
 	
 	 public static final String[] keywords = { 
-		 "谁是谷歌想要的人才","看见","Java并发编程实战",
-		 "观念的水位","打造Facebook","知日·妖怪","白夜行",
-		 "逃离德黑兰","百年孤独","全世界人民都知道","青春",
-		 "我所理解的生活","浪潮之巅","黑客与画家","编程珠玑",
-		 "平凡的世界","追风筝的人","你好，旧时光","活着",
+		 "Python参考手册","谣言粉碎机","Java并发编程实战",
+		 "物联网安全","打造Facebook","知日·奈良美智","白夜行",
+		 "白帽子讲web安全","知日·书之国","深入Android应用开发","青春",
+		 "MySQL高效编程","浪潮之巅","乔布斯传","研磨Struts2",
+		 "冰与火之歌","追风筝的人","商业的常识","活着",
 		 "不能承受的生命之轻","云图","1Q84","动物农场"
 	 };  
 	
@@ -189,10 +189,10 @@ public  class DummySectionFragment extends Fragment {
 			return inflater.inflate(R.layout.fragment_borrow, container, false);
 		}
 		else if(SEC_NUMBER_INTEGER==2){
-			return inflater.inflate(R.layout.fragment_lend, container,false);
+			return inflater.inflate(R.layout.fragment_timeline, container,false);
 		}
 		else if(SEC_NUMBER_INTEGER==3){
-			return inflater.inflate(R.layout.fragment_info, container,false);
+			return inflater.inflate(R.layout.fragment_discover, container,false);
 		}
 		
 		return textView;
@@ -230,20 +230,26 @@ public  class DummySectionFragment extends Fragment {
 					}
 		    	});
 		    	
-		      	button_findNearbyBook=(ImageButton)getActivity().findViewById(R.id.button_findNearbyBook);
-		    	
-		    	button_findNearbyBook.setOnClickListener(new OnClickListener(){
-
-					public void onClick(View v) {
-					
-						Intent intent=new Intent(getActivity(),FindNearbyBookActivity.class);
-						startActivity(intent);
-					}
-		    	});
-		    	
+		      	
 		    	
 		    	
 		    	  keywordsFlow = (KeywordsFlow)getActivity().findViewById(R.id.keyWordsFlow);  
+		    	  
+		    	  keywordsFlow.setOnItemClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						
+						
+						keyword=((TextView)v).getText().toString();
+						SearchPublicBookTask search=new SearchPublicBookTask();
+						search.execute((Void) null);
+						
+					}
+		    	  });
+		    	  
+		    	
+		    	  
 		    	  keywordsFlow.setDuration(800l);  
 		    
 		    	   keywordsFlow.rubKeywords(); 
@@ -311,6 +317,16 @@ public  class DummySectionFragment extends Fragment {
 		    		
 		    	});
 		    	
+		    	button_tweet=(ImageButton)getActivity().findViewById(R.id.button_tweet);
+		    	
+		    	button_tweet.setOnClickListener(new OnClickListener(){
+		    		
+		    		public void onClick(View v){
+		    			
+		    			Intent intent=new Intent(getActivity(),PostTweetActivity.class);
+						startActivity(intent);
+		    		}
+		    	});
 		    	
 		    	pullToRefreshView=(PullToRefreshListView)getActivity().findViewById(R.id.pullToRefresh);
 		    	
@@ -322,18 +338,36 @@ public  class DummySectionFragment extends Fragment {
 		            }
 		        });
 		    	
+		    	pullToRefreshView.setOnItemClickListener(new OnItemClickListener(){
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						
+						String isbn=bookList.get(position-1).getIsbn();
+						
+						if(isbn!=null){
+				
+							Intent intent = new Intent();
+							intent.setClass(getActivity(),
+									BookDetailActivity.class);
+							
+							intent.putExtra("ISBN", isbn);
+							startActivity(intent);
+						}
+						
+						
+					}
+		    	});
+		    	
 		    	pullToRefreshView.onRefresh();
 
 		        mListItems = new ArrayList<BookBean>();
 		        mListItems.addAll(bookList);
-
-		    //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-		       //         android.R.layout.simple_list_item_1, mListItems);
 		        
 		        adapter=new LazyAdapter(getActivity(), bookList);
 
 		        pullToRefreshView.setAdapter(adapter);
-
 
 		    	
 		    }
@@ -344,22 +378,31 @@ public  class DummySectionFragment extends Fragment {
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
 		    	text_nickname.setTypeface(iBookClub.typeFace);
 		    	
-		    
-		    	
-		    	
-		    	
-		    	
 		    	Bundle bundle=getActivity().getIntent().getExtras();
 		    	if(bundle!=null){
 		    		nickname=bundle.getString("nickname");
 		    		text_nickname.setText(nickname);
 		    	}
 		    	
+
+				button_findNearbyBook=(Button)getActivity().findViewById(R.id.button_findNearbyBook);
+		    	
+		    	button_findNearbyBook.setOnClickListener(new OnClickListener(){
+
+					public void onClick(View v) {
+					
+						Intent intent=new Intent(getActivity(),FindNearbyBookActivity.class);
+						startActivity(intent);
+					}
+		    	});
+		    	
 		    	display = getActivity().getWindowManager().getDefaultDisplay();
 				itemWidth = display.getWidth() / column_count;// 根据屏幕大小计算每列大小
 				assetManager = getActivity().getAssets();
 
 				InitLayout();
+				
+		    	
 		    	
 		    	
 		    	
@@ -484,8 +527,29 @@ public  class DummySectionFragment extends Fragment {
 
 	        @Override
 	        protected void onPostExecute(ArrayList<BookBean> result) {
-	          //  mListItems.addFirst("Added after refresh...");
-	            
+	        //    mListItems.addFirst("Added after refresh...");
+	        	
+	        	//TODO 个人状态部分未完全实现，以下仅为静态展示用
+	        	
+	        	String str[]={"人生也许就是不断地放下，然而令人痛心的是，我都没能好好地与他们道别",
+	        				"陌上花开，慢慢醉~",
+	        				"清明快到了，出游计划走起来吧~",
+	        				"我看到的柴静对未知充满了好奇和敬畏。她说记者就是在攫取，在剥离一个个灵魂。她总爱刨根问底，程度之深到了她自己都知道或多或少有贬义。 ",
+	        				"世界上不止一个人落在哈佛拥有才华横溢的校友，也不止一个人可以接触到这些顶级风投精英，但只有一个马克·扎克伯格。",
+	        				"曾经读过很多书，或许他们的文风语言够华丽，但是他们都是取悦或者虐待于人的精神，从来没有像平凡的世界这样，贯入人以强劲的价值观！",
+	        				"其实在青年的道路中，我们的大多数我想都属于这样，为了自己的生活为了自己的生活意义在世界上忙碌的奔波着。",
+	        				"我始终认为，一本书好的标准是看能不能深刻影响人，深刻影响他们走向未来的方向。这才是评价书的标准！",
+	        	};
+	        	
+	        	for(int i=0;i<str.length;i++){
+	        		BookBean bean=new BookBean();
+	        		bean.setBookname(str[i]);
+	        		
+	        		result.add((int)(Math.random()*15), bean);
+	        	}
+	        	
+	        	//TODO
+	        	
 	            adapter=new LazyAdapter(getActivity(), result);
 	            
 	            pullToRefreshView.setAdapter(adapter);
@@ -542,21 +606,25 @@ public  class DummySectionFragment extends Fragment {
 	 
 	 
 	 protected void onPostExecute(final Boolean success){
-	
-		BookInfoDao.getInstance().deleteAll();
+		 
+		 button_buyBook.setVisibility(View.VISIBLE);
+		 
+		 if(bookList.isEmpty()){
+			 Toast.makeText(getActivity(), "图书馆中暂时没有您需要的书！", Toast.LENGTH_SHORT).show();
+		 }
+		 else if(success){
+			 
+			 BookInfoDao.getInstance().deleteAll();
 		
-		
-			
-			for(BookBean book:bookList){
-					
+			 for(BookBean book:bookList){
+						
 				BookInfoDao.getInstance().create(book);
-			}
-			
-		    LoadSearchResult();
-		    
-		    webview_BookForBorrow.reload();
-	 
-		
+			 }
+				
+			 LoadSearchResult();
+			    
+			 webview_BookForBorrow.reload();
+		 }
 	}
 }
 	private void LoadSearchResult(){
@@ -598,7 +666,7 @@ public  class DummySectionFragment extends Fragment {
 		}, "bookShelfControl");
     	
     	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
-    	button_buyBook.setVisibility(View.VISIBLE);
+    	
 	}
 	 
 	

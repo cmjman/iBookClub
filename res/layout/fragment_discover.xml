@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+  
     android:orientation="vertical" >
 
  	<TextView
@@ -12,12 +13,21 @@
  	    android:layout_height="wrap_content"
  	    />
  	
+ 	 <Button
+        android:id="@+id/button_findNearbyBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+       	android:text="发现附近"
+        />
+ 	
  	
  	
  	<com.shining.ibookclub.support.LazyScrollView 
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	  	android:id="@+id/waterfall_scroll"
+	  	android:layout_above="@id/button_findNearbyBook"
 	 	
      >
 

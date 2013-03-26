@@ -48,7 +48,6 @@ public class LazyAdapter extends BaseAdapter {
         TextView text=(TextView)vi.findViewById(R.id.text);
         ImageView image=(ImageView)vi.findViewById(R.id.image);
         text.setText(data.get(position).getBookname());
-        System.out.println(data.get(position).getBookcover_url());
         imageLoader.DisplayImage(data.get(position).getBookcover_url(), image);
         return vi;
     }

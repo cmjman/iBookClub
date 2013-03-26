@@ -1,5 +1,6 @@
 package com.shining.ibookclub.support;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
@@ -52,7 +53,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
     private static ScaleAnimation animScaleLarge2Normal, animScaleNormal2Large, animScaleZero2Normal,  
             animScaleNormal2Zero;  
     /** 存储显示的关键字。 */  
-    private Vector<String> vecKeywords;  
+    private ArrayList<String> vecKeywords;  
     private int width, height;  
     /** 
      * go2Show()中被赋值为true，标识开发人员触发其开始动画显示。<br/> 
@@ -95,7 +96,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         lastStartAnimationTime = 0l;  
         animDuration = ANIM_DURATION;  
         random = new Random();  
-        vecKeywords = new Vector<String>(MAX);  
+        vecKeywords = new ArrayList<String>(MAX);  
         getViewTreeObserver().addOnGlobalLayoutListener(this);  
         interpolator = AnimationUtils.loadInterpolator(getContext(), android.R.anim.decelerate_interpolator);  
         animAlpha2Opaque = new AlphaAnimation(0.0f, 1.0f);  
@@ -121,6 +122,8 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         }  
         return result;  
     }  
+    
+  
   
     /** 
      * 开始动画显示。<br/> 
@@ -388,7 +391,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         }  
     }  
   
-    public Vector<String> getKeywords() {  
+    public ArrayList<String> getKeywords() {  
         return vecKeywords;  
     }  
   

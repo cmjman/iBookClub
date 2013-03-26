@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +50,6 @@ public class PostActivity extends Activity {
 	
 	private static BookBean bookBean=new BookBean();
 	
-//	private static String APIKey="003afe0642e755f700b0fa12c8b601e5";
-	
-//	private static String URL = "https://api.douban.com/v2/book/isbn/";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,17 +60,12 @@ public class PostActivity extends Activity {
     	      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     	      StrictMode.setThreadPolicy(policy);
     	    }
-    	    
-    	    
-    	
-    	
     	
     	 button_scan=(Button)findViewById(R.id.button_scan);
          button_scan.setOnClickListener(new OnClickListener(){
         	 
         	 public void onClick(View view){
         		 
-        		 //条形码扫描入口，Intent指向ZXING解析核心库，点击扫描按钮后，可跳转到摄像头解析界面
         		 Intent intent = new Intent("com.shining.iBookClub.library.com.google.zxing.client.android.SCAN");
         	     intent.putExtra("SCAN_MODE", "ONE_D_MODE");
         	     startActivityForResult(intent, 0);
@@ -139,26 +131,26 @@ public class PostActivity extends Activity {
 						JSONObject jsonObject = new JSONObject(strResult) ;
 						Boolean actionResult=jsonObject.getBoolean("ActionResult");
 							
-						if(actionResult){
-							setHasLend();
-						}
+						if(!actionResult)
+							result=true;
+							
 					}
 					catch(Exception e){
-						return false;
+						e.printStackTrace();
 					}
-					return result;
+					
 				}
-				
-			 
-			 
 	
-			
-			return true;
+			return result;
 		}
 		
 		protected void onPostExecute(final Boolean success) {
 			
-			 LoadBookInfo();
+			if(!success)
+				setHasLend();
+			LoadBookInfo();
+			
+			 
 		}
 		
 		protected void onCancelled() {
@@ -193,30 +185,28 @@ public class PostActivity extends Activity {
 		        	HttpUtility httpUtility=new HttpUtility(httpUrl,params);
 		        	String resultStr=	httpUtility.doPost();
 		        	
+		        	System.out.println("DeleteBook:"+resultStr);
+		 
 		        	JSONObject jsonObj=new JSONObject(resultStr);
 		        	
-				
-		        	if(jsonObj.getString("Result")=="Success"){
+		        	if(jsonObj.getString("Result").equals("Success")){
 		        		
 		        		result=true;
 		        	}
-		        
-				
-			}
-			catch(Exception e){
-				return false;
-			}
-		        return result;
+		        }
+		        catch(Exception e){
+		        	e.printStackTrace();
+		        } 
 			}	
-		        
-			
-			
-			return null;
-			
-			
+			return result;	
 		}
 		
-		
+		protected void onPostExecute(final Boolean success) {
+			
+			if(success)
+				Toast.makeText(PostActivity.this, "下架成功", Toast.LENGTH_SHORT).show();
+			 
+		}
 	}
 	
 	
@@ -224,77 +214,44 @@ public class PostActivity extends Activity {
 	 
 	 
 	 private BookBean getResultByIsbn(){
-	
-
-				try{	
-				
-				URL url = new URL(FinalConstants.Douban_ISBN_URL+isbn+"?apikey="+FinalConstants.Douban_API_KEY);      
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
-				conn.setConnectTimeout(5 * 1000);      
-				conn.setRequestMethod("GET");      
-		
-				
-				InputStream inStream = conn.getInputStream(); 
-		
-				return getBookInfo(inStream);
-				}catch (Exception e) {  
-				e.printStackTrace();  
-				}  
-		
-				return null;
-	}
-	 
-	 
-	 
-	 public BookBean getBookInfo(InputStream inputStream){
 		 
-
-		
-		 String str="";
-		 
-		 JSONObject json;
-
-		
-		 try{
-	
-		 
-		  BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-		    StringBuffer buffer = new StringBuffer();
-		    String line = "";
-		    while ((line = in.readLine()) != null){
-		      buffer.append(line);
-		    }
-		    
-		    str=buffer.toString();
-	 
-		
-		 System.out.println(str);
-		 
-	
-		 
-		 json = new JSONObject(str);
-		 
-		
-		 bookBean.setAuthor(json.getString("author"));
-		 bookBean.setBookcover_url(json.getString("image"));
-		 bookBean.setBookname(json.getString("title"));
-		 bookBean.setIsbn(json.getString("isbn13"));
-		 bookBean.setPrice(json.getString("price"));
-		 bookBean.setPublisher(json.getString("publisher"));
-		 bookBean.setSummary(json.getString("summary"));
-		 
+		 	
+			URL url;
+			try {
+				url = new URL(FinalConstants.Douban_ISBN_URL+isbn+"?apikey="+FinalConstants.Douban_API_KEY);
 			
-		 
-		 } catch (Exception e) {
-			e.printStackTrace();
-		}  
-		 
-		 
-		 return bookBean;
-		 
-	 }
-	 
-		
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+			conn.setConnectTimeout(5 * 1000);      
+			conn.setRequestMethod("GET");      
+			InputStream inStream = conn.getInputStream(); 
+			
+			String str="";
+			JSONObject json;
+			BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
+			StringBuffer buffer = new StringBuffer();
+			String line = "";
+			while ((line = in.readLine()) != null){
+				      
+				buffer.append(line);
+			}
+			str=buffer.toString();
+			json = new JSONObject(str);
+				 
+			bookBean.setAuthor(json.getString("author"));
+			bookBean.setBookcover_url(json.getString("image"));
+			bookBean.setBookname(json.getString("title"));
+			bookBean.setIsbn(json.getString("isbn13"));
+			bookBean.setPrice(json.getString("price"));
+			bookBean.setPublisher(json.getString("publisher"));
+			bookBean.setSummary(json.getString("summary"));
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}      
+			
+			return bookBean;
+	}
 	
 	public void LoadBookInfo(){
 		 

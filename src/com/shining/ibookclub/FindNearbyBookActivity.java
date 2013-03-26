@@ -20,8 +20,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.Overlay;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.support.BitmapCache;
 import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
@@ -43,6 +46,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +67,10 @@ public class FindNearbyBookActivity extends Activity {
 	private double longitude;
 	
 	private String provider;
+	
+	private Bitmap bm;
+	
+	private ArrayList<BookBean> bookList=new ArrayList<BookBean>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +148,7 @@ public class FindNearbyBookActivity extends Activity {
 	
          int radius =1000; 
   
-         Bitmap bm=getBitmap(radius);
+         bm=getBitmap(radius);
          BitmapDescriptor bmD = BitmapDescriptorFactory.fromBitmap(bm);
          gmap.addGroundOverlay(new GroundOverlayOptions().
         		            image(bmD).
@@ -149,15 +157,30 @@ public class FindNearbyBookActivity extends Activity {
 		 
          gmap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Marker"));
          
+         /*
+         for(int i=0;i<5;i++){
+         
+        	 gmap.addMarker(new MarkerOptions().icon(getDummyIcon()).position(arg0));
+         }
+         
+         MyItemizedOverlay itemizedOverlay=new MyItemizedOverlay(getAssets().list("images"));
+         
+         */
+        
          GetNearbyTask getNearbyTask=new GetNearbyTask();
          getNearbyTask.execute((Void)null);
 	}
 	
-	
+	/*
+	private BitmapDescriptor getDummyIcon(){
+		
+		return null;
+		
+	}*/
 	
 	 private Bitmap getBitmap(int radius) {
 		
-	      	Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2, Config.ARGB_4444);
+	      	Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2, Config.ALPHA_8);
 	      	System.out.println("Bitmap Size:"+bitmap.getByteCount());
 	        Canvas canvas = new Canvas(bitmap);
 	        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -196,7 +219,10 @@ public class FindNearbyBookActivity extends Activity {
 						
 						String strResult=httpUtility.doPost();
 						
-						System.out.println(strResult);
+						Gson gson = new Gson();
+						bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+						
+						
 				}
 				catch(Exception e){
 					return false;
@@ -212,6 +238,8 @@ public class FindNearbyBookActivity extends Activity {
 		
 		protected void onPostExecute(final Boolean success) {
 			
+			
+		//	System.out.println(bookList.get(0).getBookname().toString());
 			
 		}
 	}
@@ -257,6 +285,34 @@ public class FindNearbyBookActivity extends Activity {
 		
 		super.onResume();
 		locationManager.requestLocationUpdates(provider, 10000, 10, locationListener);
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		//短时间内多次进入到该界面会导致图片缓存空间（默认16M)溢出，待解决
+		//03-26 22:07:03.530: E/dalvikvm-heap(6531): Out of memory on a 16777232-byte allocation.
+		//03-26 22:07:03.540: E/AndroidRuntime(6531): java.lang.OutOfMemoryError
+		//03-26 22:07:03.540: E/AndroidRuntime(6531): 	at android.graphics.Bitmap.nativeCreate(Native Method)
+
+		   
+		if (keyCode== KeyEvent.KEYCODE_BACK) {
+		      
+			bm=null;
+			System.gc();
+			
+			FindNearbyBookActivity.this.finish();
+			
+		    return true;
+		}
+		   
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	public void onDestroy(){
+		
+		super.onDestroy();
+		bm=null;
+		System.gc();
 	}
 	
 	@Override

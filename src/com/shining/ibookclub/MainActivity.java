@@ -1,5 +1,6 @@
 package com.shining.ibookclub;
 
+import com.shining.ibookclub.R.id;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.fragment.DummySectionFragment;
@@ -124,9 +125,11 @@ public class MainActivity extends FragmentActivity implements
 	        	    SharedPreferences sp=this.getSharedPreferences("userInfo", MODE_PRIVATE); 
 	        	    sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
 	        	    startActivity(new Intent(MainActivity.this,LoginActivity.class));
-	        }
-	        	    
-	            break;
+	        	}break;
+	        case R.id.menu_personal:
+	        	startActivity(new Intent(getBaseContext(),PersonalInfoActivity.class));
+	        	break;
+	            
 	        }
 	        return true;
 	 }

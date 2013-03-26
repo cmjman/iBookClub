@@ -81,8 +81,8 @@ public class BorrowActivity extends Activity {
 
     	
     	
-    	button_editInfo=(Button)findViewById(R.id.button_editInfo);
-    	button_editInfo.setTypeface(iBookClub.typeFace);
+   // 	button_editInfo=(Button)findViewById(R.id.button_editInfo);
+   // 	button_editInfo.setTypeface(iBookClub.typeFace);
 	}
 	
 	 public class GetMyBookInfo  extends AsyncTask<Void, Void, Boolean> {

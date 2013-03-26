@@ -128,6 +128,7 @@ public class BuyBookDetailActivity extends Activity {
 				if(elements.isEmpty()){
 					
 					Toast.makeText(getBaseContext(), "网店暂无该书出售！", Toast.LENGTH_SHORT).show();
+					BuyBookDetailActivity.this.finish();
 				}
 				else{
 					

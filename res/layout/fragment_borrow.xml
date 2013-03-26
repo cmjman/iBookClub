@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="5dp" >
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+     >
     
     <SearchView
         android:id="@+id/searchView"
@@ -12,15 +16,6 @@
         android:queryHint="请在此输入需要借的书名"
         android:background="#FFFFFF"
         ></SearchView>
-    
-    <ImageButton
-        android:id="@+id/button_findNearbyBook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_find_nearby_book"
-        />
-
-	
 
      <WebView
    	     android:id="@+id/webview_BookForBorrow"
