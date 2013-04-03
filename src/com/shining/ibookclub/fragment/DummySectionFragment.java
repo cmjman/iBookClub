@@ -401,15 +401,9 @@ public  class DummySectionFragment extends Fragment {
 				assetManager = getActivity().getAssets();
 
 				InitLayout();
-				
-		    	
-		    	
-		    	
-		    	
+
 		    }
-		   
-	     
-	 
+
 	}
 	 
 	 private void InitLayout() {
@@ -491,6 +485,46 @@ public  class DummySectionFragment extends Fragment {
 			task.execute(param);
 
 		}
+		
+	private class GetRecommendationTask extends AsyncTask<Void, Void, ArrayList<BookBean>>{
+
+		@Override
+		protected ArrayList<BookBean> doInBackground(Void... p) {
+			
+			
+        	String httpUrl=FinalConstants.SERVER_URL+"getRecommend.action";
+			
+			if(LoginSingleton.isLoginSuccess()){
+				
+			
+				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+		
+				try{
+			
+					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+					
+					String strResult=httpUtility.doPost();
+					System.out.println("GetRecommend:"+strResult);
+					Gson gson = new Gson();
+					bookList = gson.fromJson(strResult, new TypeToken<ArrayList<BookBean>>(){}.getType());
+					
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+	
+			}
+		
+			
+			return bookList;
+		}
+		
+		protected void onPostExecute(ArrayList<BookBean> result) {
+		
+			//TODO 服务器端推荐算法待完善
+		}
+	}
 	 
 	 private class GetDataTask extends AsyncTask<Void, Void, ArrayList<BookBean>> {
 

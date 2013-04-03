@@ -41,6 +41,57 @@
         android:hint="密码确认"
         />
     
+    <EditText 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_age"
+        android:hint="年龄"
+        />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="阅读兴趣："
+        />
+    
+    <Spinner 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_interest"
+        />
+    
+     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="性别："
+        />
+    
+   
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_sex"
+        android:orientation="horizontal"
+        >
+        
+        <RadioButton 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"
+            android:id="@+id/male"
+            />
+        
+         <RadioButton 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            android:id="@+id/female"
+            />
+        
+   	</RadioGroup>
+    
+    
+    
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

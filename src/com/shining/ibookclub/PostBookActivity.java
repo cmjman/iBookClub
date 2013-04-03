@@ -38,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 public class PostBookActivity extends Activity {
@@ -62,6 +63,10 @@ public class PostBookActivity extends Activity {
 	
 	private ListView listView;
 	
+	private RatingBar ratingBar;
+	
+	private float rating;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,11 @@ public class PostBookActivity extends Activity {
 		setContentView(R.layout.activity_post_book);
 		
 		bookBean=(BookBean)getIntent().getSerializableExtra("bean");
+		
+		ratingBar=(RatingBar)findViewById(R.id.ratringBar);
+		
+		ratingBar.setNumStars(5);
+		ratingBar.setRating(3);
 		
 		 gmap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragment_map)).getMap(); 
 	
@@ -121,6 +131,10 @@ public class PostBookActivity extends Activity {
 
 		
 			public void onClick(View arg0) {
+				
+				rating=ratingBar.getRating();
+				
+				System.out.println(rating);
 			
 				PostBookTask postBookTask=new PostBookTask();
 				postBookTask.execute((Void)null);
@@ -165,6 +179,8 @@ public class PostBookActivity extends Activity {
 				System.out.println("PostBookTask gson:"+gsonBookInfo.toJson(bookBean));
 				params.add(new BasicNameValuePair("latitude",String.valueOf(latitude)));
 				params.add(new BasicNameValuePair("longitude",String.valueOf(longitude)));
+				params.add(new BasicNameValuePair("rating",String.valueOf(rating)));
+				
 			
 		
 				

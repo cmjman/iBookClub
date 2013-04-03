@@ -2,9 +2,9 @@ package com.shining.ibookclub.support;
 
 public class FinalConstants {
 	
-	//  public static final String SERVER_URL ="http://192.168.126.50:8004/iBookClubServer/"; 
+	  public static final String SERVER_URL ="http://192.168.126.50:8004/iBookClubServer/"; 
 	   
-    public static final String SERVER_URL ="http://1.ibookclubserver.sinaapp.com/"; 
+  //  public static final String SERVER_URL ="http://1.ibookclubserver.sinaapp.com/"; 
 
 	public static final String Douban_API_KEY="003afe0642e755f700b0fa12c8b601e5"; 
 	
