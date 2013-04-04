@@ -28,7 +28,9 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.*;
+import com.shining.ibookclub.bean.Bean;
 import com.shining.ibookclub.bean.BookBean;
+import com.shining.ibookclub.bean.TimelineBean;
 import com.shining.ibookclub.dao.BookInfoDao;
 import com.shining.ibookclub.dao.MyBookDao;
 import com.shining.ibookclub.support.FinalConstants;
@@ -142,6 +144,8 @@ public  class DummySectionFragment extends Fragment {
 	
 	
 	ArrayList<BookBean> bookList=new ArrayList<BookBean>();
+	
+	ArrayList<TimelineBean> timeline=new ArrayList<TimelineBean>();
 	
 
 	
@@ -333,8 +337,11 @@ public  class DummySectionFragment extends Fragment {
 		    	pullToRefreshView.setOnRefreshListener(new OnRefreshListener() {
 		            @Override
 		            public void onRefresh() {
-		                // Do work to refresh the list here.
-		                new GetDataTask().execute();
+		               
+		            
+		            	
+		            	   new GetDataTask().execute();
+		            	new GetTimelineTask().execute();
 		            }
 		        });
 		    	
@@ -344,7 +351,12 @@ public  class DummySectionFragment extends Fragment {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						
-						String isbn=bookList.get(position-1).getIsbn();
+						String isbn=null;
+						
+						if(!bookList.isEmpty())
+						
+							isbn=bookList.get(position-1).getIsbn();
+						
 						
 						if(isbn!=null){
 				
@@ -362,12 +374,13 @@ public  class DummySectionFragment extends Fragment {
 		    	
 		    	pullToRefreshView.onRefresh();
 
-		        mListItems = new ArrayList<BookBean>();
-		        mListItems.addAll(bookList);
+		 //       mListItems = new ArrayList<BookBean>();
+	//	        mListItems.addAll(bookList);
 		        
-		        adapter=new LazyAdapter(getActivity(), bookList);
+		        
+		 //       adapter=new LazyAdapter(getActivity(), timeline);
 
-		        pullToRefreshView.setAdapter(adapter);
+		//        pullToRefreshView.setAdapter(adapter);
 
 		    	
 		    }
@@ -525,6 +538,57 @@ public  class DummySectionFragment extends Fragment {
 			//TODO 服务器端推荐算法待完善
 		}
 	}
+	
+	private class GetTimelineTask extends AsyncTask<Void,Void,ArrayList<TimelineBean>>{
+
+		@Override
+		protected ArrayList<TimelineBean> doInBackground(Void... p) {
+		
+			String httpUrl=FinalConstants.SERVER_URL+"getTimeline.action";
+			
+			
+			
+			if(LoginSingleton.isLoginSuccess()){
+				
+				
+				List <NameValuePair> params = new ArrayList <NameValuePair>(); 
+		        params.add(new BasicNameValuePair("email", LoginSingleton.loginEmail));  
+		        
+		    	try{
+					
+					HttpUtility httpUtility=new HttpUtility(httpUrl,params);
+					
+					String strResult=httpUtility.doPost();
+					System.out.println("GetTimeline:"+strResult);
+					Gson gson = new Gson();
+					timeline = gson.fromJson(strResult, new TypeToken<ArrayList<TimelineBean>>(){}.getType());
+					
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+	
+			}
+			
+            return timeline;
+			
+		}
+		
+		  protected void onPostExecute(ArrayList<TimelineBean> result) {
+		      
+		        	
+		          //  adapter=new LazyAdapter(getActivity(), result);
+			  adapter.addData(getActivity(), result);
+		            
+		            pullToRefreshView.setAdapter(adapter);
+
+		            // Call onRefreshComplete when the list has been refreshed.
+		            pullToRefreshView.onRefreshComplete();
+
+		            super.onPostExecute(result);
+		  }
+		
+	}
 	 
 	 private class GetDataTask extends AsyncTask<Void, Void, ArrayList<BookBean>> {
 
@@ -561,37 +625,20 @@ public  class DummySectionFragment extends Fragment {
 
 	        @Override
 	        protected void onPostExecute(ArrayList<BookBean> result) {
-	        //    mListItems.addFirst("Added after refresh...");
-	        	
-	        	//TODO 个人状态部分未完全实现，以下仅为静态展示用
-	        	
-	        	String str[]={"人生也许就是不断地放下，然而令人痛心的是，我都没能好好地与他们道别",
-	        				"陌上花开，慢慢醉~",
-	        				"清明快到了，出游计划走起来吧~",
-	        				"我看到的柴静对未知充满了好奇和敬畏。她说记者就是在攫取，在剥离一个个灵魂。她总爱刨根问底，程度之深到了她自己都知道或多或少有贬义。 ",
-	        				"世界上不止一个人落在哈佛拥有才华横溢的校友，也不止一个人可以接触到这些顶级风投精英，但只有一个马克·扎克伯格。",
-	        				"曾经读过很多书，或许他们的文风语言够华丽，但是他们都是取悦或者虐待于人的精神，从来没有像平凡的世界这样，贯入人以强劲的价值观！",
-	        				"其实在青年的道路中，我们的大多数我想都属于这样，为了自己的生活为了自己的生活意义在世界上忙碌的奔波着。",
-	        				"我始终认为，一本书好的标准是看能不能深刻影响人，深刻影响他们走向未来的方向。这才是评价书的标准！",
-	        	};
-	        	
-	        	for(int i=0;i<str.length;i++){
-	        		BookBean bean=new BookBean();
-	        		bean.setBookname(str[i]);
-	        		
-	        		result.add((int)(Math.random()*15), bean);
-	        	}
-	        	
-	        	//TODO
+	        
+	        
+	        
 	        	
 	            adapter=new LazyAdapter(getActivity(), result);
+	        //	adapter.addData(getActivity(),result);
 	            
 	            pullToRefreshView.setAdapter(adapter);
 
-	            // Call onRefreshComplete when the list has been refreshed.
+	          
 	            pullToRefreshView.onRefreshComplete();
 
 	            super.onPostExecute(result);
+	        	
 	        }
 	    }
 

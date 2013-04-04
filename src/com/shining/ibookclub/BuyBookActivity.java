@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.gson.GsonBuilder;
+import com.shining.ibookclub.bean.Bean;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.LazyAdapter;
@@ -153,6 +154,7 @@ public class BuyBookActivity extends Activity {
 				LazyAdapter adapter=new LazyAdapter(BuyBookActivity.this, list);
 				
 				listView.setAdapter(adapter);
+				
 				
 			}
 				 

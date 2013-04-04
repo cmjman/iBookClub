@@ -200,22 +200,25 @@ public class PostBookActivity extends Activity {
 						result=jsonObj.getBoolean("ActionResult");
 				}
 				catch(Exception e){
-					return false;
+					e.printStackTrace();
 				}
 				
 				
-				return result;
 			}
 			
-			return null;
+			return result;
 		}
 		
 		protected void onPostExecute(final Boolean success) {
 			
+			if(success){
 			
-			Toast.makeText(getApplicationContext(), "发布成功！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "发布成功！", Toast.LENGTH_SHORT).show();
 			
 			PostBookActivity.this.finish();
+			}else{
+				Toast.makeText(getApplicationContext(), "发布失败！", Toast.LENGTH_SHORT).show();
+			}
 		}
 		
 		

@@ -2,7 +2,7 @@ package com.shining.ibookclub.bean;
 
 import java.io.Serializable;
 
-public class BookBean implements Serializable{
+public class BookBean implements Serializable,Bean{
 	
 	private String isbn;
 	private String bookname;
@@ -10,8 +10,9 @@ public class BookBean implements Serializable{
 	private String author;
 	private String bookcover_url;
 	private String summary;
-
 	private String price;
+	
+	private String timestamp;
 	
 	public void setIsbn(String isbn){
 		this.isbn=isbn;
@@ -68,6 +69,29 @@ public class BookBean implements Serializable{
 	
 	public String getPrice(){
 		return this.price;
+	}
+
+	@Override
+	public String getMessage() {
+		
+		return this.bookname;
+	}
+
+	@Override
+	public String getAvatar() {
+
+		return this.bookcover_url;
+	}
+	
+	public void setTimeStamp(String timestamp){
+		
+		this.timestamp=timestamp;
+	}
+
+	
+	public String getTimeStamp() {
+	
+		return this.timestamp;
 	}
 	
 }

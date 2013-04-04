@@ -103,8 +103,6 @@ public class PostActivity extends Activity {
      	webview_BookInfo.getSettings().setJavaScriptCanOpenWindowsAutomatically(
 				true);
      	webview_BookInfo.getSettings().setJavaScriptEnabled(true);
-
-     	
 	}
 	
 	public class SearchBookTask extends AsyncTask<Void, Void, Boolean> {
