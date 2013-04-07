@@ -3,16 +3,21 @@ package com.shining.ibookclub.fragment;
 
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -353,22 +358,19 @@ public  class DummySectionFragment extends Fragment {
 						
 						String isbn=null;
 						
-						if(!bookList.isEmpty())
+						
+						
+						if(bookList.get(position-1) instanceof BookBean){
 						
 							isbn=bookList.get(position-1).getIsbn();
 						
-						
-						if(isbn!=null){
-				
 							Intent intent = new Intent();
 							intent.setClass(getActivity(),
 									BookDetailActivity.class);
-							
+								
 							intent.putExtra("ISBN", isbn);
 							startActivity(intent);
 						}
-						
-						
 					}
 		    	});
 		    	
@@ -386,7 +388,8 @@ public  class DummySectionFragment extends Fragment {
 		    }
 		    else if(SEC_NUMBER_INTEGER==3){
 		    	
-		    	
+		    	GetRecommendationTask recommendTask=new GetRecommendationTask();
+		    	recommendTask.execute();
 		    	
 		    	text_nickname=(TextView)getActivity().findViewById(R.id.text_nickname);
 		    	text_nickname.setTypeface(iBookClub.typeFace);
@@ -413,13 +416,109 @@ public  class DummySectionFragment extends Fragment {
 				itemWidth = display.getWidth() / column_count;// 根据屏幕大小计算每列大小
 				assetManager = getActivity().getAssets();
 
-				InitLayout();
+				
 
 		    }
 
 	}
 	 
-	 private void InitLayout() {
+	 class DownloadTask extends AsyncTask<ArrayList<BookBean>,Void,Boolean>{
+
+
+			protected Boolean doInBackground(ArrayList<BookBean>... beans) {
+				
+				long t1=System.currentTimeMillis();
+				
+				File dir=new File(FinalConstants.APP_CACHE_URI+"images/");
+				if(!dir.exists())
+					dir.mkdir();
+				
+				Boolean result=false;
+				
+				try{
+				
+					for(int i=0;i<beans[0].size();i++){
+
+						URL url=new URL(beans[0].get(i).getBookcover_url());
+						System.out.println(url);
+						URLConnection con=url.openConnection();
+						final InputStream inStream=con.getInputStream();
+						
+						final File file=new File(FinalConstants.APP_CACHE_URI+"images/"+beans[0].get(i).getIsbn()+".jpg");
+						if(!file.exists())
+							file.createNewFile();
+						final FileOutputStream outStream=new FileOutputStream(file);
+						
+						final byte[] buffer = new byte[1024];
+						
+						final BlockingQueue<Integer> intQueue=new LinkedBlockingQueue<Integer>(2);
+						
+						
+						Thread read=new Thread(){
+							
+							public void run(){
+								
+								int byteread=0;
+									
+								try {
+									
+									while((byteread=inStream.read(buffer))!=-1){
+										
+										intQueue.put(byteread);	  
+									}
+								} catch (Exception e) {
+									
+									e.printStackTrace();
+								} 
+							}
+						};
+						
+						Thread write=new Thread(){
+							
+							public void run(){
+								
+								int byteread=0;
+								
+								try {
+									
+									while(true){
+										
+										byteread=intQueue.take();
+										outStream.write(buffer,0,byteread);
+									}
+								} catch (Exception e) {
+									
+									e.printStackTrace();
+								}
+							}
+						};
+						
+						read.start();
+						write.start();
+						
+					}
+					result=true;
+				
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				long t2=System.currentTimeMillis();
+				
+				System.out.println("Download:"+(t2-t1));
+				
+				return result;
+			}
+			
+			protected void onPostExecute(ArrayList<BookBean> result) {
+				
+				
+			
+			}
+
+		}
+	 
+	 private void InitLayout(ArrayList<BookBean> list) {
 			waterfall_scroll = (LazyScrollView) getActivity().findViewById(R.id.waterfall_scroll);
 			waterfall_scroll.getView();
 			waterfall_scroll.setOnScrollListener(new OnScrollListener() {
@@ -462,16 +561,30 @@ public  class DummySectionFragment extends Fragment {
 			}
 
 			// 加载所有图片路径
-
+			
+			
+			
+			
+			DownloadTask downloadTask=new DownloadTask();
+			downloadTask.execute(list);
+			
 			try {
 				image_filenames = Arrays.asList(assetManager.list(image_path));
+		
+				//TODO 下载图片部分已完成，将上面地址改成本地的图片地址即可
+					
+		//		image_filenames = Arrays.asList();
+				
+				
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// 第一次加载
 			AddItemToContainer(current_page, page_count);
 		}
+	 
+	 
 
 		private void AddItemToContainer(int pageindex, int pagecount) {
 			int j = 0;
@@ -535,7 +648,8 @@ public  class DummySectionFragment extends Fragment {
 		
 		protected void onPostExecute(ArrayList<BookBean> result) {
 		
-			//TODO 服务器端推荐算法待完善
+				InitLayout(result);
+			
 		}
 	}
 	
