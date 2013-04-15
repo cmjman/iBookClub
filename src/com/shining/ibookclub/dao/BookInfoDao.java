@@ -66,14 +66,14 @@ public class BookInfoDao {
 		
 		 
 		 cv.put("isbn",bookBean.getIsbn());
-		 cv.put("bookname", bookBean.getBookname());
+		 cv.put("bookname", bookBean.getName());
 		 cv.put("author", bookBean.getAuthor());
 		 cv.put("publisher", bookBean.getPublisher());
-		 cv.put("bookcover", bookBean.getBookcover_url());
+		 cv.put("bookcover", bookBean.getBookcover());
 		 cv.put("price", bookBean.getPrice());
 		 cv.put("summary", bookBean.getSummary());
 		 
-		 System.out.println("bookBean.getBookname()"+bookBean.getBookname());
+		 System.out.println("bookBean.getBookname()"+bookBean.getName());
 		
 		 database.insert("favorite_books", null, cv);
 	}
@@ -122,10 +122,10 @@ public class BookInfoDao {
 				new String[] {});
 		if (cursor.moveToFirst()) {
 			bookBean = new BookBean();
-			bookBean.setBookname(cursor.getString(2));
+			bookBean.setName(cursor.getString(2));
 			bookBean.setAuthor(cursor.getString(3));
 			bookBean.setPublisher(cursor.getString(4));
-			bookBean.setBookcover_url(cursor.getString(5));
+			bookBean.setBookcover(cursor.getString(5));
 			bookBean.setPrice(cursor.getString(6));
 			bookBean.setSummary(cursor.getString(7));
 			bookBean.setIsbn(isbn);

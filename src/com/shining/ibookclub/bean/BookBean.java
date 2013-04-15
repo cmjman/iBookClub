@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class BookBean implements Serializable,Bean{
 	
 	private String isbn;
-	private String bookname;
+	private String name;
 	private String publisher;
 	private String author;
-	private String bookcover_url;
+	private String bookcover;
 	private String summary;
 	private String price;
 	
@@ -18,8 +18,8 @@ public class BookBean implements Serializable,Bean{
 		this.isbn=isbn;
 	}
 	
-	public void setBookname(String bookname){
-		this.bookname=bookname;
+	public void setName(String name){
+		this.name=name;
 	}
 	
 	public void setPublisher(String publisher){
@@ -30,8 +30,8 @@ public class BookBean implements Serializable,Bean{
 		this.author=author;
 	}
 	
-	public void setBookcover_url(String bookcover_url){
-		this.bookcover_url=bookcover_url;
+	public void setBookcover(String bookcover){
+		this.bookcover=bookcover;
 	}
 	
 	public void setSummary(String summary){
@@ -47,8 +47,8 @@ public class BookBean implements Serializable,Bean{
 		return this.isbn;
 	}
 	
-	public String getBookname(){
-		return this.bookname;
+	public String getName(){
+		return this.name;
 	}
 	
 	public String getPublisher(){
@@ -59,8 +59,8 @@ public class BookBean implements Serializable,Bean{
 		return this.author;
 	}
 	
-	public String getBookcover_url(){
-		return this.bookcover_url;
+	public String getBookcover(){
+		return this.bookcover;
 	}
 	
 	public String getSummary(){
@@ -74,13 +74,13 @@ public class BookBean implements Serializable,Bean{
 	@Override
 	public String getMessage() {
 		
-		return this.bookname;
+		return this.name;
 	}
 
 	@Override
 	public String getAvatar() {
 
-		return this.bookcover_url;
+		return this.bookcover;
 	}
 	
 	public void setTimeStamp(String timestamp){

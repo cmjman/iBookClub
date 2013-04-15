@@ -71,7 +71,7 @@ public class BuyBookDetailActivity extends Activity {
     	url=getIntent().getStringExtra("url");
     	bookBean=(BookBean)getIntent().getSerializableExtra("bookbean");
     	
-    	textview.setText(bookBean.getBookname()+"\n"+bookBean.getAuthor());
+    	textview.setText(bookBean.getName()+"\n"+bookBean.getAuthor());
     	
     	HtmlParser htmlParser=new HtmlParser();
     	htmlParser.execute(url);
@@ -122,7 +122,7 @@ public class BuyBookDetailActivity extends Activity {
 				
 				String html="<html><body style='font-size:24px;font-weight:bold;'>" +
 						"<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>" +
-						"<img src='"+bookBean.getBookcover_url().replace("mpic", "lpic")+"' style='vertical-align:middle;'>"+ 
+						"<img src='"+bookBean.getBookcover().replace("mpic", "lpic")+"' style='vertical-align:middle;'>"+ 
 						elements.html()+"</body></html>";
 
 				if(elements.isEmpty()){

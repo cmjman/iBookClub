@@ -439,7 +439,7 @@ public  class DummySectionFragment extends Fragment {
 				
 					for(int i=0;i<beans[0].size();i++){
 
-						URL url=new URL(beans[0].get(i).getBookcover_url());
+						URL url=new URL(beans[0].get(i).getBookcover());
 						System.out.println(url);
 						URLConnection con=url.openConnection();
 						final InputStream inStream=con.getInputStream();
