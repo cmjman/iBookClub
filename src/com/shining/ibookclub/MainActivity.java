@@ -11,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -50,11 +51,13 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
+		   
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -93,6 +96,7 @@ public class MainActivity extends FragmentActivity implements
 		
 		 BookInfoDao.initBookInfoDao(this);
 		 MyBookDao.initMyBookDao(this);
+		 
 		
 	}
 	

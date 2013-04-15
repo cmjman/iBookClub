@@ -162,7 +162,7 @@ public class BookDetailActivity extends Activity {
      		
      		
 			public String getBookName() {
-				return bookBean.getBookname();
+				return bookBean.getName();
 			}
 
 			public String getBookSummary() {
@@ -170,7 +170,7 @@ public class BookDetailActivity extends Activity {
 			}
 
 			public String getBookImageUrl() {
-				return bookBean.getBookcover_url();
+				return bookBean.getBookcover();
 			}
 
 			public String getBookAuthor() {

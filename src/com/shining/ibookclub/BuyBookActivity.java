@@ -119,8 +119,8 @@ public class BuyBookActivity extends Activity {
 						 
 						 bookBean=new BookBean();
 						 bookBean.setAuthor(json_temp.getString("author"));
-						 bookBean.setBookcover_url(json_temp.getString("image"));
-						 bookBean.setBookname(json_temp.getString("title"));
+						 bookBean.setBookcover(json_temp.getString("image"));
+						 bookBean.setName(json_temp.getString("title"));
 						 bookBean.setIsbn(json_temp.getString("isbn13"));
 						 bookBean.setPrice(json_temp.getString("price"));
 						 bookBean.setPublisher(json_temp.getString("publisher"));

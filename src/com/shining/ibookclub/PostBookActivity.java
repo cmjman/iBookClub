@@ -147,7 +147,7 @@ public class PostBookActivity extends Activity {
 	         
 		  List<String> data = new ArrayList<String>();
 		   
-		  data.add("书名："+bean.getBookname());
+		  data.add("书名："+bean.getName());
 		  
 		  data.add("ISBN："+bean.getIsbn());
 		        

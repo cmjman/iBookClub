@@ -236,8 +236,8 @@ public class PostActivity extends Activity {
 			json = new JSONObject(str);
 				 
 			bookBean.setAuthor(json.getString("author"));
-			bookBean.setBookcover_url(json.getString("image"));
-			bookBean.setBookname(json.getString("title"));
+			bookBean.setBookcover(json.getString("image"));
+			bookBean.setName(json.getString("title"));
 			bookBean.setIsbn(json.getString("isbn13"));
 			bookBean.setPrice(json.getString("price"));
 			bookBean.setPublisher(json.getString("publisher"));
@@ -259,7 +259,7 @@ public class PostActivity extends Activity {
      		
      		
 			public String getBookName() {
-				return bookBean.getBookname();
+				return bookBean.getName();
 			}
 
 			public String getBookSummary() {
@@ -267,7 +267,7 @@ public class PostActivity extends Activity {
 			}
 
 			public String getBookImageUrl() {
-				return bookBean.getBookcover_url();
+				return bookBean.getBookcover();
 			}
 
 			public String getBookAuthor() {
