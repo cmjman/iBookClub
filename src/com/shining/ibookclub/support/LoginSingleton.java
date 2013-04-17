@@ -25,7 +25,7 @@ public class LoginSingleton {
 	
     private static LoginSingleton loginInstance = null;  
     
-
+   final private static String SALT="shinlock";
       
     
     public static HttpClient httpClient = null;  
@@ -61,10 +61,14 @@ public class LoginSingleton {
 private static Boolean Login(){
 	
 		String httpUrl=FinalConstants.SERVER_URL+"login.action";
+	
+		
+		Encryption encryption=new Encryption(loginPassword+SALT);
+		String password_encrypted=encryption.encrypt();
 		
 		List <NameValuePair> params = new ArrayList <NameValuePair>(); 
         params.add(new BasicNameValuePair("email", loginEmail)); 
-        params.add(new BasicNameValuePair("password", loginPassword)); 
+        params.add(new BasicNameValuePair("password", password_encrypted)); 
         
 		try{
 			
@@ -76,10 +80,16 @@ private static Boolean Login(){
 			actionResult=jsonObject.getBoolean("ActionResult");
 			nickname=jsonObject.getString("nickname");	
 			System.out.println("Nickname :"+nickname);
+			if(nickname=="0"){
+				System.out.println("用户不存在");
+			}else if(nickname=="-1"){
+				System.out.println("密码错误");
+			}
 		}
 		catch(Exception e){
+			
 			e.printStackTrace();
-			return false;
+			
 		}
 		return actionResult;
 	}

@@ -7,6 +7,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.shining.ibookclub.support.Encryption;
 import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
@@ -34,6 +35,8 @@ public class RegisterActivity extends Activity {
 	private EditText text_password;
 	private EditText text_confirm_password;
 	private EditText text_age;
+	
+	final private static String SALT="shinlock";
 	
 	private String gender;
 	
@@ -135,10 +138,14 @@ public class RegisterActivity extends Activity {
 			String httpUrl=FinalConstants.SERVER_URL+"register.action";
 			Boolean actionResult=false;
 			
+			Encryption encryption=new Encryption(str[2]+SALT);
+			String password_encrypted=encryption.encrypt();
+			
+			
 			List <NameValuePair> params = new ArrayList <NameValuePair>(); 
 	        params.add(new BasicNameValuePair("email", str[0])); 
 	        params.add(new BasicNameValuePair("nickname",str[1]));
-	        params.add(new BasicNameValuePair("password", str[2])); 
+	        params.add(new BasicNameValuePair("password", password_encrypted)); 
 	        params.add(new BasicNameValuePair("interest",str[3]));
 	        params.add(new BasicNameValuePair("gender",str[4]));
 	        params.add(new BasicNameValuePair("age",str[5]));
