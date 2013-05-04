@@ -2,43 +2,26 @@ package com.shining.ibookclub.fragment;
 
 
 
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-
-
-
 import org.apache.http.NameValuePair;
-
 import org.apache.http.message.BasicNameValuePair;
-
-import org.json.JSONObject;
-
-
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.*;
-import com.shining.ibookclub.bean.Bean;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.bean.TimelineBean;
 import com.shining.ibookclub.dao.BookInfoDao;
-import com.shining.ibookclub.dao.MyBookDao;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.ImageLoaderTask;
 import com.shining.ibookclub.support.KeywordsFlow;
@@ -49,23 +32,17 @@ import com.shining.ibookclub.support.LoginSingleton;
 import com.shining.ibookclub.support.PullToRefreshListView;
 import com.shining.ibookclub.support.PullToRefreshListView.OnRefreshListener;
 import com.shining.ibookclub.support.TaskParam;
-
-
 import android.content.Intent;
 import android.content.res.AssetManager;
-
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.os.Handler;
-
 import android.support.v4.app.Fragment;
-
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -74,9 +51,7 @@ import android.webkit.WebView;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -86,28 +61,15 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * A dummy fragment representing a section of the app, but that simply
- * displays dummy text.
- */
 public  class DummySectionFragment extends Fragment {
-	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
-	 */
+
 	public static final String ARG_SECTION_NUMBER = "section_number";
-	
-//	public static final Object lock = new Object();  
 	
 	private int SEC_NUMBER_INTEGER;
 	
-
-	
 	private WebView webview_BookForBorrow;
 	
-	
 	private Handler handler = new Handler();
-	
 	
 	private TextView text_nickname;
 	
@@ -116,9 +78,6 @@ public  class DummySectionFragment extends Fragment {
 	private KeywordsFlow keywordsFlow; 
 	
 	private PullToRefreshListView pullToRefreshView;
-	
-	
-
 	
 	private Button button_post;
 	
@@ -141,12 +100,8 @@ public  class DummySectionFragment extends Fragment {
 		 "不能承受的生命之轻","云图","1Q84","动物农场"
 	 };  
 	
-	  private ArrayList<BookBean> mListItems;
 	
 	private static String nickname;
-	
-	
-	
 	
 	ArrayList<BookBean> bookList=new ArrayList<BookBean>();
 	
@@ -180,11 +135,7 @@ public  class DummySectionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// Create a new TextView and set its text to the fragment's section
-		// number argument value.
-		
-		
-		
+
 		SEC_NUMBER_INTEGER=getArguments().getInt(ARG_SECTION_NUMBER);
 		TextView textView = new TextView(getActivity());
 		textView.setGravity(Gravity.CENTER);
@@ -193,7 +144,6 @@ public  class DummySectionFragment extends Fragment {
 		textView.setTypeface(iBookClub.typeFace);
 	
 		if(SEC_NUMBER_INTEGER==1){
-			
 			
 			return inflater.inflate(R.layout.fragment_borrow, container, false);
 		}
@@ -212,11 +162,7 @@ public  class DummySectionFragment extends Fragment {
 		    super.onCreate(savedInstanceState);
 		   
 		    if(SEC_NUMBER_INTEGER==1){
-		    	
-		    	
-		    //	GetPublicBookInfo getPublicBook=new GetPublicBookInfo();
-		    //	getPublicBook.execute((Void)null);
-		    	
+		    		
 		    	searchView=(SearchView)getActivity().findViewById(R.id.searchView);
 		    	
 		    	searchView.setOnQueryTextListener(new OnQueryTextListener(){
@@ -257,45 +203,38 @@ public  class DummySectionFragment extends Fragment {
 					}
 		    	  });
 		    	  
-		    	
-		    	  
 		    	  keywordsFlow.setDuration(800l);  
 		    
-		    	   keywordsFlow.rubKeywords(); 
-	    		   feedKeywordsFlow(keywordsFlow, keywords);  
+		    	  keywordsFlow.rubKeywords(); 
+	    		  feedKeywordsFlow(keywordsFlow, keywords);  
 		    	  
-		    	   if(Math.random()>0.5){
-		    		   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);
-		    	   }
-		    	   else{
-		    		   keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT); 
-		    	   }
-		    	
+		    	  if(Math.random()>0.5){
+		    		  
+		    		  keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);
+		    	  }
+		    	  else{
+		    		   
+		    		  keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT); 
+		    	  }
 		    	
 		    	webview_BookForBorrow=(WebView)getActivity().findViewById(R.id.webview_BookForBorrow);
 		    	
 		    	webview_BookForBorrow.setVisibility(View.GONE);
 		    	
-		    	
 		    	button_buyBook=(Button)getActivity().findViewById(R.id.button_buybook);
 		    	
 		    	button_buyBook.setOnClickListener(new OnClickListener(){
 
-					
 					public void onClick(View v) {
 						
 						Intent intent=new Intent(getActivity(),BuyBookActivity.class);
 						intent.putExtra("keyword", keyword);
 						startActivity(intent);
-						
 					}
 		    	});
 		    	
 		    	button_buyBook.setTypeface(iBookClub.typeFace);
-		    	
-		    	
-		    	
-		
+
 		    }
 		    else if(SEC_NUMBER_INTEGER==2){
 		    	
@@ -413,7 +352,10 @@ public  class DummySectionFragment extends Fragment {
 		    	});
 		    	
 		    	display = getActivity().getWindowManager().getDefaultDisplay();
-				itemWidth = display.getWidth() / column_count;// 根据屏幕大小计算每列大小
+		    	Point outSize =new Point();
+		    	display.getSize(outSize);
+				itemWidth =  outSize.x/ column_count;
+				outSize=null;
 				assetManager = getActivity().getAssets();
 
 				
@@ -429,7 +371,7 @@ public  class DummySectionFragment extends Fragment {
 				
 				long t1=System.currentTimeMillis();
 				
-				File dir=new File(FinalConstants.APP_CACHE_URI+"images/");
+				File dir=new File(iBookClub.APP_CACHE_URI+"images/");
 				if(!dir.exists())
 					dir.mkdir();
 				
@@ -444,7 +386,7 @@ public  class DummySectionFragment extends Fragment {
 						URLConnection con=url.openConnection();
 						final InputStream inStream=con.getInputStream();
 						
-						final File file=new File(FinalConstants.APP_CACHE_URI+"images/"+beans[0].get(i).getIsbn()+".jpg");
+						final File file=new File(iBookClub.APP_CACHE_URI+"images/"+beans[0].get(i).getIsbn()+".jpg");
 						if(!file.exists())
 							file.createNewFile();
 						final FileOutputStream outStream=new FileOutputStream(file);
@@ -618,7 +560,7 @@ public  class DummySectionFragment extends Fragment {
 		protected ArrayList<BookBean> doInBackground(Void... p) {
 			
 			
-        	String httpUrl=FinalConstants.SERVER_URL+"getRecommend.action";
+        	String httpUrl=iBookClub.SERVER_URL+"getRecommend.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
@@ -642,7 +584,6 @@ public  class DummySectionFragment extends Fragment {
 	
 			}
 		
-			
 			return bookList;
 		}
 		
@@ -658,7 +599,7 @@ public  class DummySectionFragment extends Fragment {
 		@Override
 		protected ArrayList<TimelineBean> doInBackground(Void... p) {
 		
-			String httpUrl=FinalConstants.SERVER_URL+"getTimeline.action";
+			String httpUrl=iBookClub.SERVER_URL+"getTimeline.action";
 			
 			
 			
@@ -710,7 +651,7 @@ public  class DummySectionFragment extends Fragment {
 	        protected ArrayList<BookBean> doInBackground(Void... arg0) {
 	           
 	        	
-	        	String httpUrl=FinalConstants.SERVER_URL+"getRecentBook.action";
+	        	String httpUrl=iBookClub.SERVER_URL+"getRecentBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -740,12 +681,8 @@ public  class DummySectionFragment extends Fragment {
 	        @Override
 	        protected void onPostExecute(ArrayList<BookBean> result) {
 	        
-	        
-	        
-	        	
 	            adapter=new LazyAdapter(getActivity(), result);
-	        //	adapter.addData(getActivity(),result);
-	            
+	   
 	            pullToRefreshView.setAdapter(adapter);
 
 	          
@@ -772,7 +709,7 @@ public  class DummySectionFragment extends Fragment {
 	 protected Boolean doInBackground(Void... arg0){
 		 
 		 Boolean result=false;
-		 String httpUrl=FinalConstants.SERVER_URL+"searchBook.action";
+		 String httpUrl=iBookClub.SERVER_URL+"searchBook.action";
 		 
 		 if(LoginSingleton.isLoginSuccess()){
 		 
@@ -854,20 +791,12 @@ public  class DummySectionFragment extends Fragment {
 					}
 				});
 			}
-			
-		
-
 	
 		}, "bookShelfControl");
     	
     	getActivity().findViewById(R.id.keyWordsFlow).setVisibility(View.GONE);
     	
 	}
-	 
-	
-		
-	
-	
 	 
 	 public void onResume() {  
 		  
@@ -885,8 +814,5 @@ public  class DummySectionFragment extends Fragment {
 		    	}
 	        }
 	    }  
-	 
 
-		
-	 
 }

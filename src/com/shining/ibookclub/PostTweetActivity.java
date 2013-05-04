@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -58,7 +57,7 @@ public class PostTweetActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... p) {
 		
-			String httpUrl=FinalConstants.SERVER_URL+"postTweet.action";
+			String httpUrl=iBookClub.SERVER_URL+"postTweet.action";
 			Boolean result=false;
 			
 			if(LoginSingleton.isLoginSuccess()){

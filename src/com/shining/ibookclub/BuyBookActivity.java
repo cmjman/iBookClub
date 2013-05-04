@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import com.google.gson.GsonBuilder;
 import com.shining.ibookclub.bean.Bean;
 import com.shining.ibookclub.bean.BookBean;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.LazyAdapter;
 
 import android.os.AsyncTask;
@@ -53,7 +52,7 @@ public class BuyBookActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				String url=FinalConstants.Douban_BOOK_URL+list.get(position).getIsbn();
+				String url=iBookClub.Douban_BOOK_URL+list.get(position).getIsbn();
 				
 				Intent intent=new Intent(getBaseContext(),BuyBookDetailActivity.class);
 				intent.putExtra("url", url);
@@ -76,7 +75,7 @@ public class BuyBookActivity extends Activity {
 		
 			try{	
 				
-				URL url = new URL(FinalConstants.Douban_SEARCH_URL+params[0]+"&apikey="+FinalConstants.Douban_API_KEY);      
+				URL url = new URL(iBookClub.Douban_SEARCH_URL+params[0]+"&apikey="+iBookClub.Douban_API_KEY);      
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
 				conn.setConnectTimeout(5 * 1000);      
 				conn.setRequestMethod("GET");      

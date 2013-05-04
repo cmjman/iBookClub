@@ -17,6 +17,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.shining.ibookclub.iBookClub;
+
 import android.app.Application;
 
 public class LoginSingleton {
@@ -60,7 +62,7 @@ public class LoginSingleton {
     
 private static Boolean Login(){
 	
-		String httpUrl=FinalConstants.SERVER_URL+"login.action";
+		String httpUrl=iBookClub.SERVER_URL+"login.action";
 	
 		
 		Encryption encryption=new Encryption(loginPassword+SALT);

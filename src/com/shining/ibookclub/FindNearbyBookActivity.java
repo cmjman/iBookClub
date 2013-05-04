@@ -1,5 +1,6 @@
 package com.shining.ibookclub;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shining.ibookclub.bean.BookBean;
 import com.shining.ibookclub.support.BitmapCache;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -182,7 +182,12 @@ public class FindNearbyBookActivity extends Activity {
 		
 	      	Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2, Config.ALPHA_8);
 	      	System.out.println("Bitmap Size:"+bitmap.getByteCount());
-	        Canvas canvas = new Canvas(bitmap);
+	      	
+	        
+	        SoftReference<Bitmap> softReference =new SoftReference<Bitmap>(bitmap);
+	       
+	        Canvas canvas = new Canvas(softReference.get());
+	        
 	        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	        
 	        paint.setColor(0x110000FF);
@@ -192,7 +197,7 @@ public class FindNearbyBookActivity extends Activity {
 			paint.setColor(0xFF0000FF);
 	        paint.setStyle(Style.STROKE);
 	    	canvas.drawCircle(radius, radius,radius, paint);
-	        return bitmap;
+	        return softReference.get();
 	    }
 	 
 	public class GetNearbyTask extends AsyncTask<Void, Void, Boolean> {
@@ -201,7 +206,7 @@ public class FindNearbyBookActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0) {
 			
 			Boolean result=false;
-			String httpUrl=FinalConstants.SERVER_URL+"getNearby.action";
+			String httpUrl=iBookClub.SERVER_URL+"getNearby.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				

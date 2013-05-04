@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 
 import com.shining.ibookclub.bean.BookBean;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -112,7 +111,7 @@ public class PostActivity extends Activity {
 			 	bookBean=  getResultByIsbn();
 			 
 				Boolean result=false;
-				String httpUrl=FinalConstants.SERVER_URL+"checkBook.action";
+				String httpUrl=iBookClub.SERVER_URL+"checkBook.action";
 				
 				if(LoginSingleton.isLoginSuccess()){
 					
@@ -170,7 +169,7 @@ public class PostActivity extends Activity {
 		protected Boolean doInBackground(Void... arg0){
 			
 			Boolean result=false;
-			String httpUrl=FinalConstants.SERVER_URL+"deleteBook.action";
+			String httpUrl=iBookClub.SERVER_URL+"deleteBook.action";
 			
 			if(LoginSingleton.isLoginSuccess()){
 				
@@ -216,7 +215,7 @@ public class PostActivity extends Activity {
 		 	
 			URL url;
 			try {
-				url = new URL(FinalConstants.Douban_ISBN_URL+isbn+"?apikey="+FinalConstants.Douban_API_KEY);
+				url = new URL(iBookClub.Douban_ISBN_URL+isbn+"?apikey="+iBookClub.Douban_API_KEY);
 			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
 			conn.setConnectTimeout(5 * 1000);      

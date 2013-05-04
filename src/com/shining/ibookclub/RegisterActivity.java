@@ -8,7 +8,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.shining.ibookclub.support.Encryption;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.HttpUtility;
 import com.shining.ibookclub.support.LoginSingleton;
 
@@ -135,7 +134,7 @@ public class RegisterActivity extends Activity {
 		
 		protected Boolean doInBackground(String... str) {
 			
-			String httpUrl=FinalConstants.SERVER_URL+"register.action";
+			String httpUrl=iBookClub.SERVER_URL+"register.action";
 			Boolean actionResult=false;
 			
 			Encryption encryption=new Encryption(str[2]+SALT);

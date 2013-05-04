@@ -21,7 +21,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.shining.ibookclub.bean.BookBean;
-import com.shining.ibookclub.support.FinalConstants;
 import com.shining.ibookclub.support.LazyAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -132,7 +131,7 @@ public class BuyBookDetailActivity extends Activity {
 				}
 				else{
 					
-					File file=new File(FinalConstants.APP_CACHE_URI+"buybook.html");
+					File file=new File(iBookClub.APP_CACHE_URI+"buybook.html");
 					
 					FileOutputStream out;
 					try {
